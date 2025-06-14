@@ -14,7 +14,6 @@ struct RecipeCardListView: View {
                 RecipeCard(
                     title: recipe.title,
                     description: recipe.description,
-                    tags: recipe.tags.map { $0.name },
                     imageurl: recipe.imageurl
                 )
             }

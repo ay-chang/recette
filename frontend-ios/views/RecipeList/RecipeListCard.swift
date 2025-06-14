@@ -3,34 +3,21 @@ import SwiftUI
 struct RecipeListCard: View {
     let title: String
     let description: String
-    let tags: [String]
 
     var body: some View {
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 8) {
                 Text(title)
                     .font(.headline)
-                    .foregroundColor(.primary)
-
-                if tags.isEmpty {
-                    Text("No Tags")
-                        .font(.caption)
-                        .foregroundColor(.gray)
-                } else {
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 6) {
-                            ForEach(tags, id: \.self) { tag in
-                                Text(tag)
-                                    .font(.caption)
-                                    .padding(.horizontal, 8)
-                                    .padding(.vertical, 4)
-                                    .background(Color(hex: "#e9c46a"))
-                                    .foregroundColor(Color.white)
-                                    .cornerRadius(8)
-                            }
-                        }
-                    }
-                }
+                    .padding(.top)
+                    .padding(.horizontal)
+                
+                Text(description)
+                    .font(.subheadline)
+                    .lineLimit(3)
+                    .truncationMode(.tail)
+                    .padding(.top)
+                    .padding(.horizontal)
             }
             .padding(.bottom, 16)
             .frame(maxWidth: .infinity, alignment: .leading)

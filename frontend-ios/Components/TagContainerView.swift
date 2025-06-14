@@ -1,16 +1,18 @@
 import SwiftUI
 
 struct TagContainerView: View {
-    @ObservedObject var recipe: CreateRecipeModel
-    var addTagAction: () -> Void
+    @Binding var selectedTags: Set<String>
+    @Binding var availableTags: [String]
+    var addTagAction: (() -> Void)? = nil
+    var isReadOnly: Bool = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             ForEach(getRows().enumerated().map { RowWrapper(index: $0.offset, row: $0.element) }) { rowWrapper in
                 HStack(alignment: .center, spacing: 8) {
                     ForEach(rowWrapper.row, id: \.self) { tag in
-                        if tag == "+ Add tag" {
-                            Button(action: addTagAction) {
+                        if tag == "+ Add tag", !isReadOnly, let action = addTagAction {
+                            Button(action: action) {
                                 Text("+ Add tag")
                                     .font(.callout)
                                     .padding(.vertical, 4)
@@ -24,20 +26,23 @@ struct TagContainerView: View {
                         } else {
                             TagChipView(
                                 title: tag,
-                                isSelected: recipe.selectedTags.contains(tag),
+                                isSelected: selectedTags.contains(tag),
+                                isReadOnly: isReadOnly,
                                 toggleAction: {
-                                    if recipe.selectedTags.contains(tag) {
-                                        recipe.selectedTags.remove(tag)
+                                    if selectedTags.contains(tag) {
+                                        selectedTags.remove(tag)
                                     } else {
-                                        recipe.selectedTags.insert(tag)
+                                        selectedTags.insert(tag)
                                     }
                                 }
                             )
                         }
                     }
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     private func getRows() -> [[String]] {
@@ -45,9 +50,9 @@ struct TagContainerView: View {
         var currentRow: [String] = []
         var rowWidth: CGFloat = 0
         let padding: CGFloat = 5
-        let maxWidth = UIScreen.main.bounds.width - 16  // Matches padding in parent view
+        let maxWidth = UIScreen.main.bounds.width - 16
 
-        let allTags = recipe.availableTags + ["+ Add tag"]
+        let allTags = isReadOnly ? Array(availableTags) : (availableTags + ["+ Add tag"])
 
         for tag in allTags {
             let itemWidth = textWidth(for: tag)
@@ -73,9 +78,10 @@ struct TagContainerView: View {
             .font: UIFont.systemFont(ofSize: UIFont.systemFontSize)
         ]
         let size = (text as NSString).size(withAttributes: attributes)
-        return size.width + 30 // padding for chip
+        return size.width + 30
     }
 }
+
 
 struct RowWrapper: Identifiable {
     let id = UUID()

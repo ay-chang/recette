@@ -92,8 +92,6 @@
 				CreateRecipe/RecipeIngredientsStep.swift,
 				CreateRecipe/RecipeStepsStep.swift,
 				CreateRecipe/RecipeTagsStep.swift,
-				CreateRecipe/TagChipView.swift,
-				CreateRecipe/TagContainerView.swift,
 				Main/GroceryListView.swift,
 				Main/HomeView.swift,
 				Main/MainTabView.swift,
@@ -136,6 +134,8 @@
 			membershipExceptions = (
 				CharacterCountView.swift,
 				RecipeImage.swift,
+				TagChipView.swift,
+				TagContainerView.swift,
 			);
 			target = 971C4CE42DA6ADD100A8CBAD /* frontend-ios */;
 		};

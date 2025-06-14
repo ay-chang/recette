@@ -3,7 +3,6 @@ import SwiftUI
 struct RecipeCard: View {
     let title: String
     let description: String
-    let tags: [String]
     let imageurl: String?
 
     var body: some View {
@@ -19,29 +18,9 @@ struct RecipeCard: View {
                 .font(.subheadline)
                 .lineLimit(3)
                 .truncationMode(.tail)
-                .padding(.top)
+                .padding(.vertical)
                 .padding(.horizontal)
             
-            if tags.isEmpty {
-                Text("No Tags")
-                    .font(.caption)
-                    .foregroundColor(.gray)
-            } else {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 6) {
-                        ForEach(tags, id: \.self) { tag in
-                            Text(tag)
-                                .font(.caption)
-                                .padding(.horizontal, 8)
-                                .padding(.vertical, 4)
-                                .background(Color(hex: "#e9c46a"))
-                                .foregroundColor(Color.white)
-                                .cornerRadius(8)
-                        }
-                    }
-                }
-                .padding()
-            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(Color.white)

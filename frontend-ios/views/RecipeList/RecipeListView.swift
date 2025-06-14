@@ -13,8 +13,7 @@ struct RecipeListView: View {
             } label: {
                 RecipeListCard(
                     title: recipe.title,
-                    description: recipe.description,
-                    tags: recipe.tags.map { $0.name }
+                    description: recipe.description
                 )
                 .frame(maxWidth: .infinity, alignment: .leading)
             }

@@ -2,7 +2,7 @@ import SwiftUI
 
 /**
  * Check if recipe details has an image, if not then load RecipeDetailsNoImage
- * otherwise just load RecipeDetailsWithImage. THe data is loaded in from either
+ * otherwise just load RecipeDetailsWithImage. The data is loaded in from either
  * the RecipeCardListView or the RecipeListView which we then pass into either
  * the RecipeDetailsWithImage or the RecipeDetailsNoImage. Also controls whether
  * or not the action sheet (delete, edit) is being displayed.
@@ -26,14 +26,20 @@ struct RecipeDetailsCoordinator: View {
                    !imageurl.trimmingCharacters(in: .whitespaces).isEmpty {
                     RecipeDetailsWithImage(
                         recipe: recipe,
-                        onClose: { dismiss() },
+                        onClose: {
+                            dismiss()
+                            session.shouldRefreshRecipes = true
+                        },
                         onEllipsisTap: { showActionSheet = true }
                     )
                 } else {
                     RecipeDetailsNoImage(
                         recipe: recipe,
                         model: recipeModel,
-                        onClose: { dismiss() },
+                        onClose: {
+                            dismiss()
+                            session.shouldRefreshRecipes = true
+                        },
                         onEllipsisTap: { showActionSheet = true }
                     )
                 }
@@ -63,16 +69,18 @@ struct RecipeDetailsCoordinator: View {
                 onEdit: {
                     showActionSheet = false
                     showEditRecipe = true
+                    session.shouldRefreshRecipes = true
                 }
             )
         }
-        .fullScreenCover(isPresented: $showEditRecipe) {
+        .fullScreenCover(isPresented: $showEditRecipe, onDismiss: {
+            recipeModel.loadRecipe()
+        }) {
             if let recipe = recipeModel.recipe {
                 EditRecipe(model: EditRecipeModel(recipe: recipe))
             }
-            
-
         }
+
     }
 }
 

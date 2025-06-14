@@ -66,9 +66,14 @@ struct RecipeTagsStep: View {
                 Text("Organize your recipe with tags")
                     .font(.headline)
                 
-                TagContainerView(recipe: recipe, addTagAction: {
-                    showAddTag = true
-                })
+                TagContainerView(
+                    selectedTags: $recipe.selectedTags,
+                    availableTags: $recipe.availableTags,
+                    addTagAction: {
+                        showAddTag = true
+                    }
+                )
+
             }
             
             Spacer()
