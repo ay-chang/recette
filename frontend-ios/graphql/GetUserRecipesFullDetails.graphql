@@ -1,0 +1,12 @@
+query GetUserRecipesFullDetails($email: String!) {
+  userRecipes(email: $email) {
+    id
+    title
+    description
+    steps
+    imageurl
+    tags {
+      name
+    }
+  }
+}

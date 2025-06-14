@@ -1,0 +1,11 @@
+query GetUserRecipesSummaries($email: String!) {
+  userRecipes(email: $email) {
+    id
+    title
+    tags {
+      name
+    }
+    description
+  }
+}
+

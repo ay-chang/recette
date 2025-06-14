@@ -1,0 +1,7 @@
+query GetUserTags($email: String!) {
+  userTags(email: $email) {
+    id
+    name
+  }
+}
+

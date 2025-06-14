@@ -1,0 +1,24 @@
+{
+  "schemaNamespace": "RecetteSchema",
+  "input": {
+    "schemaSearchPaths": ["graphql/schema.graphqls"],
+    "operationSearchPaths": ["graphql/**/*.graphql"]
+  },
+  "output": {
+    "testMocks": {
+      "none": {}
+    },
+    "schemaTypes": {
+      "path": "Generated",
+      "moduleType": {
+        "embeddedInTarget": {
+          "name": "frontend-ios"
+        }
+      }
+    },
+    "operations": {
+      "inSchemaModule": true
+    }
+  }
+}
+

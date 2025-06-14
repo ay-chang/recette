@@ -1,0 +1,17 @@
+query getRecipeByID($id: ID!) {
+    recipeById(id: $id) {
+      id
+      title
+      description
+      imageurl
+      steps
+      tags {
+        name
+      }
+      ingredients {
+        id
+        name
+        measurement
+      }
+    }
+  }

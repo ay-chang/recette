@@ -1,0 +1,20 @@
+mutation AddRecipe($input: RecipeInput!) {
+  addRecipe(input: $input) {
+    id
+    title
+    description
+    imageurl
+    steps
+    user {
+      id
+      email
+    }
+    ingredients {
+      name
+      measurement
+    }
+    tags {
+      name
+    }
+  }
+}

@@ -1,0 +1,6 @@
+mutation AddTag($email: String!, $name: String!) {
+  addTag(email: $email, name: $name) {
+    id
+    name
+  }
+}

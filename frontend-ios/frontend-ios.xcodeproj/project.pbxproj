@@ -1,0 +1,773 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		971C4CED2DA6ADD200A8CBAD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 971C4CEC2DA6ADD200A8CBAD /* Assets.xcassets */; };
+		971C4D362DA84F2400A8CBAD /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = 971C4D352DA84F2400A8CBAD /* Apollo */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		971C4CF32DA6ADD300A8CBAD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 971C4CDD2DA6ADD100A8CBAD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 971C4CE42DA6ADD100A8CBAD;
+			remoteInfo = "frontend-ios";
+		};
+		971C4CFD2DA6ADD300A8CBAD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 971C4CDD2DA6ADD100A8CBAD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 971C4CE42DA6ADD100A8CBAD;
+			remoteInfo = "frontend-ios";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		971C4D422DA84F2400A8CBAD /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		971C4CE52DA6ADD100A8CBAD /* frontend-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "frontend-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		971C4CEC2DA6ADD200A8CBAD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		971C4CF22DA6ADD300A8CBAD /* frontend-iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "frontend-iosTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		971C4CFC2DA6ADD300A8CBAD /* frontend-iosUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "frontend-iosUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		971C4D962DA8A4A600A8CBAD /* apollo-codegen-config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "apollo-codegen-config.json"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		971C4D6F2DA858E400A8CBAD /* Exceptions for "app" folder in "frontend-ios" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				AppView.swift,
+				frontend_iosApp.swift,
+			);
+			target = 971C4CE42DA6ADD100A8CBAD /* frontend-ios */;
+		};
+		971C4D702DA858E400A8CBAD /* Exceptions for "models" folder in "frontend-ios" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				CreateRecipeModel.swift,
+				EditRecipeModel.swift,
+				RecipeDetailsModel.swift,
+				UserSession.swift,
+			);
+			target = 971C4CE42DA6ADD100A8CBAD /* frontend-ios */;
+		};
+		971C4D712DA858E400A8CBAD /* Exceptions for "utilities" folder in "frontend-ios" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Color+Hex.swift",
+				Config.swift,
+				Network.swift,
+				S3Service.swift,
+				TagManageable.swift,
+			);
+			target = 971C4CE42DA6ADD100A8CBAD /* frontend-ios */;
+		};
+		971C4D722DA858E400A8CBAD /* Exceptions for "views" folder in "frontend-ios" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Auth/LoginView.swift,
+				Auth/SignUpView.swift,
+				CreateRecipe/AddIngredientView.swift,
+				CreateRecipe/AddStepView.swift,
+				CreateRecipe/AddTagView.swift,
+				CreateRecipe/CreateRecipeCoordinator.swift,
+				CreateRecipe/RecipeDetailsStep.swift,
+				CreateRecipe/RecipeIngredientsStep.swift,
+				CreateRecipe/RecipeStepsStep.swift,
+				CreateRecipe/RecipeTagsStep.swift,
+				CreateRecipe/TagChipView.swift,
+				CreateRecipe/TagContainerView.swift,
+				Main/GroceryListView.swift,
+				Main/HomeView.swift,
+				Main/MainTabView.swift,
+				Main/ProfileView.swift,
+				RecipeDetails/ActionSheetView.swift,
+				RecipeDetails/EditRecipe/EditRecipe.swift,
+				RecipeDetails/EditRecipe/EditRecipeDetailsDescription.swift,
+				RecipeDetails/EditRecipe/EditRecipeDetailsImage.swift,
+				RecipeDetails/EditRecipe/EditRecipeDetailsIngredients.swift,
+				RecipeDetails/EditRecipe/EditRecipeDetailsSteps.swift,
+				RecipeDetails/EditRecipe/EditRecipeDetailsTags.swift,
+				RecipeDetails/EditRecipe/EditRecipeDetailsTitle.swift,
+				RecipeDetails/RecipeDetailsContent.swift,
+				RecipeDetails/RecipeDetailsCoordinator.swift,
+				RecipeDetails/RecipeDetailsNoImage.swift,
+				RecipeDetails/RecipeDetailsWithImage.swift,
+				RecipeDetails/RecipeIngredients.swift,
+				RecipeDetails/RecipeScrollSentinel.swift,
+				RecipeDetails/RecipeSteps.swift,
+				RecipeDetails/RecipeTags.swift,
+				RecipeDetails/RecipeTopBar.swift,
+				RecipeList/MenuBar.swift,
+				RecipeList/RecipeCard.swift,
+				RecipeList/RecipeCardListView.swift,
+				RecipeList/RecipeListCard.swift,
+				RecipeList/RecipeListView.swift,
+				RecipeList/RecipesView.swift,
+			);
+			target = 971C4CE42DA6ADD100A8CBAD /* frontend-ios */;
+		};
+		97A3A1552DDDDF9F0009272B /* Exceptions for "graphql" folder in "frontend-ios" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				GetUserRecipesFullDetails.graphql,
+			);
+			target = 971C4CE42DA6ADD100A8CBAD /* frontend-ios */;
+		};
+		97C5D7E02DEDFBCC00665D56 /* Exceptions for "Components" folder in "frontend-ios" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				CharacterCountView.swift,
+				RecipeImage.swift,
+			);
+			target = 971C4CE42DA6ADD100A8CBAD /* frontend-ios */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		97A3A1562DDDDF9F0009272B /* Exceptions for "graphql" folder in "Compile Sources" phase from "frontend-ios" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = 971C4CE12DA6ADD100A8CBAD /* Sources */;
+			membershipExceptions = (
+				GetUserRecipesFullDetails.graphql,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		971C4CF52DA6ADD300A8CBAD /* frontend-iosTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "frontend-iosTests";
+			sourceTree = "<group>";
+		};
+		971C4CFF2DA6ADD300A8CBAD /* frontend-iosUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "frontend-iosUITests";
+			sourceTree = "<group>";
+		};
+		971C4D522DA858E400A8CBAD /* app */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				971C4D6F2DA858E400A8CBAD /* Exceptions for "app" folder in "frontend-ios" target */,
+			);
+			path = app;
+			sourceTree = "<group>";
+		};
+		971C4D552DA858E400A8CBAD /* graphql */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				97A3A1552DDDDF9F0009272B /* Exceptions for "graphql" folder in "frontend-ios" target */,
+				97A3A1562DDDDF9F0009272B /* Exceptions for "graphql" folder in "Compile Sources" phase from "frontend-ios" target */,
+			);
+			path = graphql;
+			sourceTree = "<group>";
+		};
+		971C4D572DA858E400A8CBAD /* models */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				971C4D702DA858E400A8CBAD /* Exceptions for "models" folder in "frontend-ios" target */,
+			);
+			path = models;
+			sourceTree = "<group>";
+		};
+		971C4D592DA858E400A8CBAD /* utilities */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				971C4D712DA858E400A8CBAD /* Exceptions for "utilities" folder in "frontend-ios" target */,
+			);
+			path = utilities;
+			sourceTree = "<group>";
+		};
+		971C4D622DA858E400A8CBAD /* views */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				971C4D722DA858E400A8CBAD /* Exceptions for "views" folder in "frontend-ios" target */,
+			);
+			path = views;
+			sourceTree = "<group>";
+		};
+		971C4E672DA9737D00A8CBAD /* Generated */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Generated;
+			sourceTree = "<group>";
+		};
+		97C5D7DD2DEDFBB800665D56 /* Components */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				97C5D7E02DEDFBCC00665D56 /* Exceptions for "Components" folder in "frontend-ios" target */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		971C4CE22DA6ADD100A8CBAD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				971C4D362DA84F2400A8CBAD /* Apollo in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		971C4CEF2DA6ADD300A8CBAD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		971C4CF92DA6ADD300A8CBAD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		971C4CDC2DA6ADD100A8CBAD = {
+			isa = PBXGroup;
+			children = (
+				97C5D7DD2DEDFBB800665D56 /* Components */,
+				971C4E672DA9737D00A8CBAD /* Generated */,
+				971C4D522DA858E400A8CBAD /* app */,
+				971C4D622DA858E400A8CBAD /* views */,
+				971C4D592DA858E400A8CBAD /* utilities */,
+				971C4D572DA858E400A8CBAD /* models */,
+				971C4D552DA858E400A8CBAD /* graphql */,
+				971C4CFF2DA6ADD300A8CBAD /* frontend-iosUITests */,
+				971C4CF52DA6ADD300A8CBAD /* frontend-iosTests */,
+				971C4D342DA84F2400A8CBAD /* Frameworks */,
+				971C4D962DA8A4A600A8CBAD /* apollo-codegen-config.json */,
+				971C4CEC2DA6ADD200A8CBAD /* Assets.xcassets */,
+				971C4CE62DA6ADD100A8CBAD /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		971C4CE62DA6ADD100A8CBAD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				971C4CE52DA6ADD100A8CBAD /* frontend-ios.app */,
+				971C4CF22DA6ADD300A8CBAD /* frontend-iosTests.xctest */,
+				971C4CFC2DA6ADD300A8CBAD /* frontend-iosUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		971C4D342DA84F2400A8CBAD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		971C4CE42DA6ADD100A8CBAD /* frontend-ios */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 971C4D062DA6ADD300A8CBAD /* Build configuration list for PBXNativeTarget "frontend-ios" */;
+			buildPhases = (
+				971C4CE12DA6ADD100A8CBAD /* Sources */,
+				971C4CE22DA6ADD100A8CBAD /* Frameworks */,
+				971C4CE32DA6ADD100A8CBAD /* Resources */,
+				971C4D422DA84F2400A8CBAD /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				971C4D552DA858E400A8CBAD /* graphql */,
+				971C4E672DA9737D00A8CBAD /* Generated */,
+			);
+			name = "frontend-ios";
+			packageProductDependencies = (
+				971C4D352DA84F2400A8CBAD /* Apollo */,
+			);
+			productName = "frontend-ios";
+			productReference = 971C4CE52DA6ADD100A8CBAD /* frontend-ios.app */;
+			productType = "com.apple.product-type.application";
+		};
+		971C4CF12DA6ADD300A8CBAD /* frontend-iosTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 971C4D092DA6ADD300A8CBAD /* Build configuration list for PBXNativeTarget "frontend-iosTests" */;
+			buildPhases = (
+				971C4CEE2DA6ADD300A8CBAD /* Sources */,
+				971C4CEF2DA6ADD300A8CBAD /* Frameworks */,
+				971C4CF02DA6ADD300A8CBAD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				971C4CF42DA6ADD300A8CBAD /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				971C4CF52DA6ADD300A8CBAD /* frontend-iosTests */,
+			);
+			name = "frontend-iosTests";
+			packageProductDependencies = (
+			);
+			productName = "frontend-iosTests";
+			productReference = 971C4CF22DA6ADD300A8CBAD /* frontend-iosTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		971C4CFB2DA6ADD300A8CBAD /* frontend-iosUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 971C4D0C2DA6ADD300A8CBAD /* Build configuration list for PBXNativeTarget "frontend-iosUITests" */;
+			buildPhases = (
+				971C4CF82DA6ADD300A8CBAD /* Sources */,
+				971C4CF92DA6ADD300A8CBAD /* Frameworks */,
+				971C4CFA2DA6ADD300A8CBAD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				971C4CFE2DA6ADD300A8CBAD /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				971C4CFF2DA6ADD300A8CBAD /* frontend-iosUITests */,
+			);
+			name = "frontend-iosUITests";
+			packageProductDependencies = (
+			);
+			productName = "frontend-iosUITests";
+			productReference = 971C4CFC2DA6ADD300A8CBAD /* frontend-iosUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		971C4CDD2DA6ADD100A8CBAD /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1630;
+				LastUpgradeCheck = 1630;
+				TargetAttributes = {
+					971C4CE42DA6ADD100A8CBAD = {
+						CreatedOnToolsVersion = 16.3;
+					};
+					971C4CF12DA6ADD300A8CBAD = {
+						CreatedOnToolsVersion = 16.3;
+						TestTargetID = 971C4CE42DA6ADD100A8CBAD;
+					};
+					971C4CFB2DA6ADD300A8CBAD = {
+						CreatedOnToolsVersion = 16.3;
+						TestTargetID = 971C4CE42DA6ADD100A8CBAD;
+					};
+				};
+			};
+			buildConfigurationList = 971C4CE02DA6ADD100A8CBAD /* Build configuration list for PBXProject "frontend-ios" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 971C4CDC2DA6ADD100A8CBAD;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				971C4D332DA6CEE400A8CBAD /* XCRemoteSwiftPackageReference "apollo-ios" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 971C4CE62DA6ADD100A8CBAD /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				971C4CE42DA6ADD100A8CBAD /* frontend-ios */,
+				971C4CF12DA6ADD300A8CBAD /* frontend-iosTests */,
+				971C4CFB2DA6ADD300A8CBAD /* frontend-iosUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		971C4CE32DA6ADD100A8CBAD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				971C4CED2DA6ADD200A8CBAD /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		971C4CF02DA6ADD300A8CBAD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		971C4CFA2DA6ADD300A8CBAD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		971C4CE12DA6ADD100A8CBAD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		971C4CEE2DA6ADD300A8CBAD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		971C4CF82DA6ADD300A8CBAD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		971C4CF42DA6ADD300A8CBAD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 971C4CE42DA6ADD100A8CBAD /* frontend-ios */;
+			targetProxy = 971C4CF32DA6ADD300A8CBAD /* PBXContainerItemProxy */;
+		};
+		971C4CFE2DA6ADD300A8CBAD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 971C4CE42DA6ADD100A8CBAD /* frontend-ios */;
+			targetProxy = 971C4CFD2DA6ADD300A8CBAD /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		971C4D042DA6ADD300A8CBAD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		971C4D052DA6ADD300A8CBAD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		971C4D072DA6ADD300A8CBAD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = D9387N6G4C;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Recette;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "allenchang.frontend-ios";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		971C4D082DA6ADD300A8CBAD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = D9387N6G4C;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Recette;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "allenchang.frontend-ios";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		971C4D0A2DA6ADD300A8CBAD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "allenchang.frontend-iosTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/frontend-ios.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/frontend-ios";
+			};
+			name = Debug;
+		};
+		971C4D0B2DA6ADD300A8CBAD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "allenchang.frontend-iosTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/frontend-ios.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/frontend-ios";
+			};
+			name = Release;
+		};
+		971C4D0D2DA6ADD300A8CBAD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "allenchang.frontend-iosUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "frontend-ios";
+			};
+			name = Debug;
+		};
+		971C4D0E2DA6ADD300A8CBAD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "allenchang.frontend-iosUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "frontend-ios";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		971C4CE02DA6ADD100A8CBAD /* Build configuration list for PBXProject "frontend-ios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				971C4D042DA6ADD300A8CBAD /* Debug */,
+				971C4D052DA6ADD300A8CBAD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		971C4D062DA6ADD300A8CBAD /* Build configuration list for PBXNativeTarget "frontend-ios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				971C4D072DA6ADD300A8CBAD /* Debug */,
+				971C4D082DA6ADD300A8CBAD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		971C4D092DA6ADD300A8CBAD /* Build configuration list for PBXNativeTarget "frontend-iosTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				971C4D0A2DA6ADD300A8CBAD /* Debug */,
+				971C4D0B2DA6ADD300A8CBAD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		971C4D0C2DA6ADD300A8CBAD /* Build configuration list for PBXNativeTarget "frontend-iosUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				971C4D0D2DA6ADD300A8CBAD /* Debug */,
+				971C4D0E2DA6ADD300A8CBAD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		971C4D332DA6CEE400A8CBAD /* XCRemoteSwiftPackageReference "apollo-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apollographql/apollo-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.19.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		971C4D352DA84F2400A8CBAD /* Apollo */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 971C4D332DA6CEE400A8CBAD /* XCRemoteSwiftPackageReference "apollo-ios" */;
+			productName = Apollo;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 971C4CDD2DA6ADD100A8CBAD /* Project object */;
+}

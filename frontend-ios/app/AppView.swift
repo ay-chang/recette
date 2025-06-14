@@ -1,0 +1,23 @@
+/**
+ * Decides whether or not user is logged in which determines
+ * whether or not we are on the login screen
+ */
+
+import SwiftUI
+
+struct AppView: View {
+    @EnvironmentObject var session: UserSession
+
+    var body: some View {
+        Group {
+            if session.isLoggedIn {
+                MainTabView()
+            } else {
+                LoginView()
+            }
+        }
+        .onAppear {
+            session.loadSavedSession() // called when the real session is attached
+        }
+    }
+}

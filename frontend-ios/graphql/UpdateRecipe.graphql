@@ -1,0 +1,17 @@
+mutation UpdateRecipe($input: UpdateRecipeInput!) {
+  updateRecipe(input: $input) {
+    id
+    title
+    description
+    imageurl
+    ingredients {
+      name
+      measurement
+    }
+    steps
+    tags {
+      name
+    }
+  }
+}
+
