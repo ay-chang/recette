@@ -22,10 +22,14 @@
 **/*.xcodeproj/xcuserdata/
 **/*.xcodeproj/project.xcsettings
 **/*.xcuserstate
+**/xcuserdata/
+**/xcshareddata/
 **/*.swiftpm
 **/.dsym
 **/*.ipa
 **/apollo-codegen-config
+frontend-ios/Generated/
+apollo-ios-cli
 **/frontend-ios/Assets.xcassets/*/*.png
 
 # === VS Code ===
