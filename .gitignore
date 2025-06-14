@@ -1,0 +1,43 @@
+# === GLOBAL IGNORE ===
+.DS_Store
+*.log
+
+# === ENV FILES ===
+**/.env
+
+# === MAVEN / JAVA BACKEND ===
+**/target/
+**/.mvn/
+**/pom.xml.tag
+**/pom.xml.releaseBackup
+**/pom.xml.versionsBackup
+**/pom.xml.next
+**/release.properties
+
+# === FRONTEND - Xcode / Swift (frontend-ios) ===
+**/DerivedData/
+**/build/
+**/*.xcworkspace
+**/*.xcodeproj/project.xcworkspace/
+**/*.xcodeproj/xcuserdata/
+**/*.xcodeproj/project.xcsettings
+**/*.xcuserstate
+**/*.swiftpm
+**/.dsym
+**/*.ipa
+**/apollo-codegen-config
+**/frontend-ios/Assets.xcassets/*/*.png
+
+# === VS Code ===
+**/.vscode/
+
+# === TEST REPORTS ===
+**/surefire-reports/
+**/jacoco.exec
+
+# === BACKEND CONFIG FILES ===
+backend/application-test.properties
+
+# === GIT ===
+*.swp
+*.swo
