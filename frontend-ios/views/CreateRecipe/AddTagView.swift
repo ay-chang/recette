@@ -23,7 +23,7 @@ struct AddTagView<Model: TagManageable & ObservableObject>: View {
                     let trimmedTagName = newTagName.trimmingCharacters(in: .whitespaces)
                     if !trimmedTagName.isEmpty {
                         if let email = UserDefaults.standard.string(forKey: "loggedInEmail") {
-                            recipe.addTagToBackend(email: email, tagName: trimmedTagName)
+                            recipe.addTagToUser(email: email, tagName: trimmedTagName)
                             showAddTag = false
                         } else {
                             print("Error: No logged in email found")

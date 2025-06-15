@@ -51,6 +51,11 @@ struct CreateRecipeCoordinator: View {
                 )
             }
         }
+        .onAppear {
+            if let email = session.userEmail {
+                recipe.loadUserTags(email: email)
+            }
+        }
         .alert("", isPresented: $showErrorAlert, actions: {
             Button("OK", role: .cancel) {}
         }, message: {

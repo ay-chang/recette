@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct RecipeDetailsContent: View {
-    let recipe: RecetteSchema.GetRecipeByIDQuery.Data.RecipeById
+    let recipe: RecipeDetails
 
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {

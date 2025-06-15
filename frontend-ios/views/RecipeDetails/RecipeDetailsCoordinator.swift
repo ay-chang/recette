@@ -19,9 +19,7 @@ struct RecipeDetailsCoordinator: View {
 
     var body: some View {
         VStack {
-            if recipeModel.isLoading {
-                ProgressView("Loading recipe...")
-            } else if let recipe = recipeModel.recipe {
+            if let recipe = recipeModel.recipe {
                 if let imageurl = recipe.imageurl,
                    !imageurl.trimmingCharacters(in: .whitespaces).isEmpty {
                     RecipeDetailsWithImage(
@@ -35,7 +33,17 @@ struct RecipeDetailsCoordinator: View {
                 } else {
                     RecipeDetailsNoImage(
                         recipe: recipe,
-                        model: recipeModel,
+                        selectedImage: { image in
+                            if let email = session.userEmail {
+                                recipeModel.updateRecipeImage(image: image, email: email) { success in
+                                    if success {
+                                        recipeModel.loadRecipe()
+                                    } else {
+                                        print("Failed to update image.")
+                                    }
+                                }
+                            }
+                        },
                         onClose: {
                             dismiss()
                             session.shouldRefreshRecipes = true

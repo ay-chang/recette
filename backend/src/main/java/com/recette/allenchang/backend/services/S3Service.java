@@ -106,16 +106,10 @@ public class S3Service {
     return publicUrl.toString();
   }
 
-  /**
-   * Deletes an image from S3
-   * 
-   * @param imageUrl image to be deleted
-   */
+  /** Deletes an image from S3 */
   public void deleteImage(String imageUrl) {
+    /* Key needs to be just the S3 object not the whole url */
     String key = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
-
-    System.out.println("KEY: " + key + "\n\n");
-
     amazonS3.deleteObject(bucketName, key);
   }
 

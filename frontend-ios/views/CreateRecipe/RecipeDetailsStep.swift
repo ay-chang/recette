@@ -2,7 +2,6 @@ import SwiftUI
 import PhotosUI
 
 struct RecipeDetailsStep: View {
-    @EnvironmentObject var session: UserSession
     @ObservedObject var recipe: CreateRecipeModel
     var onNext: () -> Void
     var onCancel: () -> Void
@@ -123,11 +122,6 @@ struct RecipeDetailsStep: View {
             }
         }
         .padding()
-        .onAppear {
-            if let email = session.userEmail {
-                recipe.loadUserTags(email: email)
-            }
-        }
     }
 }
 

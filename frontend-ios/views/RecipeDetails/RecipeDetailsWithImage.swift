@@ -8,7 +8,7 @@ import SwiftUI
  */
 
 struct RecipeDetailsWithImage: View {
-    let recipe: RecetteSchema.GetRecipeByIDQuery.Data.RecipeById
+    let recipe: RecipeDetails
     let onClose: () -> Void
     let onEllipsisTap: () -> Void
 

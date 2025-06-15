@@ -7,6 +7,9 @@ struct EditRecipe: View {
     @State private var editingIngredientIndex: Int? = nil
     @State private var editingStepIndex: Int? = nil
     @State private var showAddTag: Bool = false
+    @State private var errorMessage: String? = nil
+    @State private var showErrorAlert: Bool = false
+
 
     
     var body: some View {
@@ -70,8 +73,13 @@ struct EditRecipe: View {
             
             /** Save Recipe Button */
             Button(action: {
-                model.updateRecipe()
-                dismiss()
+                model.updateRecipe(
+                    onSuccess: { dismiss() },
+                    onError: { error in
+                        errorMessage = error.localizedDescription
+                        showErrorAlert = true
+                    }
+                )
             }) {
                 Text("Save Changes")
                     .foregroundColor(.white)
@@ -81,6 +89,7 @@ struct EditRecipe: View {
                     .cornerRadius(12)
                     .padding()
             }
+
         }
         .onAppear {
             if let email = session.userEmail {
@@ -90,6 +99,12 @@ struct EditRecipe: View {
         .fullScreenCover(isPresented: $showAddTag) {
             AddTagView(recipe: model, showAddTag: $showAddTag)
         }
+        .alert("Error", isPresented: $showErrorAlert, actions: {
+            Button("OK", role: .cancel) {}
+        }, message: {
+            Text(errorMessage ?? "Something went wrong.")
+        })
+
         
         
         Spacer()
