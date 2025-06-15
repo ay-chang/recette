@@ -33,7 +33,8 @@ class EditRecipeModel: ObservableObject, TagManageable {
         Task.detached(priority: nil) {
             if let selectedImage {
                 if let oldImageUrl {
-                    print(selectedImage)
+                    print("Selected Image: \(selectedImage)")
+                    print("Old Image: \(oldImageUrl)")
                     
                     S3Manager.deleteImage(at: oldImageUrl)
                 }

@@ -17,7 +17,6 @@ struct RecipeDetailsContent: View {
             
             // List of tags
             RecipeTags(tags: recipe.tags)
-                .padding(.top, -8)
     
             // List of Ingredients and Steps
             RecipeIngredients(ingredients: recipe.ingredients)

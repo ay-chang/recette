@@ -96,6 +96,8 @@ public class RecipeController {
   /** REST endpoint to handle delting photo from amazon S3 */
   @DeleteMapping("delete-image")
   public ResponseEntity<String> deleteFile(@RequestParam("url") String fileUrl) {
+    System.out.println("Deleting Image: " + fileUrl + "\n\n");
+
     try {
       S3Service.deleteImage(fileUrl);
       return ResponseEntity.ok("Deleted image: " + fileUrl);
