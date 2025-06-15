@@ -59,6 +59,8 @@ enum S3Manager {
 
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
+        
+        print("DELETING IMAGE WITH URL: \(imageURL)")
 
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {

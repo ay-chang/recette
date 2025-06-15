@@ -112,7 +112,10 @@ public class S3Service {
    * @param imageUrl image to be deleted
    */
   public void deleteImage(String imageUrl) {
-    String key = imageUrl.substring(imageUrl.indexOf("recipe-images/"));
+    String key = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
+
+    System.out.println("KEY: " + key + "\n\n");
+
     amazonS3.deleteObject(bucketName, key);
   }
 
