@@ -16,7 +16,7 @@ struct EditRecipeDetailsSteps: View {
                 
             /** List of steps */
             VStack (alignment: .leading) {
-                ForEach($steps.indices, id: \.self) { index in
+                ForEach(steps.indices, id: \.self) { index in
                     let step = $steps[index]
                     
                     HStack (spacing: 12){
@@ -36,16 +36,9 @@ struct EditRecipeDetailsSteps: View {
                         
                         HStack {
                             if editingStepIndex == index {
-                                TextEditor(text: $steps[index])
-                                    .frame(height: 100)
-                                    .padding(8)
-                                    .background(Color.white)
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 8)
-                                            .stroke(Color.gray.opacity(0.5), lineWidth: 1)
-                                    )
+                                EditRecipeDetailsContent(text: step)
                             } else {
-                                Text("\(step.wrappedValue)")
+                                Text(step.wrappedValue)
                                     .onTapGesture {
                                         editingStepIndex = index
                                     }
@@ -81,8 +74,30 @@ struct EditRecipeDetailsSteps: View {
                 .padding(.horizontal)
             }
             .buttonStyle(PlainButtonStyle())
-
-            
         }
     }
 }
+
+struct EditRecipeDetailsContent: View {
+    @Binding var text: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            TextEditor(text: $text)
+                .frame(height: 100)
+                .padding(8)
+                .background(Color.white)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(Color.gray.opacity(0.5), lineWidth: 1)
+                )
+                .onChange(of: text) {
+                    if text.count > 150 {
+                        text = String(text.prefix(150))
+                    }
+                }
+            CharacterCountView(currentCount: text.count, maxCount: 150)
+        }
+    }
+}
+

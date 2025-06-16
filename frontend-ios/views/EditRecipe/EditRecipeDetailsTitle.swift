@@ -20,8 +20,13 @@ struct EditRecipeDetailsTitle: View {
                     RoundedRectangle(cornerRadius: 8)
                         .stroke(Color.gray.opacity(0.5), lineWidth: 1)
                 )
+                .onChange(of: title) {
+                    if title.count > 55 {
+                        title = String(title.prefix(55))
+                    }
+                }
             
-            // CharacterCountView(currentCount: $model.title.count, maxCount: 55)
+             CharacterCountView(currentCount: title.count, maxCount: 55)
         }
     }
 }

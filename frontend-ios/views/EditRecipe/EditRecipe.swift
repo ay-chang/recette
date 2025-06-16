@@ -17,12 +17,28 @@ struct EditRecipe: View {
         ZStack {
             Text("Edit your Recipe")
                 .frame(maxWidth: .infinity, alignment: .center)
+            
             HStack {
-                Button(action: { dismiss() }) {
-                    Image(systemName: "xmark")
-                        .foregroundColor(.gray)
+                Button("Cancel") {
+                    dismiss()
                 }
+                .foregroundColor(.black)
+                .fontWeight(.light)
+                
                 Spacer()
+                Button(action: {
+                    model.updateRecipe(
+                        onSuccess: { dismiss() },
+                        onError: { error in
+                            errorMessage = error.localizedDescription
+                            showErrorAlert = true
+                        }
+                    )
+                }) {
+                    Text("Save")
+                        .foregroundColor(.black)
+                        .fontWeight(.light)
+                }
             }
         }
         .padding()
@@ -70,26 +86,6 @@ struct EditRecipe: View {
                 
             }
             .padding()
-            
-            /** Save Recipe Button */
-            Button(action: {
-                model.updateRecipe(
-                    onSuccess: { dismiss() },
-                    onError: { error in
-                        errorMessage = error.localizedDescription
-                        showErrorAlert = true
-                    }
-                )
-            }) {
-                Text("Save Changes")
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color(hex: "#e9c46a"))
-                    .cornerRadius(12)
-                    .padding()
-            }
-
         }
         .onAppear {
             if let email = session.userEmail {

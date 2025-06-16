@@ -19,8 +19,13 @@ struct EditRecipeDetailsDescription: View {
                     RoundedRectangle(cornerRadius: 8)
                         .stroke(Color.gray.opacity(0.5), lineWidth: 1)
                 )
+                .onChange(of: description) {
+                    if description.count > 250 {
+                        description = String(description.prefix(250))
+                    }
+                }
             
-            // CharacterCountView(currentCount: $model.description.count, maxCount: 250)
+             CharacterCountView(currentCount: description.count, maxCount: 250)
         }
     }
 }

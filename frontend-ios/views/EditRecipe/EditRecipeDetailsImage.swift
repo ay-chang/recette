@@ -18,7 +18,7 @@ struct EditRecipeDetailsImage: View {
                     .frame(maxWidth: UIScreen.main.bounds.width)
                     .clipped()
             } else {
-                RecipeImage(imageUrlString: imageUrlString, frameHeight: 420, frameWidth: UIScreen.main.bounds.width)
+                RecipeImage(imageUrlString: imageUrlString, frameHeight: 425, frameWidth: UIScreen.main.bounds.width)
             }
             
             // Overlay "Edit Cover" button
@@ -37,9 +37,9 @@ struct EditRecipeDetailsImage: View {
                 .padding()
             }
         }
-        .onChange(of: photoItem) { newItem in
+        .onChange(of: photoItem) {
             Task {
-                if let data = try? await newItem?.loadTransferable(type: Data.self),
+                if let data = try? await photoItem?.loadTransferable(type: Data.self),
                    let uiImage = UIImage(data: data) {
                     selectedImage = uiImage
                 }
