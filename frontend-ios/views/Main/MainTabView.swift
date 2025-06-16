@@ -13,28 +13,28 @@ struct MainTabView: View {
                 HomeView(selectedTab: $selectedTab)
                     .tabItem {
                         Label("Recipes", systemImage: "list.bullet.rectangle")
+                            .environment(\.symbolVariants, .none)
                     }
                     .tag(0)
                 
                 Color.clear // Invisible tab for "Create"
                     .tabItem {
                         Label("Create", systemImage: "plus.app")
-                            .foregroundColor(Color.white)
-                            .background(Color.white)
+                            .environment(\.symbolVariants, .none)
                     }
                     .tag(1)
                 
                 GroceryListView()
                     .tabItem {
                         Label("Grocery", systemImage: "cart")
-
+                              .environment(\.symbolVariants, .none)
                     }
                     .tag(2)
                 
                 ProfileView()
                     .tabItem {
-                        Label("Profile", systemImage: "person.circle")
-                            .background(Color.white)
+                        Label("Profile", systemImage: "person")
+                            .environment(\.symbolVariants, .none)
                     }
                     .tag(3)
             }
