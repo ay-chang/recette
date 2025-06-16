@@ -16,8 +16,8 @@ struct RecipeScrollSentinel: View {
                     GeometryReader { geo in
                         Color.clear
                             .onAppear {} // required for layout
-                            .onChange(of: geo.frame(in: .global).minY) { value in
-                                onScroll(value)
+                            .onChange(of: geo.frame(in: .global).minY) {
+                                onScroll($1)
                             }
                     }
                 )

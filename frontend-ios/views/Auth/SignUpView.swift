@@ -42,12 +42,6 @@ struct SignUpView: View {
 
                 Button(action: {
                     session.signUp(email: email, password: password)
-                    if let error = session.loginError {
-                        Text(error)
-                            .foregroundColor(.red)
-                            .font(.footnote)
-                    }
-
                 }) {
                     Text("Sign up")
                         .frame(maxWidth: .infinity)
@@ -57,6 +51,12 @@ struct SignUpView: View {
                         .cornerRadius(10)
                         .font(.title3)
                         .fontWeight(.semibold)
+                }
+                
+                if let error = session.loginError {
+                    Text(error)
+                        .foregroundColor(.red)
+                        .font(.footnote)
                 }
             }
 
