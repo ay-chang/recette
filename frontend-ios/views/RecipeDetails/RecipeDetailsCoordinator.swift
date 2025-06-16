@@ -80,6 +80,7 @@ struct RecipeDetailsCoordinator: View {
                     session.shouldRefreshRecipes = true
                 }
             )
+            .ignoresSafeArea(.container, edges: .bottom)
         }
         .fullScreenCover(isPresented: $showEditRecipe, onDismiss: {
             recipeModel.loadRecipe()

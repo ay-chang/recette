@@ -12,7 +12,7 @@ struct MainTabView: View {
             TabView(selection: $selectedTab) {
                 HomeView(selectedTab: $selectedTab)
                     .tabItem {
-                        Label("Recipes", systemImage: "list.bullet.rectangle.fill")
+                        Label("Recipes", systemImage: "list.bullet.rectangle")
                     }
                     .tag(0)
                 
@@ -26,7 +26,7 @@ struct MainTabView: View {
                 
                 GroceryListView()
                     .tabItem {
-                        Label("Grocery", systemImage: "cart.fill")
+                        Label("Grocery", systemImage: "cart")
 
                     }
                     .tag(2)
@@ -51,7 +51,6 @@ struct MainTabView: View {
         .fullScreenCover(isPresented: $showCreateRecipe) {
             CreateRecipeCoordinator()
         }
-        .background(Color.gray.opacity(0.03))
         Rectangle()
                 .fill(Color.gray.opacity(0.1))
                 .frame(height: 1)
