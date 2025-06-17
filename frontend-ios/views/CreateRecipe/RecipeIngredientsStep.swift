@@ -33,7 +33,7 @@ struct RecipeIngredientsStep: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(Color.gray.opacity(0.1))
 
-        // Ingredient List and Add Button
+        /** Ingredient List and Add Button */
         VStack(alignment: .leading, spacing: 24) {
             HStack {
                 Text("Ingredient List")
@@ -148,6 +148,15 @@ struct IngredientRow: View {
                         .onSubmit { editingIndex = nil }
                 }
             } else {
+                if isEditing {
+                    Button(action: onDelete) {
+                        Image(systemName: "minus.circle.fill")
+                            .foregroundColor(.red.opacity(0.9))
+                            .font(.system(size: 16))
+                    }
+                    .buttonStyle(BorderlessButtonStyle())
+                }
+                
                 Text(ingredient.name)
                     .onTapGesture {
                         if isEditing {
@@ -163,12 +172,6 @@ struct IngredientRow: View {
                         }
                     }
             }
-
-            if isEditing {
-                Image(systemName: "line.3.horizontal")
-                    .foregroundColor(.gray)
-                    .padding(.leading, 8)
-            }
         }
         .padding(.vertical, 20)
         .background(Color.white)
@@ -180,13 +183,6 @@ struct IngredientRow: View {
             alignment: .bottom
         )
         .contentShape(Rectangle())
-        .swipeActions(edge: .trailing) {
-            if isEditing {
-                Button(role: .destructive, action: onDelete) {
-                    Label("Delete", systemImage: "trash")
-                }
-            }
-        }
         .listRowInsets(EdgeInsets())
         .listRowSeparator(.hidden)
         .background(Color.clear)

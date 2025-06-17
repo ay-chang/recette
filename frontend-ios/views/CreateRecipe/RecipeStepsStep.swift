@@ -26,7 +26,7 @@ struct RecipeStepsStep: View {
         }
         .padding()
         
-        // Intro box
+        /** Intro box */
         Text("Let’s break it down. How would you describe the process of making this recipe step by step?")
             .font(.subheadline)
             .foregroundColor(.gray)
@@ -34,7 +34,7 @@ struct RecipeStepsStep: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(Color.gray.opacity(0.1))
         
-        // Step List
+        /** Step List */
         VStack(alignment: .leading, spacing: 24) {
             HStack() {
                 Text("Step List:")
@@ -52,96 +52,15 @@ struct RecipeStepsStep: View {
                 
             }
             
-            List {
-                if !recipe.steps.isEmpty {
-                    ForEach(recipe.steps.indices, id: \.self) { index in
-                        HStack(alignment: .top) {
-                            Text("\(index + 1).")
-                                .font(.callout)
-                                .foregroundColor(.gray)
-
-                            if editingIndex == index {
-                                TextField("Edit step", text: $recipe.steps[index], onCommit: {
-                                    editingIndex = nil
-                                    
-                                })
-                                .textFieldStyle(.roundedBorder)
-                            } else {
-                                Text(recipe.steps[index])
-                                    .font(.callout)
-                                    .fixedSize(horizontal: false, vertical: true)
-                                    .onTapGesture {
-                                        if isEditing {
-                                            editingIndex = index
-                                        }
-                                    }
-                            }
-
-                            Spacer()
-                            
-                            if isEditing && swipedIndex != index {
-                                Image(systemName: "line.3.horizontal")
-                                    .foregroundColor(.gray)
-                                    .padding(.leading, 8)
-                            }
-                        }
-                        .padding(.vertical, 20)
-                        .background(Color.white)
-                        .cornerRadius(8)
-                        .overlay(
-                            Rectangle()
-                                .frame(height: 1)
-                                .foregroundColor(Color.gray.opacity(0.3)),
-                            alignment: .bottom
-                        )
-                        .contentShape(Rectangle())
-                        .swipeActions(edge: .trailing) {
-                            if isEditing {
-                                Button(role: .destructive) {
-                                    recipe.steps.remove(at: index)
-                                } label: {
-                                    Label("", systemImage: "trash")
-                                }
-                            }
-                        }
-                        
-                    }
-                    .listRowInsets(EdgeInsets()) // removes default padding
-                    .listRowSeparator(.hidden)   // hides separator lines
-                    .background(Color.clear)     // removes background behind each row
-
-                }
-
-                    // Add Step Button (always shown)
-                    Button(action: {
-                        isEditing = false
-                        showAddStep = true
-                    }) {
-                        HStack {
-                            Text("+ Add a step")
-                                .font(.callout)
-                                .foregroundColor(.black.opacity(0.5))
-                            Spacer()
-                        }
-                        .padding(.horizontal)
-                        .padding(.top, recipe.steps.isEmpty ? 20 : 0)
-                        .overlay(alignment: .top) {
-                            if recipe.steps.isEmpty {
-                                Rectangle()
-                                    .frame(height: 1)
-                                    .foregroundColor(Color.gray.opacity(0.3))
-                            }
-                        }
-                    }
-                    .buttonStyle(PlainButtonStyle()) 
-                    .listRowInsets(EdgeInsets())
-                    .listRowSeparator(.hidden)
-                    .background(Color.clear)
-            }
-            .listStyle(.plain)
+            CreateRecipeStepsContent(
+                recipe: recipe,
+                isEditing: $isEditing,
+                editingIndex: $editingIndex,
+                showAddStep: $showAddStep
+            )
 
 
-            // Navigation Buttons
+            /** Navigation Buttons */
             HStack {
                 Button(action: onBack) {
                     Text("Back")
@@ -171,3 +90,97 @@ struct RecipeStepsStep: View {
     
 }
 
+struct CreateRecipeStepsContent: View {
+    @ObservedObject var recipe: CreateRecipeModel
+    @Binding var isEditing: Bool
+    @Binding var editingIndex: Int?
+    @Binding var showAddStep: Bool
+
+    var body: some View {
+        List {
+            if !recipe.steps.isEmpty {
+                ForEach(recipe.steps.indices, id: \.self) { index in
+                    HStack(alignment: .top) {
+                        
+                        /** Number or red minus */
+                        if !isEditing {
+                            Text("\(index + 1).")
+                                .font(.callout)
+                                .foregroundColor(.gray)
+                        } else {
+                            Button(action: {
+                                recipe.steps.remove(at: index)
+                            }) {
+                                Image(systemName: "minus.circle.fill")
+                                    .foregroundColor(.red.opacity(0.9))
+                                    .font(.system(size: 16))
+                            }
+                            .buttonStyle(BorderlessButtonStyle())
+                        }
+
+                        /** Step content */
+                        if editingIndex == index {
+                            TextField("Edit step", text: Binding(
+                                get: { recipe.steps[index] },
+                                set: { recipe.steps[index] = $0 }
+                            ), onCommit: {
+                                editingIndex = nil
+                            })
+                            .textFieldStyle(.roundedBorder)
+                        } else {
+                            Text(recipe.steps[index])
+                                .font(.callout)
+                                .fixedSize(horizontal: false, vertical: true)
+                                .onTapGesture {
+                                    if isEditing {
+                                        editingIndex = index
+                                    }
+                                }
+                        }
+
+                        Spacer()
+                    }
+                    .padding(.vertical, 20)
+                    .background(Color.white)
+                    .cornerRadius(8)
+                    .overlay(
+                        Rectangle()
+                            .frame(height: 1)
+                            .foregroundColor(Color.gray.opacity(0.3)),
+                        alignment: .bottom
+                    )
+                }
+                .listRowInsets(EdgeInsets())
+                .listRowSeparator(.hidden)
+                .background(Color.clear)
+            }
+
+            /** Add Step Button (always shown) */
+            Button(action: {
+                isEditing = false
+                showAddStep = true
+            }) {
+                HStack {
+                    Text("+ Add a step")
+                        .font(.callout)
+                        .foregroundColor(.black.opacity(0.5))
+                    Spacer()
+                }
+                .padding(.horizontal)
+                .padding(.top, recipe.steps.isEmpty ? 20 : 0)
+                .overlay(alignment: .top) {
+                    if recipe.steps.isEmpty {
+                        Rectangle()
+                            .frame(height: 1)
+                            .foregroundColor(Color.gray.opacity(0.3))
+                    }
+                }
+            }
+            .buttonStyle(PlainButtonStyle())
+            .listRowInsets(EdgeInsets())
+            .listRowSeparator(.hidden)
+            .background(Color.clear)
+        }
+        .listStyle(.plain)
+    }
+}
