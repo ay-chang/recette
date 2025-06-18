@@ -17,6 +17,7 @@ type Mutation {
   updateRecipeImage(recipeId: String!, imageurl: String!): Recipe!
   updateRecipe(input: UpdateRecipeInput!): Recipe!
   addGroceries(groceries: [GroceryInput!]!, email: String!, recipeid: String!): [Grocery]
+  toggleGroceryCheck(id: ID!, checked: Boolean!): Grocery!
 }
 
 type User {
@@ -53,6 +54,7 @@ type Grocery {
   id: ID!
   name: String!
   measurement: String!
+  checked: Boolean!
   recipe: Recipe
 }
 

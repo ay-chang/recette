@@ -16,6 +16,7 @@ public class Grocery {
     private Integer id;
     private String name;
     private String measurement;
+    private boolean checked;
 
     @ManyToOne
     @JoinColumn(name = "recipe_id", nullable = false)
@@ -33,6 +34,7 @@ public class Grocery {
         this.measurement = measurement;
         this.recipe = recipe;
         this.user = user;
+        this.checked = false;
     }
 
     public String getName() {
@@ -49,6 +51,14 @@ public class Grocery {
 
     public void setMeasurement(String measurement) {
         this.measurement = measurement;
+    }
+
+    public boolean getChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 
     public Recipe getRecipe() {

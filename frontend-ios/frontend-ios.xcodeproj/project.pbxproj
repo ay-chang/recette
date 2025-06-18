@@ -64,6 +64,7 @@
 				CreateEditRecipeModels/BaseRecipe.swift,
 				CreateEditRecipeModels/CreateRecipeModel.swift,
 				CreateEditRecipeModels/EditRecipeModel.swift,
+				GroceriesModel.swift,
 				IngredientModel.swift,
 				RecipeDetailsModel.swift,
 				RecipeListModel.swift,
@@ -102,7 +103,8 @@
 				EditRecipe/EditRecipeDetailsSteps.swift,
 				EditRecipe/EditRecipeDetailsTags.swift,
 				EditRecipe/EditRecipeDetailsTitle.swift,
-				Main/GroceryListView.swift,
+				Groceries/GroceryList.swift,
+				Main/GroceriesView.swift,
 				Main/HomeView.swift,
 				Main/MainTabView.swift,
 				Main/ProfileView.swift,
@@ -129,6 +131,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				GetUserRecipesFullDetails.graphql,
+				ToggleGroceryCheck.graphql,
 			);
 			target = 971C4CE42DA6ADD100A8CBAD /* frontend-ios */;
 		};
@@ -150,6 +153,7 @@
 			buildPhase = 971C4CE12DA6ADD100A8CBAD /* Sources */;
 			membershipExceptions = (
 				GetUserRecipesFullDetails.graphql,
+				ToggleGroceryCheck.graphql,
 			);
 		};
 /* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */

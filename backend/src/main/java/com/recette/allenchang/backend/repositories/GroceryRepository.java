@@ -2,10 +2,20 @@ package com.recette.allenchang.backend.repositories;
 
 import com.recette.allenchang.backend.models.Grocery;
 
+import jakarta.transaction.Transactional;
+
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface GroceryRepository extends JpaRepository<Grocery, Integer> {
     List<Grocery> findByUserId(Long userId);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Grocery g SET g.checked = :checked WHERE g.id = :id")
+    void updateChecked(@Param("id") Integer id, @Param("checked") boolean checked);
 }

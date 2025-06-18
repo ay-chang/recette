@@ -5,12 +5,20 @@ struct RecipeIngredients: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Ingredients")
-                .font(.title3)
-                .fontWeight(.medium)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.bottom, 12)
-                .overlay(Rectangle().frame(height: 1).foregroundColor(Color.gray.opacity(0.3)), alignment: .bottom)
+            HStack (alignment: .firstTextBaseline){
+                Text("Ingredients")
+                    .font(.title3)
+                    .fontWeight(.medium)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.bottom, 12)
+                
+                Spacer()
+                
+                Text("+ Add to grocery list")
+                    .font(.caption)
+                    .foregroundColor(Color.gray)
+            }
+            .overlay(Rectangle().frame(height: 1).foregroundColor(Color.gray.opacity(0.3)), alignment: .bottom)
             
             VStack(alignment: .leading, spacing: 8) {
                 ForEach(ingredients) { ingredient in

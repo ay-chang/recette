@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
+
 import com.recette.allenchang.backend.models.Grocery;
 import com.recette.allenchang.backend.models.User;
 import com.recette.allenchang.backend.models.Recipe;
@@ -48,6 +50,13 @@ public class GroceryService {
         }
 
         return groceryRepository.saveAll(groceries);
+    }
+
+    @Transactional
+    public Grocery toggleChecked(Integer id, boolean checked) {
+        groceryRepository.updateChecked(id, checked);
+        return groceryRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Grocery not found with id: " + id));
     }
 
 }

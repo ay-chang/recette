@@ -31,4 +31,10 @@ public class GroceriesController {
         return groceryService.addGroceries(groceries, email, recipeid);
     }
 
+    /** UPDATE: toggle checked for grocery item */
+    @MutationMapping
+    public Grocery toggleGroceryCheck(@Argument int id, @Argument boolean checked) {
+        return groceryService.toggleChecked(id, checked);
+    }
+
 }

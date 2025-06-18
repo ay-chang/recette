@@ -1,0 +1,12 @@
+query getUserGroceries($email: String!) {
+  getUserGroceries(email: $email) {
+    id
+    name
+    measurement
+    checked
+    recipe {
+      id,
+      title
+    }
+  }
+}

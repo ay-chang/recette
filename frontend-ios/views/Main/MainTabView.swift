@@ -24,7 +24,7 @@ struct MainTabView: View {
                     }
                     .tag(1)
                 
-                GroceryListView()
+                GroceriesView()
                     .tabItem {
                         Label("Grocery", systemImage: "cart")
                               .environment(\.symbolVariants, .none)
