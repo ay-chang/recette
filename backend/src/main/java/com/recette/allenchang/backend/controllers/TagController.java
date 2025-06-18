@@ -13,20 +13,20 @@ import java.util.List;
 @Controller
 public class TagController {
 
-  private final TagService tagService;
+    private final TagService tagService;
 
-  public TagController(TagService tagService) {
-    this.tagService = tagService;
-  }
+    public TagController(TagService tagService) {
+        this.tagService = tagService;
+    }
 
-  @QueryMapping
-  public List<Tag> userTags(@Argument String email) {
-    return tagService.getTagsByUser(email);
-  }
+    @QueryMapping
+    public List<Tag> userTags(@Argument String email) {
+        return tagService.getTagsByUser(email);
+    }
 
-  @MutationMapping
-  public Tag addTag(@Argument String email, @Argument String name) {
-    return tagService.addTag(email, name);
-  }
+    @MutationMapping
+    public Tag addTag(@Argument String email, @Argument String name) {
+        return tagService.addTag(email, name);
+    }
 
 }

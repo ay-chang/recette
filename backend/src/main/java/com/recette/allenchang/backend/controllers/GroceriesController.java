@@ -1,0 +1,34 @@
+package com.recette.allenchang.backend.controllers;
+
+import java.util.List;
+
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.stereotype.Controller;
+
+import com.recette.allenchang.backend.models.Grocery;
+import com.recette.allenchang.backend.services.GroceryService;
+
+@Controller
+public class GroceriesController {
+    private final GroceryService groceryService;
+
+    public GroceriesController(GroceryService groceryService) {
+        this.groceryService = groceryService;
+    }
+
+    /** GET: get grocery items for user */
+    @QueryMapping
+    public List<Grocery> getUserGroceries(@Argument String email) {
+        return groceryService.getUserGroceries(email);
+    }
+
+    /** POST: add grocery items */
+    @MutationMapping
+    public List<Grocery> addGroceries(@Argument List<Grocery> groceries, @Argument String email,
+            @Argument String recipeid) {
+        return groceryService.addGroceries(groceries, email, recipeid);
+    }
+
+}

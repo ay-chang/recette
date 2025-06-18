@@ -4,6 +4,7 @@ type Query {
   userRecipes(email: String!): [Recipe!]!
   getUsername(email: String!): String!
   userTags(email: String!): [Tag!]!
+  getUserGroceries(email: String!): [Grocery!]!
 }
 
 type Mutation {
@@ -15,6 +16,7 @@ type Mutation {
   addTag(email: String!, name: String!): Tag!
   updateRecipeImage(recipeId: String!, imageurl: String!): Recipe!
   updateRecipe(input: UpdateRecipeInput!): Recipe!
+  addGroceries(groceries: [GroceryInput!]!, email: String!, recipeid: String!): [Grocery]
 }
 
 type User {
@@ -47,6 +49,13 @@ type Tag {
   user: User!
 }
 
+type Grocery {
+  id: ID!
+  name: String!
+  measurement: String!
+  recipe: Recipe
+}
+
 input UserInput {
   email: String!
 }
@@ -74,6 +83,11 @@ input UpdateRecipeInput {
   ingredients: [IngredientInput!]!
   steps: [String!]!
   tags: [String!]
+}
+
+input GroceryInput {
+  name: String!
+  measurement: String!
 }
 
 input SignUpInput {

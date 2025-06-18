@@ -13,10 +13,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TagRepository extends JpaRepository<Tag, Integer> {
-  List<Tag> findByUser(User user);
+    List<Tag> findByUser(User user);
 
-  Optional<Tag> findByName(String name);
+    Optional<Tag> findByName(String name);
 
-  boolean existsByUserAndName(User user, String name);
+    boolean existsByUserAndName(User user, String name);
 
 }

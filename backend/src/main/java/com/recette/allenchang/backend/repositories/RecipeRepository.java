@@ -12,6 +12,6 @@ import com.recette.allenchang.backend.models.Recipe;
 import java.util.List;
 
 public interface RecipeRepository extends JpaRepository<Recipe, Integer> {
-  List<Recipe> findByUserId(Long userId);
+    List<Recipe> findByUserId(Long userId);
 
 }

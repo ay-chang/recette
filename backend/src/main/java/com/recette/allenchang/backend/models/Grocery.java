@@ -4,40 +4,35 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "ingredients")
-public class Ingredient {
-
+@Table(name = "groceries")
+public class Grocery {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
     private String measurement;
 
-    /*
-     * recipe_id specifies the foreign key column in the Ingredient table that links
-     * it to the Recipe table.
-     */
     @ManyToOne
     @JoinColumn(name = "recipe_id", nullable = false)
     private Recipe recipe;
 
-    // Constructors, getters, and setters
-    public Ingredient() {
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    public Grocery() {
     }
 
-    public Ingredient(String name, String measurement, Recipe recipe) {
+    public Grocery(String name, String measurement, Recipe recipe, User user) {
         this.name = name;
         this.measurement = measurement;
         this.recipe = recipe;
-    }
-
-    public Integer getId() {
-        return id;
+        this.user = user;
     }
 
     public String getName() {
@@ -62,6 +57,14 @@ public class Ingredient {
 
     public void setRecipe(Recipe recipe) {
         this.recipe = recipe;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
 }

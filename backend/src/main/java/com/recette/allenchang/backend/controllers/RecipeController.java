@@ -31,80 +31,80 @@ import org.springframework.http.HttpStatus;
 @RestController
 public class RecipeController {
 
-  private final RecipeService recipeService;
-  private final S3Service S3Service;
+    private final RecipeService recipeService;
+    private final S3Service S3Service;
 
-  public RecipeController(RecipeService recipeService, S3Service S3Service) {
-    this.recipeService = recipeService;
-    this.S3Service = S3Service;
-  }
-
-  /** GET all recipes */
-  @QueryMapping
-  public List<Recipe> recipes() {
-    return recipeService.getAllRecipes();
-  }
-
-  /** GET all recipes associated with a user */
-  @QueryMapping
-  public List<Recipe> userRecipes(@Argument String email) {
-    return recipeService.getRecipesByUserEmail(email);
-  }
-
-  /** GET a recipe by its id */
-  @QueryMapping
-  public Recipe recipeById(@Argument String id) {
-    return recipeService.getRecipeById(id);
-  }
-
-  /** DELETE a recipe by its id */
-  @MutationMapping
-  public boolean deleteRecipe(@Argument String id) {
-    return recipeService.deleteRecipe(id);
-  }
-
-  /** POST a recipe to database */
-  @MutationMapping
-  public Recipe addRecipe(@Argument RecipeInput input) {
-    return recipeService.addRecipe(input);
-  }
-
-  /** PUT (update) a recipes image */
-  @MutationMapping
-  public Recipe updateRecipeImage(@Argument String recipeId, @Argument String imageurl) {
-    return recipeService.updateRecipeImage(recipeId, imageurl);
-  }
-
-  /** PUT request, update recipe details */
-  @MutationMapping
-  public Recipe updateRecipe(@Argument UpdateRecipeInput input) {
-    return recipeService.updateRecipe(input);
-  }
-
-  /** REST endpoint to handle uploading photo to amazon S3 */
-  @PostMapping("upload")
-  public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
-    try {
-      String publicUrl = S3Service.optimizeAndUploadImage(file);
-      return ResponseEntity.ok(publicUrl);
-    } catch (IOException e) {
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-          .body("Failed to upload image: " + e.getMessage());
+    public RecipeController(RecipeService recipeService, S3Service S3Service) {
+        this.recipeService = recipeService;
+        this.S3Service = S3Service;
     }
-  }
 
-  /** REST endpoint to handle delting photo from amazon S3 */
-  @DeleteMapping("delete-image")
-  public ResponseEntity<String> deleteFile(@RequestParam("url") String fileUrl) {
-    System.out.println("Deleting Image: " + fileUrl + "\n\n");
-
-    try {
-      S3Service.deleteImage(fileUrl);
-      return ResponseEntity.ok("Deleted image: " + fileUrl);
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-          .body("Failed to delete image: " + e.getMessage());
+    /** GET all recipes */
+    @QueryMapping
+    public List<Recipe> recipes() {
+        return recipeService.getAllRecipes();
     }
-  }
+
+    /** GET all recipes associated with a user */
+    @QueryMapping
+    public List<Recipe> userRecipes(@Argument String email) {
+        return recipeService.getRecipesByUserEmail(email);
+    }
+
+    /** GET a recipe by its id */
+    @QueryMapping
+    public Recipe recipeById(@Argument String id) {
+        return recipeService.getRecipeById(id);
+    }
+
+    /** DELETE a recipe by its id */
+    @MutationMapping
+    public boolean deleteRecipe(@Argument String id) {
+        return recipeService.deleteRecipe(id);
+    }
+
+    /** POST a recipe to database */
+    @MutationMapping
+    public Recipe addRecipe(@Argument RecipeInput input) {
+        return recipeService.addRecipe(input);
+    }
+
+    /** PUT (update) a recipes image */
+    @MutationMapping
+    public Recipe updateRecipeImage(@Argument String recipeId, @Argument String imageurl) {
+        return recipeService.updateRecipeImage(recipeId, imageurl);
+    }
+
+    /** PUT request, update recipe details */
+    @MutationMapping
+    public Recipe updateRecipe(@Argument UpdateRecipeInput input) {
+        return recipeService.updateRecipe(input);
+    }
+
+    /** REST endpoint to handle uploading photo to amazon S3 */
+    @PostMapping("upload")
+    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
+        try {
+            String publicUrl = S3Service.optimizeAndUploadImage(file);
+            return ResponseEntity.ok(publicUrl);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to upload image: " + e.getMessage());
+        }
+    }
+
+    /** REST endpoint to handle delting photo from amazon S3 */
+    @DeleteMapping("delete-image")
+    public ResponseEntity<String> deleteFile(@RequestParam("url") String fileUrl) {
+        System.out.println("Deleting Image: " + fileUrl + "\n\n");
+
+        try {
+            S3Service.deleteImage(fileUrl);
+            return ResponseEntity.ok("Deleted image: " + fileUrl);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to delete image: " + e.getMessage());
+        }
+    }
 
 }

@@ -14,66 +14,69 @@ import java.util.List;
 @Table(name = "users")
 public class User {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
-  private String username;
-  private String email;
-  private String password;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String username;
+    private String email;
+    private String password;
 
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Recipe> recipes;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Recipe> recipes;
 
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Tag> tags;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Tag> tags;
 
-  /** Getters and setters */
-  public Long getId() {
-    return id;
-  }
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Grocery> groceries;
 
-  public void setId(Long id) {
-    this.id = id;
-  }
+    /** Getters and setters */
+    public Long getId() {
+        return id;
+    }
 
-  public String getUsername() {
-    return username;
-  }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-  public void setUsername(String username) {
-    this.username = username;
-  }
+    public String getUsername() {
+        return username;
+    }
 
-  public String getEmail() {
-    return email;
-  }
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-  public void setEmail(String email) {
-    this.email = email;
-  }
+    public String getEmail() {
+        return email;
+    }
 
-  public String getPassword() {
-    return password;
-  }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-  public void setPassword(String password) {
-    this.password = password;
-  }
+    public String getPassword() {
+        return password;
+    }
 
-  public List<Recipe> getRecipes() {
-    return recipes;
-  }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-  public void setRecipes(List<Recipe> recipes) {
-    this.recipes = recipes;
-  }
+    public List<Recipe> getRecipes() {
+        return recipes;
+    }
 
-  public List<Tag> getTags() {
-    return tags;
-  }
+    public void setRecipes(List<Recipe> recipes) {
+        this.recipes = recipes;
+    }
 
-  public void setTags(List<Tag> tags) {
-    this.tags = tags;
-  }
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
 
 }

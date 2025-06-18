@@ -26,46 +26,46 @@ import java.util.Optional;
  */
 @Service
 public class UserService {
-  private final UserRepository userRepository;
-  private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-  public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-    this.userRepository = userRepository;
-    this.passwordEncoder = passwordEncoder;
-  }
-
-  /**
-   * Registers the user with the given a user given email and a user given
-   * password that is encoded.
-   * 
-   * @param email
-   * @param password
-   * @return
-   */
-  public User registerUser(String email, String password) {
-    if (userRepository.findByEmail(email).isPresent()) {
-      throw new IllegalArgumentException("Email already in use");
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
-    User user = new User();
-    user.setEmail(email);
-    user.setPassword(passwordEncoder.encode(password));
-    user.setUsername(email.split("@")[0]); // TODO: Implement an actual username system
 
-    return userRepository.save(user);
-  }
+    /**
+     * Registers the user with the given a user given email and a user given
+     * password that is encoded.
+     * 
+     * @param email
+     * @param password
+     * @return
+     */
+    public User registerUser(String email, String password) {
+        if (userRepository.findByEmail(email).isPresent()) {
+            throw new IllegalArgumentException("Email already in use");
+        }
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(passwordEncoder.encode(password));
+        user.setUsername(email.split("@")[0]); // TODO: Implement an actual username system
 
-  /**
-   * Validate username and password during login. If authentication is successful
-   * (username exists and password matches), it contains the User. If
-   * authentication fails, it returns an empty Optional.
-   * 
-   * @param email
-   * @param password
-   * @return
-   */
-  public Optional<User> authenticate(String email, String password) {
-    return userRepository.findByEmail(email)
-        .filter(user -> passwordEncoder.matches(password, user.getPassword()));
-  }
+        return userRepository.save(user);
+    }
+
+    /**
+     * Validate username and password during login. If authentication is successful
+     * (username exists and password matches), it contains the User. If
+     * authentication fails, it returns an empty Optional.
+     * 
+     * @param email
+     * @param password
+     * @return
+     */
+    public Optional<User> authenticate(String email, String password) {
+        return userRepository.findByEmail(email)
+                .filter(user -> passwordEncoder.matches(password, user.getPassword()));
+    }
 
 }
