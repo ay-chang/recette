@@ -17,6 +17,8 @@ import com.recette.allenchang.backend.repositories.RecipeRepository;
 import com.recette.allenchang.backend.repositories.TagRepository;
 import com.recette.allenchang.backend.repositories.UserRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class RecipeService {
     private final RecipeRepository recipeRepository;
@@ -53,6 +55,7 @@ public class RecipeService {
      * @param id recipe id
      * @return boolean true if recipe succesfully deleted, otherwise false
      */
+    @Transactional
     public boolean deleteRecipe(String id) {
         Optional<Recipe> recipeOptional = recipeRepository.findById(Integer.parseInt(id));
 

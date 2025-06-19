@@ -16,7 +16,8 @@ type Mutation {
   addTag(email: String!, name: String!): Tag!
   updateRecipeImage(recipeId: String!, imageurl: String!): Recipe!
   updateRecipe(input: UpdateRecipeInput!): Recipe!
-  addGroceries(groceries: [GroceryInput!]!, email: String!, recipeid: String!): [Grocery]
+  addGroceries(groceries: [GroceryInput!]!, email: String!, recipeId: String!): [Grocery]
+  removeRecipeFromGroceries(email: String!, recipeId: String!): Boolean!
   toggleGroceryCheck(id: ID!, checked: Boolean!): Grocery!
 }
 

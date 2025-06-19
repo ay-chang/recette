@@ -1,0 +1,3 @@
+mutation removeRecipeFromGroceries($email: String!, $recipeId: String! ) {
+  removeRecipeFromGroceries(email: $email, recipeId: $recipeId)
+}

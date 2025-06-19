@@ -7,12 +7,12 @@ import SwiftUI
 
 struct AppView: View {
     @EnvironmentObject var session: UserSession
-    @EnvironmentObject var groceriesModel: GroceriesModel
-
+    @StateObject var groceriesModel = GroceriesModel()
     var body: some View {
         Group {
             if session.isLoggedIn {
                 MainTabView()
+                    .environmentObject(groceriesModel)
             } else {
                 LoginView()
             }

@@ -32,16 +32,16 @@ public class GroceryService {
                 .orElse(List.of());
     }
 
-    public List<Grocery> addGroceries(List<Grocery> groceries, String email, String recipeid) {
+    public List<Grocery> addGroceries(List<Grocery> groceries, String email, String recipeId) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
 
         Recipe recipe;
-        if (recipeid.isEmpty() || recipeid == null) {
+        if (recipeId.isEmpty() || recipeId == null) {
             recipe = null;
         } else {
-            recipe = recipeRepository.findById(Integer.parseInt(recipeid))
-                    .orElseThrow(() -> new IllegalArgumentException("Recipe not found with id: " + recipeid));
+            recipe = recipeRepository.findById(Integer.parseInt(recipeId))
+                    .orElseThrow(() -> new IllegalArgumentException("Recipe not found with id: " + recipeId));
         }
 
         for (Grocery grocery : groceries) {
@@ -57,6 +57,19 @@ public class GroceryService {
         groceryRepository.updateChecked(id, checked);
         return groceryRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Grocery not found with id: " + id));
+    }
+
+    @Transactional
+    public boolean removeRecipeFromGroceries(String email, String recipeId) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
+
+        Recipe recipe = recipeRepository.findById(Integer.parseInt(recipeId))
+                .orElseThrow(() -> new IllegalArgumentException("Recipe not found with id: " + recipeId));
+
+        groceryRepository.deleteByUserAndRecipe(user, recipe);
+
+        return true;
     }
 
 }

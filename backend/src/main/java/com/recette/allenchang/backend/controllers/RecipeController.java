@@ -57,25 +57,25 @@ public class RecipeController {
         return recipeService.getRecipeById(id);
     }
 
-    /** DELETE a recipe by its id */
+    /** DELETE: a recipe by its id */
     @MutationMapping
     public boolean deleteRecipe(@Argument String id) {
         return recipeService.deleteRecipe(id);
     }
 
-    /** POST a recipe to database */
+    /** POST: a recipe to database */
     @MutationMapping
     public Recipe addRecipe(@Argument RecipeInput input) {
         return recipeService.addRecipe(input);
     }
 
-    /** PUT (update) a recipes image */
+    /** UPDATE: a recipes image */
     @MutationMapping
     public Recipe updateRecipeImage(@Argument String recipeId, @Argument String imageurl) {
         return recipeService.updateRecipeImage(recipeId, imageurl);
     }
 
-    /** PUT request, update recipe details */
+    /** UPDATE: recipe details */
     @MutationMapping
     public Recipe updateRecipe(@Argument UpdateRecipeInput input) {
         return recipeService.updateRecipe(input);

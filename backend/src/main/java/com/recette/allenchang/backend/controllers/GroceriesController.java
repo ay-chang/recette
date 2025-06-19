@@ -27,14 +27,20 @@ public class GroceriesController {
     /** POST: add grocery items */
     @MutationMapping
     public List<Grocery> addGroceries(@Argument List<Grocery> groceries, @Argument String email,
-            @Argument String recipeid) {
-        return groceryService.addGroceries(groceries, email, recipeid);
+            @Argument String recipeId) {
+        return groceryService.addGroceries(groceries, email, recipeId);
     }
 
     /** UPDATE: toggle checked for grocery item */
     @MutationMapping
     public Grocery toggleGroceryCheck(@Argument int id, @Argument boolean checked) {
         return groceryService.toggleChecked(id, checked);
+    }
+
+    /** DELETE: delete a recipe group from the grocery list */
+    @MutationMapping
+    public boolean removeRecipeFromGroceries(@Argument String email, @Argument String recipeId) {
+        return groceryService.removeRecipeFromGroceries(email, recipeId);
     }
 
 }

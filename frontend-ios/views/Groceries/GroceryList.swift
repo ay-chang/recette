@@ -2,6 +2,8 @@ import SwiftUI
 
 struct GroceryList: View {
     @EnvironmentObject var groceriesModel: GroceriesModel
+    @EnvironmentObject var session: UserSession
+    @State private var isEditing = false
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -27,21 +29,44 @@ struct GroceryList: View {
             )
             .background(Color.gray.opacity(0.03))
             
+            /** Main content */
             VStack(alignment: .leading, spacing: 12) {
-                Text("Grocery List")
-                    .font(.title)
-                    .fontWeight(.bold)
-                
-                VStack(alignment: .leading) {
-                    List {
-                        GroceryListRecipeGroup(groceriesModel: groceriesModel)
+                HStack {
+                    Text("Grocery List")
+                        .font(.title)
+                        .fontWeight(.bold)
+                    Spacer()
+                    Button (action: {
+                        isEditing.toggle()
+                    }) {
+                        Image(systemName: "pencil")
+                            .foregroundColor(isEditing ? Color(hex: "#e9c46a") : .gray)
                     }
-                    .listStyle(.plain)
+
+                }
+   
+                VStack(alignment: .leading) {
+                    if groceriesModel.items.isEmpty {
+                        VStack (alignment: .center){
+                            Spacer()
+                            Text("Your grocery list is empty.")
+                                .font(.headline)
+                                .foregroundColor(.gray)
+                            Spacer()
+                        }
+                        .frame(maxWidth: .infinity)
+                    } else {
+                        List {
+                            GroceryListRecipeGroup(groceriesModel: groceriesModel, session: session, isEditing: isEditing)
+                        }
+                        .listStyle(.plain)
+                    }
                 }
             }
             .padding(.horizontal)
-            
-          
+        }
+        .onDisappear {
+            isEditing = false
         }
     }
 }

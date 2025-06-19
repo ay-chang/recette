@@ -1,5 +1,5 @@
-mutation addGroceries($groceries: [GroceryInput!]!, $email: String!, $recipeid: String!) {
-  addGroceries(groceries: $groceries, email: $email, recipeid: $recipeid) {
+mutation addGroceries($groceries: [GroceryInput!]!, $email: String!, $recipeId: String!) {
+  addGroceries(groceries: $groceries, email: $email, recipeId: $recipeId) {
     id
     name
     measurement

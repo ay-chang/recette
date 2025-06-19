@@ -1,6 +1,8 @@
 package com.recette.allenchang.backend.repositories;
 
 import com.recette.allenchang.backend.models.Grocery;
+import com.recette.allenchang.backend.models.Recipe;
+import com.recette.allenchang.backend.models.User;
 
 import jakarta.transaction.Transactional;
 
@@ -18,4 +20,6 @@ public interface GroceryRepository extends JpaRepository<Grocery, Integer> {
     @Transactional
     @Query("UPDATE Grocery g SET g.checked = :checked WHERE g.id = :id")
     void updateChecked(@Param("id") Integer id, @Param("checked") boolean checked);
+
+    void deleteByUserAndRecipe(User user, Recipe recipe);
 }

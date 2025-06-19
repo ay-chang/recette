@@ -2,6 +2,8 @@ import SwiftUI
 
 struct GroceryListRecipeGroup: View {
     @ObservedObject var groceriesModel: GroceriesModel
+    @ObservedObject var session: UserSession
+    let isEditing: Bool
     
     var body: some View {
         /** For loop to get each recipe */
@@ -9,6 +11,19 @@ struct GroceryListRecipeGroup: View {
             VStack(alignment: .leading) {
                 /** Recipe group header*/
                 HStack {
+                    if isEditing {
+                        Button(action: {
+                            if let email = session.userEmail {
+                                groceriesModel.removeRecipeFromGroceries(recipeId: group.id, email: email)
+                            }
+                        }) {
+                            Image(systemName: "minus.circle.fill")
+                                .foregroundColor(.red.opacity(0.9))
+                                .font(.system(size: 16))
+                        }
+                        .buttonStyle(BorderlessButtonStyle())
+                    }
+                    
                     Text(group.title)
                         .font(.headline)
                     Spacer()

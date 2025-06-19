@@ -12,6 +12,11 @@ struct GroceryItem: Identifiable {
 class GroceriesModel: ObservableObject {
     @Published var items: [GroceryItem] = []
     
+    /**
+      * This property returns the grocery items grouped by their associated recipe, preserving the original
+      * order of the items array. Uses a set to track which recipes have already been seen to prevent
+      * grouping the same recipe multiple times.
+      */
     var groupedByRecipe: [(id: String, title: String, items: [GroceryItem])] {
         var seen = Set<String>()
         var orderedGroups: [(id: String, title: String, items: [GroceryItem])] = []
@@ -76,7 +81,7 @@ class GroceriesModel: ObservableObject {
         let mutation = RecetteSchema.AddGroceriesMutation(
             groceries: groceryInputs,
             email: email,
-            recipeid: recipeId
+            recipeId: recipeId
         )
 
         Network.shared.apollo.perform(mutation: mutation) { [weak self] result in
@@ -89,6 +94,28 @@ class GroceriesModel: ObservableObject {
                     }
                 } else if let errors = graphQLResult.errors {
                     print("GraphQL errors: \(errors.map { $0.message })")
+                }
+            case .failure(let error):
+                print("Network error: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    func removeRecipeFromGroceries(recipeId: String, email: String) {
+        let mutation = RecetteSchema.RemoveRecipeFromGroceriesMutation(email: email, recipeId: recipeId)
+        
+        Network.shared.apollo.perform(mutation: mutation) { [weak self] result in
+            switch result {
+            case .success(let graphQLResult):
+                if let success = graphQLResult.data?.removeRecipeFromGroceries, success {
+                    print("Successfully removed groceries for recipe \(recipeId)")
+                    DispatchQueue.main.async {
+                        self?.items.removeAll { $0.recipeId == recipeId }
+                    }
+                } else if let errors = graphQLResult.errors {
+                    print("GraphQL errors: \(errors.map { $0.message })")
+                } else {
+                    print("Unexpected: No success flag and no errors.")
                 }
             case .failure(let error):
                 print("Network error: \(error.localizedDescription)")
