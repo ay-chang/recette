@@ -1,0 +1,7 @@
+mutation addGroceries($groceries: [GroceryInput!]!, $email: String!, $recipeid: String!) {
+  addGroceries(groceries: $groceries, email: $email, recipeid: $recipeid) {
+    id
+    name
+    measurement
+  }
+}

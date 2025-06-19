@@ -2,6 +2,10 @@ import SwiftUI
 
 struct RecipeIngredients: View {
     let ingredients: [Ingredient]
+    let recipeId: String
+    
+    @EnvironmentObject var session: UserSession
+    @StateObject var groceryModel = GroceriesModel()
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -14,9 +18,15 @@ struct RecipeIngredients: View {
                 
                 Spacer()
                 
-                Text("+ Add to grocery list")
-                    .font(.caption)
-                    .foregroundColor(Color.gray)
+                Button {
+                    if let email = session.userEmail {
+                        groceryModel.addGroceries(ingredients, email: email, recipeId: recipeId)
+                    }
+                } label: {
+                    Text("+ Add to grocery list")
+                        .font(.caption)
+                        .foregroundColor(Color.gray)
+                }
             }
             .overlay(Rectangle().frame(height: 1).foregroundColor(Color.gray.opacity(0.3)), alignment: .bottom)
             

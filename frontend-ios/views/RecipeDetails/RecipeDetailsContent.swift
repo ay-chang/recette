@@ -19,7 +19,7 @@ struct RecipeDetailsContent: View {
             RecipeTags(tags: recipe.tags)
     
             // List of Ingredients and Steps
-            RecipeIngredients(ingredients: recipe.ingredients)
+            RecipeIngredients(ingredients: recipe.ingredients, recipeId: recipe.id)
             RecipeSteps(steps: recipe.steps)
            
         }

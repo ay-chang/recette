@@ -69,6 +69,37 @@ class GroceriesModel: ObservableObject {
         }
     }
     
+    func addGroceries(_ ingredients: [Ingredient], email: String, recipeId: String) {
+        print("🧾 Adding groceries for recipe \(recipeId) and user \(email)")
+
+        let groceryInputs = ingredients.map {
+            RecetteSchema.GroceryInput(name: $0.name, measurement: $0.measurement)
+        }
+
+        let mutation = RecetteSchema.AddGroceriesMutation(
+            groceries: groceryInputs,
+            email: email,
+            recipeid: recipeId
+        )
+
+        Network.shared.apollo.perform(mutation: mutation) { [weak self] result in
+            switch result {
+            case .success(let graphQLResult):
+                if let groceries = graphQLResult.data?.addGroceries {
+                    print("✅ Successfully added \(groceries.count) groceries")
+                    DispatchQueue.main.async {
+                        self?.loadGroceries(email: email)
+                    }
+                } else if let errors = graphQLResult.errors {
+                    print("⚠️ GraphQL errors: \(errors.map { $0.message })")
+                }
+            case .failure(let error):
+                print("❌ Network error: \(error.localizedDescription)")
+            }
+        }
+    }
+
+    
     func toggleGroceryCheck(id: String, checked: Bool) {
         let mutation = RecetteSchema.ToggleGroceryCheckMutation(id: id, checked: checked)
         
