@@ -49,11 +49,10 @@ Filter recipes by tags or search by title for fast access to your saved meals.
 ### Database  
 #### PostgreSQL  
 Schema includes:
-- `recipes`, `ingredients`, `steps`, `recipe_tags`, `user_tags`, `groceries`, `users`
+- `recipes`, `ingredients`, `steps`, `recipe_tags`, `user_tags`, `groceries`, `users`, etc.
 
 ### Cloud & Storage  
 - **Amazon S3**: stores recipe images and static assets  
-- **Deployed GraphQL endpoint** hosted via cloud provider (TBD, e.g., Render or AWS)
 
 ---
 
