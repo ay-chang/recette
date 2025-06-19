@@ -9,7 +9,6 @@ struct GroceryItem: Identifiable {
     var isChecked: Bool = false
 }
 
-
 class GroceriesModel: ObservableObject {
     @Published var items: [GroceryItem] = []
     
@@ -70,8 +69,6 @@ class GroceriesModel: ObservableObject {
     }
     
     func addGroceries(_ ingredients: [Ingredient], email: String, recipeId: String) {
-        print("🧾 Adding groceries for recipe \(recipeId) and user \(email)")
-
         let groceryInputs = ingredients.map {
             RecetteSchema.GroceryInput(name: $0.name, measurement: $0.measurement)
         }
@@ -86,15 +83,15 @@ class GroceriesModel: ObservableObject {
             switch result {
             case .success(let graphQLResult):
                 if let groceries = graphQLResult.data?.addGroceries {
-                    print("✅ Successfully added \(groceries.count) groceries")
+                    print("Successfully added \(groceries.count) groceries")
                     DispatchQueue.main.async {
                         self?.loadGroceries(email: email)
                     }
                 } else if let errors = graphQLResult.errors {
-                    print("⚠️ GraphQL errors: \(errors.map { $0.message })")
+                    print("GraphQL errors: \(errors.map { $0.message })")
                 }
             case .failure(let error):
-                print("❌ Network error: \(error.localizedDescription)")
+                print("Network error: \(error.localizedDescription)")
             }
         }
     }
@@ -116,6 +113,15 @@ class GroceriesModel: ObservableObject {
             }
         }
     }
+    
+    func hasRecipe(_ recipeId: String) -> Bool {
+        let found = items.contains(where: { $0.recipeId == recipeId })
+        print("🔍 Checking if recipe \(recipeId) is already in grocery list → \(found)")
+        return found
+    }
+
+
+
 
 
 }

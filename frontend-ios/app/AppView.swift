@@ -7,6 +7,7 @@ import SwiftUI
 
 struct AppView: View {
     @EnvironmentObject var session: UserSession
+    @EnvironmentObject var groceriesModel: GroceriesModel
 
     var body: some View {
         Group {

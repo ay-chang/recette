@@ -5,7 +5,9 @@ struct RecipeIngredients: View {
     let recipeId: String
     
     @EnvironmentObject var session: UserSession
-    @StateObject var groceryModel = GroceriesModel()
+    @EnvironmentObject var groceryModel: GroceriesModel
+    @State private var showAlreadyAddedAlert = false
+
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -20,13 +22,36 @@ struct RecipeIngredients: View {
                 
                 Button {
                     if let email = session.userEmail {
-                        groceryModel.addGroceries(ingredients, email: email, recipeId: recipeId)
-                    }
+                            print("🛒 Attempting to add recipe \(recipeId) for user \(email)")
+                            
+                            if groceryModel.hasRecipe(recipeId) {
+                                print("⚠️ Recipe already exists in grocery list. Showing alert.")
+                                showAlreadyAddedAlert = true
+                            } else {
+                                print("✅ Recipe not found in grocery list. Proceeding to add.")
+                                groceryModel.addGroceries(ingredients, email: email, recipeId: recipeId)
+                            }
+                        }
                 } label: {
-                    Text("+ Add to grocery list")
-                        .font(.caption)
-                        .foregroundColor(Color.gray)
+                    HStack(alignment: .firstTextBaseline) {
+                        Image(systemName: "cart.badge.plus")
+                            .foregroundColor(Color.gray)
+                            .font(.system(size: 14))
+                        Text("Add to grocery list")
+                            .font(.footnote)
+                            .foregroundColor(Color.gray)
+                    }
                 }
+                .alert(isPresented: $showAlreadyAddedAlert) {
+                    Alert(
+                        title: Text("Already Added"),
+                        message: Text("This recipe is already in your grocery list."),
+                        dismissButton: .default(Text("OK"))
+                    )
+                }
+
+                
+
             }
             .overlay(Rectangle().frame(height: 1).foregroundColor(Color.gray.opacity(0.3)), alignment: .bottom)
             

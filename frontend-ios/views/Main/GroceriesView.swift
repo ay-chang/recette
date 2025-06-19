@@ -2,14 +2,14 @@ import SwiftUI
 
 struct GroceriesView: View {
     @EnvironmentObject var session: UserSession
-    @StateObject private var model = GroceriesModel()
+    @EnvironmentObject var groceriesModel: GroceriesModel
     
     var body: some View {
-        GroceryList(model: model)
+        GroceryList()
             .onAppear{
                 if let email = session.userEmail {
                     print("loaded grocery list...")
-                    model.loadGroceries(email: email)
+                    groceriesModel.loadGroceries(email: email)
                 }
             }
     }

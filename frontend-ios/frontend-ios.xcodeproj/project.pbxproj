@@ -104,6 +104,8 @@
 				EditRecipe/EditRecipeDetailsTags.swift,
 				EditRecipe/EditRecipeDetailsTitle.swift,
 				Groceries/GroceryList.swift,
+				Groceries/GroceryListItemRow.swift,
+				Groceries/GroceryListRecipeGroup.swift,
 				Main/GroceriesView.swift,
 				Main/HomeView.swift,
 				Main/MainTabView.swift,
