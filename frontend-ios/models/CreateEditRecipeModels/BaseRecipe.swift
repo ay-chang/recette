@@ -54,15 +54,32 @@ class BaseRecipe: ObservableObject, TagManageable {
         if title.trimmingCharacters(in: .whitespaces).isEmpty {
             return ValidationError("Recipe title is required.")
         }
+        
         if description.trimmingCharacters(in: .whitespaces).isEmpty {
             return ValidationError("Recipe description is required.")
         }
+        
         if ingredients.isEmpty {
             return ValidationError("At least one ingredient is required.")
         }
+        
+        for ingredient in ingredients {
+                if ingredient.name.trimmingCharacters(in: .whitespaces).isEmpty ||
+                    ingredient.measurement.trimmingCharacters(in: .whitespaces).isEmpty {
+                    return ValidationError("Ingredient name or measurement cannot be empty.")
+                }
+            }
+        
         if steps.isEmpty {
             return ValidationError("At least one step is required.")
         }
+        
+        for step in steps {
+            if step.trimmingCharacters(in: .whitespaces).isEmpty {
+                return ValidationError("Step cannot be empty.")
+            }
+        }
+        
         return nil
     }
 }

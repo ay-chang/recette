@@ -33,9 +33,12 @@ struct EditRecipeDetailsIngredients: View {
                         }
                         
                         
-                        HStack {
-                            if editingIngredientIndex == index {
+                        if editingIngredientIndex == index {
+                            Button (action: {
+                                editingIngredientIndex = index
+                            }){
                                 TextField("Name", text: ingredient.name)
+                                    .foregroundColor(Color.black)
                                     .padding(8)
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 8)
@@ -48,15 +51,22 @@ struct EditRecipeDetailsIngredients: View {
                                         RoundedRectangle(cornerRadius: 8)
                                             .stroke(Color.gray.opacity(0.5), lineWidth: 1)
                                     )
-                            } else {
-                                Text(ingredient.wrappedValue.name)
-                                Spacer()
-                                Text(ingredient.wrappedValue.measurement)
-                                    .foregroundColor(.gray)
                             }
-                        }
-                        .onTapGesture {
-                            editingIngredientIndex = index
+                            .contentShape(Rectangle())
+                        } else {
+                            Button (action: {
+                                editingIngredientIndex = index
+                            }){
+                                HStack {
+                                    Text(ingredient.wrappedValue.name)
+                                        .foregroundColor(Color.black)
+                                    Spacer()
+                                    Text(ingredient.wrappedValue.measurement)
+                                        .foregroundColor(.gray)
+                                }
+ 
+                            }
+                            .contentShape(Rectangle())
                         }
                     }
                     .padding(.vertical, 20)
