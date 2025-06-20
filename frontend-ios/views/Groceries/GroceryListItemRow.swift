@@ -15,15 +15,16 @@ struct GroceryListItemRow: View {
                     groceriesModel.toggleGroceryCheck(id: item.id, checked: newValue)
                 }
             }) {
-                Image(systemName: item.isChecked ? "checkmark.square.fill" : "square")
-                    .foregroundColor(.black)
+                HStack {
+                    Image(systemName: item.isChecked ? "checkmark.square.fill" : "square")
+                        .foregroundColor(item.isChecked ? Color(hex: "#e9c46a") : .black)
+                    Text(item.name)
+                        .strikethrough(item.isChecked)
+                        .foregroundColor(item.isChecked ? .gray : .black)
+                }
             }
             .buttonStyle(BorderlessButtonStyle())
-            
-            Text(item.name)
-                .strikethrough(item.isChecked)
-                .foregroundColor(item.isChecked ? .gray : .black)
-            
+
             Spacer()
             
             Text(item.measurement)

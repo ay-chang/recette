@@ -48,6 +48,7 @@ struct MainTabView: View {
                 }
             }
         }
+        .background(Color.white)
         .fullScreenCover(isPresented: $showCreateRecipe) {
             CreateRecipeCoordinator()
         }

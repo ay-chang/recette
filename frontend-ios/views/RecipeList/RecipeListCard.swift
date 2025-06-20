@@ -6,18 +6,15 @@ struct RecipeListCard: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: 12) {
                 Text(title)
                     .font(.headline)
-                    .padding(.top)
-                    .padding(.horizontal)
-                
+
                 Text(description)
                     .font(.subheadline)
                     .lineLimit(3)
                     .truncationMode(.tail)
-                    .padding(.top)
-                    .padding(.horizontal)
+                    
             }
             .padding(.bottom, 16)
             .frame(maxWidth: .infinity, alignment: .leading)

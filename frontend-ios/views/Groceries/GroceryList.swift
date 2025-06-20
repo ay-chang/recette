@@ -4,21 +4,26 @@ struct GroceryList: View {
     @EnvironmentObject var groceriesModel: GroceriesModel
     @EnvironmentObject var session: UserSession
     @State private var isEditing = false
+    @State private var showInfo = false
     
     var body: some View {
         VStack(alignment: .leading) {
             /** Header */
             HStack {
                 Spacer()
-                Text("Info")
-                    .padding(.vertical, 10)
-                    .padding(.horizontal, 14)
-                    .foregroundColor(Color.black)
-                    .overlay(
-                            RoundedRectangle(cornerRadius: 15)
-                                .stroke(Color.gray.opacity(0.6), lineWidth: 1)
-                        )
-                        .cornerRadius(15)
+                Button (action: {
+                    showInfo = true
+                }) {
+                    Text("Info")
+                        .padding(.vertical, 10)
+                        .padding(.horizontal, 14)
+                        .foregroundColor(Color.black)
+                        .overlay(
+                                RoundedRectangle(cornerRadius: 15)
+                                    .stroke(Color.gray.opacity(0.6), lineWidth: 1)
+                            )
+                            .cornerRadius(15)
+                }
             }
             .padding()
             .overlay(
@@ -63,10 +68,13 @@ struct GroceryList: View {
                     }
                 }
             }
-            .padding(.horizontal)
+            .padding()
         }
         .onDisappear {
             isEditing = false
+        }
+        .fullScreenCover(isPresented: $showInfo) {
+            GroceryListInfo(showInfo: $showInfo)
         }
     }
 }
