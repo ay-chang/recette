@@ -7,18 +7,25 @@ struct RecipeCardListView: View {
     @State private var selectedRecipe: SelectedRecipe? = nil    // recipe to be opened
     
     var body: some View {
-        List(recipes, id: \.id) { recipe in
-            Button {
-                selectedRecipe = SelectedRecipe(id: recipe.id)
-            } label: {
-                RecipeCard(
-                    title: recipe.title,
-                    description: recipe.description,
-                    imageurl: recipe.imageurl
-                )
+        ZStack {
+            ScrollView {
+                LazyVStack(spacing: 16) {
+                    ForEach(recipes, id: \.id) { recipe in
+                        Button {
+                            selectedRecipe = SelectedRecipe(id: recipe.id)
+                        } label: {
+                            RecipeCard(
+                                title: recipe.title,
+                                description: recipe.description,
+                                imageurl: recipe.imageurl
+                            )
+                            .padding(.horizontal)
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                    }
+                }
+                .padding(.vertical)
             }
-            .buttonStyle(PlainButtonStyle())
-            .listRowSeparator(.hidden)
         }
         .listStyle(PlainListStyle())
         .fullScreenCover(item: $selectedRecipe) { selected in

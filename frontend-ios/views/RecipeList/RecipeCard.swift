@@ -22,7 +22,7 @@ struct RecipeCard: View {
                 .padding(.horizontal)
             
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxWidth: .infinity, alignment: .center)
         .background(Color.white)
         .cornerRadius(12)
         .shadow(color: Color.black.opacity(0.15), radius: 5, x: 0, y: 4)

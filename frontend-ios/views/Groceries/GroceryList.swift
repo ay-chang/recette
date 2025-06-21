@@ -52,8 +52,12 @@ struct GroceryList: View {
    
                 VStack(alignment: .leading) {
                     if groceriesModel.items.isEmpty {
-                        VStack (alignment: .center){
+                        VStack (alignment: .center, spacing: 24){
                             Spacer()
+//                            Image("empty-groceries-illustration")
+//                                .resizable()
+//                                .scaledToFit()
+//                                .frame(width: 225)
                             Text("Your grocery list is empty.")
                                 .font(.headline)
                                 .foregroundColor(.gray)

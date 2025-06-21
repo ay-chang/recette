@@ -8,38 +8,37 @@ struct MainTabView: View {
     @State private var selectedTab = 0
     
     var body: some View {
-        ZStack {
-            TabView(selection: $selectedTab) {
-                HomeView(selectedTab: $selectedTab)
-                    .tabItem {
-                        Label("Recipes", systemImage: "list.bullet.rectangle")
-                            .environment(\.symbolVariants, .none)
-                    }
-                    .tag(0)
-                
-                Color.clear // Invisible tab for "Create"
-                    .tabItem {
-                        Label("Create", systemImage: "plus.app")
-                            .environment(\.symbolVariants, .none)
-                    }
-                    .tag(1)
-                
-                GroceriesView()
-                    .tabItem {
-                        Label("Grocery", systemImage: "cart")
-                              .environment(\.symbolVariants, .none)
-                    }
-                    .tag(2)
-                
-                ProfileView()
-                    .tabItem {
-                        Label("Profile", systemImage: "person")
-                            .environment(\.symbolVariants, .none)
-                    }
-                    .tag(3)
-            }
-            .tint(Color(hex: "#e9c46a"))
+
+        TabView(selection: $selectedTab) {
+            HomeView(selectedTab: $selectedTab)
+                .tabItem {
+                    Label("Recipes", systemImage: "list.bullet.rectangle")
+                        .environment(\.symbolVariants, .none)
+                }
+                .tag(0)
+            
+            Color.clear // Invisible tab for "Create"
+                .tabItem {
+                    Label("Create", systemImage: "plus.app")
+                        .environment(\.symbolVariants, .none)
+                }
+                .tag(1)
+            
+            GroceriesView()
+                .tabItem {
+                    Label("Grocery", systemImage: "cart")
+                          .environment(\.symbolVariants, .none)
+                }
+                .tag(2)
+            
+            ProfileView()
+                .tabItem {
+                    Label("Profile", systemImage: "person")
+                        .environment(\.symbolVariants, .none)
+                }
+                .tag(3)
         }
+        .tint(Color(hex: "#e9c46a"))
         .onChange(of: selectedTab) { _, newTab in
             if newTab == 1 {
                 selectedTab = 0

@@ -13,7 +13,7 @@ struct RecipesView: View {
     @State private var hasLoaded = false
     
     var body: some View {
-        VStack {
+        VStack (spacing: 0){
             MenuBar(isListView: $isListView)
                 
             // Decide whether to display list or image view
