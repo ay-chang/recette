@@ -32,10 +32,6 @@ public class S3Service {
      * Public entrypoint to optimize and upload a WebP recipe image. The function
      * uses the two helper functions optimizeImage and uploadImage to upload an
      * optimized and resized version of the image with the webp extension to S3.
-     * 
-     * @param file image passed in through the request
-     * @return
-     * @throws IOException
      */
     public String optimizeAndUploadImage(MultipartFile file) throws IOException {
         byte[] optimizedWebP = optimizeImage(file);
@@ -48,11 +44,6 @@ public class S3Service {
      * to resize the image and a byte array output stream to create an in memory
      * buffer to hold binary image data. This allows us to keep everything in memory
      * for performance and cleanliness.
-     * 
-     * TODO: implement limit upload sizes
-     * 
-     * @param file user image to be optimized
-     * @return raw binary of webP image
      */
     public byte[] optimizeImage(MultipartFile file) throws IOException {
         BufferedImage originalImage = ImageIO.read(file.getInputStream());
@@ -81,14 +72,7 @@ public class S3Service {
         return outputStream.toByteArray();
     }
 
-    /**
-     * Uploads raw image bytes to S3 under the given key and content type.
-     * 
-     * @param imageBytes  byte array recieved from optimize function
-     * @param key         file path inside the S3 bucket
-     * @param contentType image extension
-     * @return publicUrl to be saved in DB
-     */
+    /** Uploads raw image bytes to S3 under the given key and content type. */
     public String uploadImage(byte[] imageBytes, String key, String contentType) {
         ByteArrayInputStream inputStream = new ByteArrayInputStream(imageBytes);
 

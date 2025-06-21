@@ -1,4 +1,4 @@
-package com.recette.allenchang.backend.services;
+package com.recette.allenchang.backend.services.groceries;
 
 import java.util.List;
 
@@ -14,22 +14,16 @@ import com.recette.allenchang.backend.repositories.RecipeRepository;
 import com.recette.allenchang.backend.repositories.UserRepository;
 
 @Service
-public class GroceryService {
+public class GroceriesMutationService {
     private final GroceryRepository groceryRepository;
     private final UserRepository userRepository;
     private final RecipeRepository recipeRepository;
 
-    public GroceryService(GroceryRepository groceryRepository, UserRepository userRepository,
+    public GroceriesMutationService(GroceryRepository groceryRepository, UserRepository userRepository,
             RecipeRepository recipeRepository) {
         this.groceryRepository = groceryRepository;
         this.userRepository = userRepository;
         this.recipeRepository = recipeRepository;
-    }
-
-    public List<Grocery> getUserGroceries(String email) {
-        return userRepository.findByEmail(email)
-                .map(user -> groceryRepository.findByUserId(user.getId()))
-                .orElse(List.of());
     }
 
     public List<Grocery> addGroceries(List<Grocery> groceries, String email, String recipeId) {
