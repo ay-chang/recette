@@ -12,6 +12,9 @@ public class RecipeInput {
     private User user;
     private List<String> tags;
     private List<String> steps;
+    private String difficulty;
+    private Integer cookTimeInMinutes;
+    private Integer servingSize;
 
     /** Getters and Setters */
     public String getTitle() {
@@ -68,6 +71,30 @@ public class RecipeInput {
 
     public void setSteps(List<String> steps) {
         this.steps = steps;
+    }
+
+    public String getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public Integer getCookTimeInMinutes() {
+        return cookTimeInMinutes;
+    }
+
+    public void setCookTimeInMinutes(Integer cookTimeInMinutes) {
+        this.cookTimeInMinutes = cookTimeInMinutes;
+    }
+
+    public Integer getServingSize() {
+        return servingSize;
+    }
+
+    public void setServingSize(Integer servingSize) {
+        this.servingSize = servingSize;
     }
 
 }

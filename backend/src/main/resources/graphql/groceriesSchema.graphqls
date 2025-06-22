@@ -1,0 +1,22 @@
+extend type Query {
+  getUserGroceries(email: String!): [Grocery!]!
+}
+
+extend type Mutation {
+  addGroceries(groceries: [GroceryInput!]!, email: String!, recipeId: String!): [Grocery]
+  removeRecipeFromGroceries(email: String!, recipeId: String!): Boolean!
+  toggleGroceryCheck(id: ID!, checked: Boolean!): Grocery!
+}
+
+type Grocery {
+  id: ID!
+  name: String!
+  measurement: String!
+  checked: Boolean!
+  recipe: Recipe
+}
+
+input GroceryInput {
+  name: String!
+  measurement: String!
+}

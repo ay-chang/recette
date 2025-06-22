@@ -1,0 +1,13 @@
+extend type Query {
+  userTags(email: String!): [Tag!]!
+}
+
+extend type Mutation {
+  addTag(email: String!, name: String!): Tag!
+}
+
+type Tag {
+  id: ID!
+  name: String!
+  user: User!
+}

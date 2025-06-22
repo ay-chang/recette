@@ -48,6 +48,9 @@ public class Recipe {
     private String title;
     private String description;
     private String imageurl;
+    private String difficulty;
+    private Integer cookTimeInMinutes;
+    private Integer servingSize;
 
     /**
      * The @OneToMany: Indicates a one-to-many relationship. A Recipe is the "one"
@@ -87,13 +90,17 @@ public class Recipe {
     public Recipe() {
     }
 
-    public Recipe(String title, String description, List<Ingredient> ingredients, String imageurl,
-            User user) {
+    public Recipe(String title, String description, List<Ingredient> ingredients, List<String> steps,
+            String imageurl, User user, String difficulty, Integer cookTimeInMinutes, Integer servingSize) {
         this.title = title;
         this.description = description;
         this.ingredients = ingredients;
+        this.steps = steps;
         this.imageurl = imageurl;
         this.user = user;
+        this.difficulty = difficulty;
+        this.cookTimeInMinutes = cookTimeInMinutes;
+        this.servingSize = servingSize;
     }
 
     /** Getters and setters */
@@ -164,4 +171,29 @@ public class Recipe {
     public void setSteps(List<String> steps) {
         this.steps = steps;
     }
+
+    public String getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public Integer getCookTimeInMinutes() {
+        return cookTimeInMinutes;
+    }
+
+    public void setCookTimeInMinutes(Integer cookTimeInMinutes) {
+        this.cookTimeInMinutes = cookTimeInMinutes;
+    }
+
+    public Integer getServingSize() {
+        return servingSize;
+    }
+
+    public void setServingSize(Integer servingSize) {
+        this.servingSize = servingSize;
+    }
+
 }

@@ -1,0 +1,30 @@
+extend type Query {
+  getUsername(email: String!): String!
+}
+
+extend type Mutation {
+  signUp(input: SignUpInput!): User! # User signup
+  login(input: LoginInput!): String! # User login returns a token
+  logout(email: String!): Boolean!
+}
+
+type User {
+  id: ID!
+  email: String!
+  username: String
+  recipes: [Recipe!]! # Recipes associated with the user
+}
+
+input UserInput {
+  email: String!
+}
+
+input SignUpInput {
+  email: String!
+  password: String!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
