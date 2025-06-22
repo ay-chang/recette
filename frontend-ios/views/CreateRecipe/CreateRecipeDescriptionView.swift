@@ -1,18 +1,14 @@
 import SwiftUI
 
-struct RecipeTagsStep: View {
+struct CreateRecipeDescriptionView: View {
     @ObservedObject var recipe: CreateRecipeModel
+    var onNext: () -> Void
     var onBack: () -> Void
-    var onFinish: () -> Void
     var onCancel: () -> Void
     
-    @State private var prepTime: String = ""
-    @State private var showAddTag: Bool = false
-
     var body: some View {
-        // Header
         ZStack {
-            Text("Description & Tags")
+            Text("Description")
                 .frame(maxWidth: .infinity, alignment: .center)
             HStack {
                 Button(action: onCancel) {
@@ -25,15 +21,16 @@ struct RecipeTagsStep: View {
         .padding()
         
         // Intro Box
-        Text("Describe your recipe and keep it organized with tags")
+        Text("Describe your recipe and tell us blah blah blah blah.")
             .font(.subheadline)
             .foregroundColor(.gray)
             .padding()
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(Color.gray.opacity(0.1))
         
-        // Description
-        VStack(alignment: .leading, spacing: 8) {
+
+        /** Desription Text box */
+        VStack (alignment: .leading) {
             Text("Give your recipe a description")
                 .font(.headline)
             
@@ -51,34 +48,12 @@ struct RecipeTagsStep: View {
                         RoundedRectangle(cornerRadius: 8)
                             .stroke(Color.gray.opacity(0.4), lineWidth: 1)
                     )
-            }
-            
-            // Character count
-            HStack {
-                Spacer()
-                Text("\(recipe.description.count) / 250")
-                    .font(.callout)
-                    .foregroundColor(.gray)
-            }
-            
-            /** Tags */
-            VStack(alignment: .leading, spacing: 12) {
-                Text("Organize your recipe with tags")
-                    .font(.headline)
-                
-                TagContainerView(
-                    selectedTags: $recipe.selectedTags,
-                    availableTags: $recipe.availableTags,
-                    addTagAction: {
-                        showAddTag = true
-                    }
-                )
-
+                CharacterCountView(currentCount: recipe.description.count, maxCount: 250)
             }
             
             Spacer()
             
-            // Navigation Buttons
+            /** Navigation Buttons */
             HStack {
                 Button(action: onBack) {
                     Text("Back")
@@ -89,8 +64,8 @@ struct RecipeTagsStep: View {
                 
                 Spacer()
 
-                Button(action: onFinish) {
-                    Text("Finish")
+                Button(action: onNext) {
+                    Text("Next")
                         .padding(.vertical, 12)
                         .padding(.horizontal, 24)
                         .background(.black)
@@ -101,8 +76,5 @@ struct RecipeTagsStep: View {
             .padding(.top, 4)
         }
         .padding()
-        .fullScreenCover(isPresented: $showAddTag) {
-            AddTagView(recipe: recipe, showAddTag: $showAddTag)
-        }
     }
 }

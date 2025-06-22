@@ -37,6 +37,9 @@ type Recipe {
   steps: [String!]!
   user: User!
   tags: [Tag!]!
+  difficulty: String
+  cookTimeInMinutes: Int
+  servingSize: Int
 }
 
 type Ingredient {
@@ -76,6 +79,9 @@ input RecipeInput {
   steps: [String!]!
   user: UserInput!
   tags: [String!]
+  difficulty: String
+  cookTimeInMinutes: Int
+  servingSize: Int
 }
 
 input UpdateRecipeInput {

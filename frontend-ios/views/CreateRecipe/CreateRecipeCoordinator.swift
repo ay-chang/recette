@@ -4,6 +4,7 @@ enum CreateRecipeStep {
     case details
     case ingredients
     case steps
+    case description
     case tags
 }
 
@@ -24,11 +25,13 @@ struct CreateRecipeCoordinator: View {
             case .ingredients:
                 RecipeIngredientsStep(recipe: recipe, onNext: { step = .steps }, onBack: { step = .details }, onCancel: { dismiss() })
             case .steps:
-                RecipeStepsStep(recipe: recipe, onNext: { step = .tags }, onBack: { step = .ingredients }, onCancel: { dismiss() })
+                RecipeStepsStep(recipe: recipe, onNext: { step = .description }, onBack: { step = .ingredients }, onCancel: { dismiss() })
+            case .description:
+                CreateRecipeDescriptionView(recipe: recipe, onNext: { step = .tags}, onBack: {step = .steps}, onCancel: { dismiss() })
             case .tags:
-                RecipeTagsStep(
+                CreateRecipeTagsStep(
                     recipe: recipe,
-                    onBack: { step = .steps },
+                    onBack: { step = .description },
                     onFinish: {
                         if let email = session.userEmail {
                             recipe.saveRecipe(email: email) { result in

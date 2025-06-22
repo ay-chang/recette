@@ -9,6 +9,9 @@ class BaseRecipe: ObservableObject, TagManageable {
     @Published var steps: [String] = []
     @Published var selectedTags: Set<String> = []
     @Published var availableTags: [String] = []
+    @Published var difficulty: String = ""
+    @Published var cookTimeInMinutes: Int = 0
+    @Published var servingSize: Int = 0
     
     func loadUserTags(email: String) {
         let getUserTagsQuery = RecetteSchema.GetUserTagsQuery(email: email)

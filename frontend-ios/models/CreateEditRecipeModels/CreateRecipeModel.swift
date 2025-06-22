@@ -28,7 +28,10 @@ class CreateRecipeModel: BaseRecipe {
                     ingredients: gqlIngredients,
                     steps: steps,
                     user: RecetteSchema.UserInput(email: email),
-                    tags: .some(Array(selectedTags))
+                    tags: .some(Array(selectedTags)),
+                    difficulty: difficulty.isEmpty ? .null : .some(difficulty),
+                    cookTimeInMinutes: .some(cookTimeInMinutes),
+                    servingSize: .some(servingSize)
                 )
 
                 let mutation = RecetteSchema.AddRecipeMutation(input: input)
@@ -36,8 +39,9 @@ class CreateRecipeModel: BaseRecipe {
                 Network.shared.apollo.perform(mutation: mutation) { result in
                     switch result {
                     case .success(let graphQLResult):
-                        if let _ = graphQLResult.errors {
-                            completion(.failure(ValidationError("GraphQL error")))
+                        if let errors = graphQLResult.errors {
+                            print("GraphQL Errors:", errors)
+                            completion(.failure(ValidationError("GraphQL error: \(errors.first?.message ?? "Unknown error")")))
                         } else {
                             completion(.success(()))
                         }
