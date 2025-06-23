@@ -56,14 +56,9 @@ public class RecipeMutationService {
         recipe.setDescription(input.getDescription());
         recipe.setImageurl(input.getImageurl());
         recipe.setSteps(new ArrayList<>(input.getSteps()));
-
-        // Replace ingredients
         recipe.getIngredients().clear();
         recipe.getIngredients().addAll(mapIngredients(input.getIngredients(), recipe));
-
-        // Replace tags (only once, with mutable list)
         recipe.setTags(new ArrayList<>(mapTags(input.getTags())));
-
         recipe.setDifficulty(input.getDifficulty());
         recipe.setServingSize(input.getServingSize());
         recipe.setCookTimeInMinutes(input.getCookTimeInMinutes());
