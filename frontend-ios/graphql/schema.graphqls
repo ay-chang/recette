@@ -80,8 +80,8 @@ input RecipeInput {
   user: UserInput!
   tags: [String!]
   difficulty: String
-  cookTimeInMinutes: Int
   servingSize: Int
+  cookTimeInMinutes: Int
 }
 
 input UpdateRecipeInput {
@@ -92,6 +92,9 @@ input UpdateRecipeInput {
   ingredients: [IngredientInput!]!
   steps: [String!]!
   tags: [String!]
+  difficulty: String
+  servingSize: Int
+  cookTimeInMinutes: Int
 }
 
 input GroceryInput {

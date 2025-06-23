@@ -12,6 +12,9 @@ mutation UpdateRecipe($input: UpdateRecipeInput!) {
     tags {
       name
     }
+    difficulty
+    servingSize
+    cookTimeInMinutes
   }
 }
 

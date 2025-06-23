@@ -8,5 +8,8 @@ query GetUserRecipesFullDetails($email: String!) {
     tags {
       name
     }
+    difficulty
+    servingSize
+    cookTimeInMinutes
   }
 }

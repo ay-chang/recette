@@ -15,8 +15,8 @@ class EditRecipeModel: BaseRecipe {
         self.ingredients = recipe.ingredients
         self.selectedTags = Set(recipe.tags)
         self.difficulty = recipe.difficulty
-        self.cookTimeInMinutes = recipe.cookTimeInMinutes ?? 0
         self.servingSize = recipe.servingSize ?? 0
+        self.cookTimeInMinutes = recipe.cookTimeInMinutes ?? 0
     }
 
     func updateRecipe(
@@ -64,7 +64,10 @@ class EditRecipeModel: BaseRecipe {
             imageurl: imageurl != nil ? .some(imageurl!) : .null,
             ingredients: gqlIngredients,
             steps: steps,
-            tags: .some(Array(selectedTags))
+            tags: .some(Array(selectedTags)),
+            difficulty: difficulty != nil ? .some(difficulty!) : .null,
+            servingSize: .some(servingSize),
+            cookTimeInMinutes: .some(cookTimeInMinutes)
         )
 
         let mutation = RecetteSchema.UpdateRecipeMutation(input: input)
