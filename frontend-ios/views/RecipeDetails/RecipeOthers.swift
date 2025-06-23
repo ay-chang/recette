@@ -15,10 +15,10 @@ struct RecipeOthers: View {
                         .font(.system(size: 22))
                         .foregroundColor(Color(hex: "#e9c46a"))
                     Text("\(difficulty!)")
-                        .font(.system(size: 16))
+                        .font(.system(size: 14))
                         .fontWeight(.medium)
                 }
-                .padding(.trailing, 16)
+                .padding(.trailing, 12)
             }
             
             /** Serving size */
@@ -28,10 +28,10 @@ struct RecipeOthers: View {
                         .font(.system(size: 22))
                         .foregroundColor(Color(hex: "#e9c46a"))
                     Text("Serves \(servingSize)")
-                        .font(.system(size: 16))
+                        .font(.system(size: 14))
                         .fontWeight(.medium)
                 }
-                .padding(.trailing, 16)
+                .padding(.trailing, 12)
             }
             
             /** Cook time */
@@ -46,20 +46,20 @@ struct RecipeOthers: View {
                     
                     if hours > 0 {
                         Text("\(hours) hour\(hours == 1 ? "" : "s")")
-                            .font(.system(size: 16))
+                            .font(.system(size: 14))
                             .fontWeight(.medium)
                         if minutes > 0 {
-                            Text("\(minutes) minute\(minutes == 1 ? "" : "s")")
-                                .font(.system(size: 16))
+                            Text("\(minutes) min\(minutes == 1 ? "" : "s")")
+                                .font(.system(size: 14))
                                 .fontWeight(.medium)
                         }
                     } else {
-                        Text("\(minutes) minute\(minutes == 1 ? "" : "s")")
-                            .font(.system(size: 16))
+                        Text("\(minutes) min\(minutes == 1 ? "" : "s")")
+                            .font(.system(size: 14))
                             .fontWeight(.medium)
                     }
                 }
-                .padding(.trailing, 16)
+                .padding(.trailing, 12)
             }
             Spacer()
         }
