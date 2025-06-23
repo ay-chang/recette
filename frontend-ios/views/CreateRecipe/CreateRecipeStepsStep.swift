@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct RecipeStepsStep: View {
+struct CreateRecipeStepsStep: View {
     @ObservedObject var recipe: CreateRecipeModel
     var onNext: () -> Void
     var onBack: () -> Void

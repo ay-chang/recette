@@ -1,7 +1,7 @@
 import SwiftUI
 import PhotosUI
 
-struct RecipeDetailsStep: View {
+struct CreateRecipeDetailsStep: View {
     @ObservedObject var recipe: CreateRecipeModel
     var onNext: () -> Void
     var onCancel: () -> Void
@@ -30,7 +30,7 @@ struct RecipeDetailsStep: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(Color.gray.opacity(0.1))
 
-        // Recipe title input
+        /** Title, image picker, and nav buttons */
         VStack(spacing: 24) {
             // Recipe Title Section with Character Limit
             VStack(alignment: .leading, spacing: 8) {

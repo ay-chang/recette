@@ -22,13 +22,13 @@ struct RecipeIngredients: View {
                 
                 Button {
                     if let email = session.userEmail {
-                            print("🛒 Attempting to add recipe \(recipeId) for user \(email)")
+                            print("Attempting to add recipe \(recipeId) for user \(email)")
                             
                             if groceryModel.hasRecipe(recipeId) {
-                                print("⚠️ Recipe already exists in grocery list. Showing alert.")
+                                print("Recipe already exists in grocery list. Showing alert.")
                                 showAlreadyAddedAlert = true
                             } else {
-                                print("✅ Recipe not found in grocery list. Proceeding to add.")
+                                print("Recipe not found in grocery list. Proceeding to add.")
                                 groceryModel.addGroceries(ingredients, email: email, recipeId: recipeId)
                             }
                         }

@@ -8,6 +8,9 @@ struct RecipeDetails: Identifiable, Equatable {
     var ingredients: [Ingredient]
     var steps: [String]
     var tags: [String]
+    var difficulty: String?
+    var cookTimeInMinutes: Int?
+    var servingSize: Int?
 }
 
 class RecipeDetailsModel: ObservableObject {
@@ -36,7 +39,10 @@ class RecipeDetailsModel: ObservableObject {
                                 Ingredient(name: $0.name, measurement: $0.measurement)
                             },
                             steps: gql.steps,
-                            tags: gql.tags.map { $0.name }
+                            tags: gql.tags.map { $0.name },
+                            difficulty: gql.difficulty,
+                            cookTimeInMinutes: gql.cookTimeInMinutes,
+                            servingSize: gql.servingSize
                         )
                     }
                 case .failure(let error):
@@ -64,35 +70,35 @@ class RecipeDetailsModel: ObservableObject {
             }
         }
 
-        func updateRecipeImage(image: UIImage, email: String, completion: @escaping (Bool) -> Void) {
-            Task {
-                do {
-                    let imageurl = try await S3Manager.uploadImage(image)
-                    let mutation = RecetteSchema.UpdateRecipeImageMutation(
-                        recipeId: RecetteSchema.ID(recipeId),
-                        imageurl: imageurl
-                    )
+    func updateRecipeImage(image: UIImage, email: String, completion: @escaping (Bool) -> Void) {
+        Task {
+            do {
+                let imageurl = try await S3Manager.uploadImage(image)
+                let mutation = RecetteSchema.UpdateRecipeImageMutation(
+                    recipeId: RecetteSchema.ID(recipeId),
+                    imageurl: imageurl
+                )
 
-                    Network.shared.apollo.perform(mutation: mutation) { result in
-                        switch result {
-                        case .success(let gqlResult):
-                            if gqlResult.errors == nil {
-                                DispatchQueue.main.async {
-                                    self.loadRecipe()
-                                    completion(true)
-                                }
-                            } else {
-                                completion(false)
+                Network.shared.apollo.perform(mutation: mutation) { result in
+                    switch result {
+                    case .success(let gqlResult):
+                        if gqlResult.errors == nil {
+                            DispatchQueue.main.async {
+                                self.loadRecipe()
+                                completion(true)
                             }
-                        case .failure:
+                        } else {
                             completion(false)
                         }
+                    case .failure:
+                        completion(false)
                     }
-                } catch {
-                    completion(false)
                 }
+            } catch {
+                completion(false)
             }
         }
+    }
 }
 
 struct SelectedRecipe: Identifiable {

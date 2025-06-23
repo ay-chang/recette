@@ -13,5 +13,8 @@ query getRecipeByID($id: ID!) {
         name
         measurement
       }
+      difficulty
+      cookTimeInMinutes
+      servingSize
     }
   }

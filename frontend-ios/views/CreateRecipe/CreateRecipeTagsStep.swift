@@ -2,19 +2,15 @@ import SwiftUI
 
 struct CreateRecipeTagsStep: View {
     @ObservedObject var recipe: CreateRecipeModel
+    var onNext: () -> Void
     var onBack: () -> Void
-    var onFinish: () -> Void
     var onCancel: () -> Void
     
-    @State private var prepTime: String = ""
     @State private var showAddTag: Bool = false
     
-
-
     var body: some View {
-        // Header
         ZStack {
-            Text("Tags & Other options")
+            Text("Description & Tags")
                 .frame(maxWidth: .infinity, alignment: .center)
             HStack {
                 Button(action: onCancel) {
@@ -26,85 +22,34 @@ struct CreateRecipeTagsStep: View {
         }
         .padding()
         
-        // Intro Box
-        Text("Keep your recipe organized with tags and give it more options.")
+        /** Intro Box */
+        Text("Give your recipe a description and organize them with tags.")
             .font(.subheadline)
             .foregroundColor(.gray)
             .padding()
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(Color.gray.opacity(0.1))
         
-        VStack(alignment: .leading, spacing: 8) {
-
-            // ADD FEATURES HERE
-            
-            // Difficulty
-            VStack(alignment: .leading) {
-                Text("Select difficulty")
+        /** Description box, tags, and nav buttons */
+        VStack(alignment: .leading, spacing: 24) {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Give your recipe a description")
                     .font(.headline)
-                
-                HStack(spacing: 16) {
-                    ForEach(["Easy", "Medium", "Hard"], id: \.self) { level in
-                        Button(action: {
-                            recipe.difficulty = level
-                        }) {
-                            Text(level)
-                                .foregroundColor(recipe.difficulty == level ? .white : .black)
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(recipe.difficulty == level ? Color.black : Color.gray.opacity(0.1))
-                                .cornerRadius(12)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .stroke(Color.gray.opacity(0.4), lineWidth: 1)
-                                )
-                        }
+                TextEditor(text: Binding(
+                    get: { String(recipe.description.prefix(250)) },
+                    set: { newValue in
+                        recipe.description = String(newValue.prefix(250))
                     }
-                }
+                ))
+                    .frame(height: 150)
+                    .padding(8)
+                    .background(Color.white)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.gray.opacity(0.4), lineWidth: 1)
+                    )
+                CharacterCountView(currentCount: recipe.description.count, maxCount: 250)
             }
-            
-            // Serving Size
-            VStack(alignment: .leading) {
-                Text("Serving size")
-                    .font(.headline)
-
-                Stepper(value: $recipe.servingSize, in: 1...20, step: 1) {
-                    Text("\(recipe.servingSize) \(recipe.servingSize == 1 ? "serving" : "servings")")
-                }
-            }
-
-            // Cook Time
-            VStack(alignment: .leading) {
-                Text("Cook time")
-                    .font(.headline)
-
-                HStack {
-                    Picker("Hours", selection: Binding(
-                        get: { recipe.cookTimeInMinutes / 60 },
-                        set: { recipe.cookTimeInMinutes = $0 * 60 + (recipe.cookTimeInMinutes % 60) }
-                    )) {
-                        ForEach(0..<13) { hour in
-                            Text("\(hour) hr").tag(hour)
-                        }
-                    }
-                    .pickerStyle(.wheel)
-                    .frame(width: 100)
-
-                    Picker("Minutes", selection: Binding(
-                        get: { recipe.cookTimeInMinutes % 60 },
-                        set: { recipe.cookTimeInMinutes = (recipe.cookTimeInMinutes / 60) * 60 + $0 }
-                    )) {
-                        ForEach(Array(stride(from: 0, through: 55, by: 5)), id: \.self) { min in
-                            Text("\(min) min").tag(min)
-                        }
-                    }
-                    .pickerStyle(.wheel)
-                    .frame(width: 100)
-                }
-            }
-
-            
-            
             
             /** Tags */
             VStack(alignment: .leading, spacing: 12) {
@@ -118,12 +63,11 @@ struct CreateRecipeTagsStep: View {
                         showAddTag = true
                     }
                 )
-
             }
             
             Spacer()
             
-            // Navigation Buttons
+            /** Navigation Buttons */
             HStack {
                 Button(action: onBack) {
                     Text("Back")
@@ -134,8 +78,8 @@ struct CreateRecipeTagsStep: View {
                 
                 Spacer()
 
-                Button(action: onFinish) {
-                    Text("Finish")
+                Button(action: onNext) {
+                    Text("Next")
                         .padding(.vertical, 12)
                         .padding(.horizontal, 24)
                         .background(.black)
@@ -150,6 +94,4 @@ struct CreateRecipeTagsStep: View {
             AddTagView(recipe: recipe, showAddTag: $showAddTag)
         }
     }
-
 }
-

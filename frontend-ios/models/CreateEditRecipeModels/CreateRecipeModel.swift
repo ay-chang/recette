@@ -29,7 +29,7 @@ class CreateRecipeModel: BaseRecipe {
                     steps: steps,
                     user: RecetteSchema.UserInput(email: email),
                     tags: .some(Array(selectedTags)),
-                    difficulty: difficulty.isEmpty ? .null : .some(difficulty),
+                    difficulty: difficulty != nil ? .some(difficulty!) : .null,
                     cookTimeInMinutes: .some(cookTimeInMinutes),
                     servingSize: .some(servingSize)
                 )

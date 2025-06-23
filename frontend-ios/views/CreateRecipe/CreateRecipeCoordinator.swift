@@ -4,8 +4,8 @@ enum CreateRecipeStep {
     case details
     case ingredients
     case steps
-    case description
     case tags
+    case others
 }
 
 struct CreateRecipeCoordinator: View {
@@ -21,17 +21,17 @@ struct CreateRecipeCoordinator: View {
         VStack {
             switch step {
             case .details:
-                RecipeDetailsStep(recipe: recipe, onNext: { step = .ingredients }, onCancel: { dismiss() })
+                CreateRecipeDetailsStep(recipe: recipe, onNext: { step = .ingredients }, onCancel: { dismiss() })
             case .ingredients:
-                RecipeIngredientsStep(recipe: recipe, onNext: { step = .steps }, onBack: { step = .details }, onCancel: { dismiss() })
+                CreateRecipeIngredientsStep(recipe: recipe, onNext: { step = .steps }, onBack: { step = .details }, onCancel: { dismiss() })
             case .steps:
-                RecipeStepsStep(recipe: recipe, onNext: { step = .description }, onBack: { step = .ingredients }, onCancel: { dismiss() })
-            case .description:
-                CreateRecipeDescriptionView(recipe: recipe, onNext: { step = .tags}, onBack: {step = .steps}, onCancel: { dismiss() })
+                CreateRecipeStepsStep(recipe: recipe, onNext: { step = .tags }, onBack: { step = .ingredients }, onCancel: { dismiss() })
             case .tags:
-                CreateRecipeTagsStep(
+                CreateRecipeTagsStep(recipe: recipe, onNext: { step = .others}, onBack: {step = .steps}, onCancel: { dismiss() })
+            case .others:
+                CreateRecipeOthersStep(
                     recipe: recipe,
-                    onBack: { step = .description },
+                    onBack: { step = .tags },
                     onFinish: {
                         if let email = session.userEmail {
                             recipe.saveRecipe(email: email) { result in

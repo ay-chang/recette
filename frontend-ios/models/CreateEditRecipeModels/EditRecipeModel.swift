@@ -14,6 +14,9 @@ class EditRecipeModel: BaseRecipe {
         self.steps = recipe.steps
         self.ingredients = recipe.ingredients
         self.selectedTags = Set(recipe.tags)
+        self.difficulty = recipe.difficulty
+        self.cookTimeInMinutes = recipe.cookTimeInMinutes ?? 0
+        self.servingSize = recipe.servingSize ?? 0
     }
 
     func updateRecipe(
