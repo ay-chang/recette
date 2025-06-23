@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.recette.allenchang.backend.inputs.RecipeFilterInput;
 import com.recette.allenchang.backend.models.Recipe;
 import com.recette.allenchang.backend.repositories.RecipeRepository;
 import com.recette.allenchang.backend.repositories.UserRepository;
@@ -34,5 +35,9 @@ public class RecipeQueryService {
     public Recipe getRecipeById(String id) {
         return recipeRepository.findById(Integer.parseInt(id)).orElse(null);
     }
+
+    // public List<Recipe> getFilteredRecipes(RecipeFilterInput input) {
+
+    // }
 
 }

@@ -37,13 +37,13 @@ public class RecipeMutationService {
         recipe.setTitle(input.getTitle());
         recipe.setDescription(input.getDescription());
         recipe.setImageurl(input.getImageurl());
-        recipe.setSteps(input.getSteps());
+        recipe.setSteps(new ArrayList<>(input.getSteps())); // wrap for safety
         recipe.setUser(findUserByEmail(input.getUser().getEmail()));
-        recipe.setIngredients(mapIngredients(input.getIngredients(), recipe));
-        recipe.setTags(mapTags(input.getTags()));
+        recipe.setIngredients(new ArrayList<>(mapIngredients(input.getIngredients(), recipe)));
+        recipe.setTags(new ArrayList<>(mapTags(input.getTags())));
         recipe.setDifficulty(input.getDifficulty());
-        recipe.setCookTimeInMinutes(input.getCookTimeInMinutes());
         recipe.setServingSize(input.getServingSize());
+        recipe.setCookTimeInMinutes(input.getCookTimeInMinutes());
 
         return recipeRepository.save(recipe);
     }
@@ -56,9 +56,17 @@ public class RecipeMutationService {
         recipe.setDescription(input.getDescription());
         recipe.setImageurl(input.getImageurl());
         recipe.setSteps(new ArrayList<>(input.getSteps()));
+
+        // Replace ingredients
         recipe.getIngredients().clear();
         recipe.getIngredients().addAll(mapIngredients(input.getIngredients(), recipe));
+
+        // Replace tags (only once, with mutable list)
         recipe.setTags(new ArrayList<>(mapTags(input.getTags())));
+
+        recipe.setDifficulty(input.getDifficulty());
+        recipe.setServingSize(input.getServingSize());
+        recipe.setCookTimeInMinutes(input.getCookTimeInMinutes());
 
         return recipeRepository.save(recipe);
     }
@@ -67,7 +75,6 @@ public class RecipeMutationService {
     @Transactional
     public boolean deleteRecipe(String id) {
         Recipe recipe = findRecipeById(id);
-
         recipe.getTags().clear();
         recipeRepository.delete(recipe);
         return true;
@@ -81,6 +88,7 @@ public class RecipeMutationService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
     }
 
+    /** Setting the recipe in a mutation function */
     private Recipe findRecipeById(String id) {
         return recipeRepository.findById(Integer.parseInt(id))
                 .orElseThrow(() -> new IllegalArgumentException("Recipe not found with id: " + id));

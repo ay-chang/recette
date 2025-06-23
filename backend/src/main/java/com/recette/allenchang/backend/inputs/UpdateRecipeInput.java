@@ -10,6 +10,9 @@ public class UpdateRecipeInput {
     private List<IngredientInput> ingredients;
     private List<String> tags;
     private List<String> steps;
+    private String difficulty;
+    private Integer cookTimeInMinutes;
+    private Integer servingSize;
 
     /** Getters and Setters */
     public String getId() {
@@ -66,5 +69,29 @@ public class UpdateRecipeInput {
 
     public void setSteps(List<String> steps) {
         this.steps = steps;
+    }
+
+    public String getDifficulty() {
+        return this.difficulty;
+    }
+
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public Integer getCookTimeInMinutes() {
+        return this.cookTimeInMinutes;
+    }
+
+    public void setCookTimeInMinutes(Integer cookTimeInMinutes) {
+        this.cookTimeInMinutes = cookTimeInMinutes;
+    }
+
+    public Integer getServingSize() {
+        return this.servingSize;
+    }
+
+    public void setServingSize(Integer servingSize) {
+        this.servingSize = servingSize;
     }
 }

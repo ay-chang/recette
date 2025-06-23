@@ -52,6 +52,9 @@ input UpdateRecipeInput {
   ingredients: [IngredientInput!]!
   steps: [String!]!
   tags: [String!]
+  difficulty: String
+  servingSize: Int
+  cookTimeInMinutes: Int
 }
 
 input IngredientInput {
