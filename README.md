@@ -6,23 +6,28 @@ Recette is a mobile recipe management app that lets users create, edit, and orga
 
 ## ✨ Features
 
-### 📝 Create & Edit Recipes  
+### Create & Edit Recipes  
 Add recipes with titles, descriptions, steps, ingredients, tags, and images. Edit them seamlessly from within the app.
 
-### 📸 Image Uploads  
+### Image Uploads  
 Upload and store recipe images using Amazon S3.
 
-### 🏷️ Custom Tagging System  
+### Custom Tagging System  
 Users can create and apply custom tags (e.g., “vegetarian”, “quick”, “favorites”) for easier filtering and organization.
 
-### 📅 Weekly & Long-Term Goals (iOS)  
-Manage weekly cooking goals and track long-term culinary milestones, with subtasks for step-by-step progress.
-
-### 🛒 Groceries Integration  
+### Groceries Integration  
 One-click ingredient-to-grocery list functionality, tied to the recipe and user account.
 
-### 🔍 Filtering & Search  
+### Filtering & Search  
 Filter recipes by tags or search by title for fast access to your saved meals.
+
+<p align="center">
+  <img src="assets/screenshots/RecipeList.png" width="200"/>
+  <img src="assets/screenshots/RecipeDetails.png" width="200"/>
+  <img src="assets/screenshots/CreateRecipe.png" width="200"/>
+  <img src="assets/screenshots/GroceryList.png" width="200"/>
+</p>
+
 
 ---
 
