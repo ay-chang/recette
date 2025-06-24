@@ -5,6 +5,9 @@ struct RecipeListItems: Identifiable {
     var title: String
     var description: String
     var imageurl: String?
+    var difficulty: String?
+    var servingSize: Int?
+    var cookTimeInMinutes: Int?
 }
 
 class RecipeListModel: ObservableObject {
@@ -39,7 +42,10 @@ class RecipeListModel: ObservableObject {
                                 id: $0.id,
                                 title: $0.title,
                                 description: $0.description,
-                                imageurl: $0.imageurl
+                                imageurl: $0.imageurl,
+                                difficulty: $0.difficulty,
+                                servingSize: $0.servingSize,
+                                cookTimeInMinutes: $0.cookTimeInMinutes
                             )
                         }
                     } else {

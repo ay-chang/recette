@@ -10,11 +10,17 @@ struct RecipeDetailsContent: View {
                 .font(.system(size: 28))
                 .fontWeight(.medium)
             
-            /** Check if any of the properties even exist and then display*/
+            /** Check if any of the properties even exist and then display others bar*/
             if recipe.difficulty != nil ||
                (recipe.cookTimeInMinutes ?? 0) > 0 ||
                (recipe.servingSize ?? 0) > 0 {
-                RecipeOthers(difficulty: recipe.difficulty, cookTimeInMinutes: recipe.cookTimeInMinutes, servingSize: recipe.servingSize)
+                OthersBarView(
+                    difficulty: recipe.difficulty,
+                    servingSize: recipe.servingSize,
+                    cookTimeInMinutes: recipe.cookTimeInMinutes,
+                    iconSize: 22,
+                    fontSize: 14
+                )
             }
 
             /** Recipe description */

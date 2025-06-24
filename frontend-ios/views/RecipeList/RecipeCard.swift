@@ -4,19 +4,39 @@ struct RecipeCard: View {
     let title: String
     let description: String
     let imageurl: String?
+    let difficulty: String?
+    let servingSize: Int?
+    let cookTimeInMinutes: Int?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             RecipeImage(imageUrlString: imageurl, frameHeight: 300, frameWidth: CGFloat?.none)
 
             Text(title)
-                .font(.headline)
+                .font(.title2)
+                .fontWeight(.semibold)
                 .padding(.top)
                 .padding(.horizontal)
             
+            /** Check if any of the properties even exist and then display others bar*/
+            if difficulty != nil ||
+               (cookTimeInMinutes ?? 0) > 0 ||
+                (servingSize ?? 0) > 0 {
+                OthersBarView(
+                    difficulty: difficulty,
+                    servingSize: servingSize,
+                    cookTimeInMinutes: cookTimeInMinutes,
+                    iconSize: 22,
+                    fontSize: 14
+                )
+                .padding(.top)
+                .padding(.horizontal)
+            }
+            
             Text(description)
                 .font(.subheadline)
-                .lineLimit(3)
+                .foregroundColor(Color.gray)
+                .lineLimit(2)
                 .truncationMode(.tail)
                 .padding(.vertical)
                 .padding(.horizontal)

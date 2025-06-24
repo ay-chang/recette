@@ -17,7 +17,10 @@ struct RecipeCardListView: View {
                             RecipeCard(
                                 title: recipe.title,
                                 description: recipe.description,
-                                imageurl: recipe.imageurl
+                                imageurl: recipe.imageurl,
+                                difficulty: recipe.difficulty,
+                                servingSize: recipe.servingSize,
+                                cookTimeInMinutes: recipe.cookTimeInMinutes
                             )
                             .padding(.horizontal)
                         }

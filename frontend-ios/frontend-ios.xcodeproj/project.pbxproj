@@ -119,7 +119,6 @@
 				RecipeDetails/RecipeDetailsNoImage.swift,
 				RecipeDetails/RecipeDetailsWithImage.swift,
 				RecipeDetails/RecipeIngredients.swift,
-				RecipeDetails/RecipeOthers.swift,
 				RecipeDetails/RecipeScrollSentinel.swift,
 				RecipeDetails/RecipeSteps.swift,
 				RecipeDetails/RecipeTags.swift,
@@ -145,6 +144,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				CharacterCountView.swift,
+				OthersBarView.swift,
 				RecipeImage.swift,
 				TagChipView.swift,
 				TagContainerView.swift,
