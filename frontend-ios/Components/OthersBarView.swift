@@ -17,6 +17,7 @@ struct OthersBarView: View {
                         .font(.system(size: iconSize))
                         .foregroundColor(Color(hex: "#e9c46a"))
                     Text("\(difficulty!)")
+                        .foregroundColor(Color.black)
                         .font(.system(size: fontSize))
                         .fontWeight(.medium)
                 }
@@ -30,6 +31,7 @@ struct OthersBarView: View {
                         .font(.system(size: iconSize))
                         .foregroundColor(Color(hex: "#e9c46a"))
                     Text("Serves \(servingSize)")
+                        .foregroundColor(Color.black)
                         .font(.system(size: fontSize))
                         .fontWeight(.medium)
                 }
@@ -48,15 +50,18 @@ struct OthersBarView: View {
                     
                     if hours > 0 {
                         Text("\(hours) hour\(hours == 1 ? "" : "s")")
+                            .foregroundColor(Color.black)
                             .font(.system(size: fontSize))
                             .fontWeight(.medium)
                         if minutes > 0 {
                             Text("\(minutes) min\(minutes == 1 ? "" : "s")")
+                                .foregroundColor(Color.black)
                                 .font(.system(size: fontSize))
                                 .fontWeight(.medium)
                         }
                     } else {
                         Text("\(minutes) min\(minutes == 1 ? "" : "s")")
+                            .foregroundColor(Color.black)
                             .font(.system(size: fontSize))
                             .fontWeight(.medium)
                     }

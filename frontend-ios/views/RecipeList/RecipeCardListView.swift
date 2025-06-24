@@ -25,6 +25,7 @@ struct RecipeCardListView: View {
                             .padding(.horizontal)
                         }
                         .buttonStyle(PlainButtonStyle())
+                    
                     }
                 }
                 .padding(.vertical)

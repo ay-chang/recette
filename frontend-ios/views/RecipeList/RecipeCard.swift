@@ -13,6 +13,7 @@ struct RecipeCard: View {
             RecipeImage(imageUrlString: imageurl, frameHeight: 300, frameWidth: CGFloat?.none)
 
             Text(title)
+                .foregroundColor(Color.black)
                 .font(.title2)
                 .fontWeight(.semibold)
                 .padding(.top)
@@ -43,6 +44,7 @@ struct RecipeCard: View {
             
         }
         .frame(maxWidth: .infinity, alignment: .center)
+        .contentShape(Rectangle())
         .background(Color.white)
         .cornerRadius(12)
         .shadow(color: Color.black.opacity(0.15), radius: 5, x: 0, y: 4)
