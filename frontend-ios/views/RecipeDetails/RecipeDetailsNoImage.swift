@@ -44,6 +44,7 @@ struct RecipeDetailsNoImage: View {
                 .background(Color.white)
             }
             .coordinateSpace(name: "scroll")
+            .scrollIndicators(.hidden)
 
             RecipeTopBar(
                 showWhiteBar: true,

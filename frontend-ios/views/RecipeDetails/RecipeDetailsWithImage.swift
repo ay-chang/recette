@@ -38,6 +38,7 @@ struct RecipeDetailsWithImage: View {
             
             }
             .coordinateSpace(name: "scroll")
+            .scrollIndicators(.hidden)
             
             RecipeTopBar(
                 showWhiteBar: showWhiteTopBar,

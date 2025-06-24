@@ -30,6 +30,7 @@ struct RecipeCardListView: View {
                 }
                 .padding(.vertical)
             }
+            .scrollIndicators(.hidden)
         }
         .listStyle(PlainListStyle())
         .fullScreenCover(item: $selectedRecipe) { selected in
