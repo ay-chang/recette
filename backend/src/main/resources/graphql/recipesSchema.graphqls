@@ -2,6 +2,7 @@ extend type Query {
   recipes: [Recipe]
   recipeById(id: ID!): Recipe
   userRecipes(email: String!): [Recipe!]!
+  filterUserRecipes(email: String!, recipeFilterInput: RecipeFilterInput): [Recipe!]!
 }
 
 extend type Mutation {
@@ -60,4 +61,10 @@ input UpdateRecipeInput {
 input IngredientInput {
   name: String!
   measurement: String!
+}
+
+input RecipeFilterInput {
+  tags: [String]
+  maxCookTimeInMinutes: Int
+  difficulties: [String]
 }

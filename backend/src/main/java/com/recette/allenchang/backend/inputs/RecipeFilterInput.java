@@ -4,8 +4,8 @@ import java.util.List;
 
 public class RecipeFilterInput {
     private List<String> tags;
-    private String difficulty;
-    private Integer cookTimeInMinutes;
+    private List<String> difficulties;
+    private Integer maxCookTimeInMinutes;
 
     public List<String> getTags() {
         return this.tags;
@@ -15,20 +15,20 @@ public class RecipeFilterInput {
         this.tags = tags;
     }
 
-    public String getDifficulty() {
-        return this.difficulty;
+    public List<String> getDifficulties() {
+        return this.difficulties;
     }
 
-    public void setDifficulty(String difficulty) {
-        this.difficulty = difficulty;
+    public void setDifficulties(List<String> difficulties) {
+        this.difficulties = difficulties;
     }
 
     public Integer getCookTimeInMinutes() {
-        return this.cookTimeInMinutes;
+        return this.maxCookTimeInMinutes;
     }
 
     public void setCookTimeInMinutes(Integer cookTimeInMinutes) {
-        this.cookTimeInMinutes = cookTimeInMinutes;
+        this.maxCookTimeInMinutes = cookTimeInMinutes;
     }
 
 }
