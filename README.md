@@ -4,6 +4,13 @@ Recette is a mobile recipe management app that lets users create, edit, and orga
 
 ---
 
+<p align="center">
+  <img src="assets/screenshots/RecipeList.png" width="200"/>
+  <img src="assets/screenshots/RecipeDetails.png" width="200"/>
+  <img src="assets/screenshots/CreateRecipe.png" width="200"/>
+  <img src="assets/screenshots/GroceryList.png" width="200"/>
+</p>
+
 ## ✨ Features
 
 ### Create & Edit Recipes  
@@ -20,14 +27,6 @@ One-click ingredient-to-grocery list functionality, tied to the recipe and user 
 
 ### Filtering & Search  
 Filter recipes by tags or search by title for fast access to your saved meals.
-
-<p align="center">
-  <img src="assets/screenshots/RecipeList.png" width="200"/>
-  <img src="assets/screenshots/RecipeDetails.png" width="200"/>
-  <img src="assets/screenshots/CreateRecipe.png" width="200"/>
-  <img src="assets/screenshots/GroceryList.png" width="200"/>
-</p>
-
 
 ---
 
