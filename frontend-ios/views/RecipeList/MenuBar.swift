@@ -2,12 +2,12 @@ import SwiftUI
 
 struct MenuBar: View {
     @Binding var isListView: Bool
+    @Binding var showFilterSheet: Bool
 
     var body: some View {
         HStack (alignment: .center) {
-            // TODO: new file for filter button (does nothing for now)
             Button(action: {
-                // TODO: Implement filter logic
+                showFilterSheet = true
             }) {
                 HStack (alignment: .center){
                     Text("Filter")
@@ -55,6 +55,8 @@ struct MenuBar: View {
             alignment: .bottom
         )
         .background(Color.white)
-//        .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 2)
+        .sheet(isPresented: $showFilterSheet) {
+            FilterSheetView()
+        }
     }
 }

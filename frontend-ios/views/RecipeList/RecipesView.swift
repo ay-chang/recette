@@ -11,10 +11,11 @@ struct RecipesView: View {
     @State private var isListView = false
     @StateObject private var model = RecipeListModel()
     @State private var hasLoaded = false
+    @State private var showFilterSheet = false
     
     var body: some View {
         VStack (spacing: 0){
-            MenuBar(isListView: $isListView)
+            MenuBar(isListView: $isListView, showFilterSheet: $showFilterSheet)
                 
             // Decide whether to display list or image view
             if isListView {

@@ -53,7 +53,11 @@ struct RecipeIngredients: View {
                 
 
             }
-            .overlay(Rectangle().frame(height: 1).foregroundColor(Color.gray.opacity(0.3)), alignment: .bottom)
+            .overlay(
+                Rectangle()
+                    .frame(height: 1)
+                    .foregroundColor(Color.gray.opacity(0.3)), alignment: .bottom
+            )
             
             VStack(alignment: .leading, spacing: 8) {
                 ForEach(ingredients) { ingredient in

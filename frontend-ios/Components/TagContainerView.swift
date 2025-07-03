@@ -5,13 +5,14 @@ struct TagContainerView: View {
     @Binding var availableTags: [String]
     var addTagAction: (() -> Void)? = nil
     var isReadOnly: Bool = false
+    var showsAddTagButton: Bool = true  // NEW!
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             ForEach(getRows().enumerated().map { RowWrapper(index: $0.offset, row: $0.element) }) { rowWrapper in
                 HStack(alignment: .center, spacing: 8) {
                     ForEach(rowWrapper.row, id: \.self) { tag in
-                        if tag == "+ Add tag", !isReadOnly, let action = addTagAction {
+                        if tag == "+ Add tag", !isReadOnly, showsAddTagButton, let action = addTagAction {
                             Button(action: action) {
                                 Text("+ Add tag")
                                     .font(.callout)
@@ -52,7 +53,14 @@ struct TagContainerView: View {
         let padding: CGFloat = 5
         let maxWidth = UIScreen.main.bounds.width - 16
 
-        let allTags = isReadOnly ? Array(availableTags) : (availableTags + ["+ Add tag"])
+        let allTags: [String]
+        if isReadOnly {
+            allTags = availableTags
+        } else if showsAddTagButton {
+            allTags = availableTags + ["+ Add tag"]
+        } else {
+            allTags = availableTags
+        }
 
         for tag in allTags {
             let itemWidth = textWidth(for: tag)
@@ -81,7 +89,6 @@ struct TagContainerView: View {
         return size.width + 30
     }
 }
-
 
 struct RowWrapper: Identifiable {
     let id = UUID()

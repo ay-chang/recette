@@ -15,7 +15,7 @@ struct TagChipView: View {
             .fixedSize(horizontal: true, vertical: false)
             .padding(.vertical, 4)
             .padding(.horizontal, 8)
-            .foregroundColor(isReadOnly ? .white : (isSelected ? .white : .black))
+            .foregroundColor(isReadOnly ? .white : (isSelected ? .white : .black.opacity(0.7)))
             .background(
                 RoundedRectangle(cornerRadius: 8)
                     .fill(isReadOnly ? Color(hex: "#e9c46a") : (isSelected ? Color(hex: "#e9c46a") : Color.gray.opacity(0.1)))

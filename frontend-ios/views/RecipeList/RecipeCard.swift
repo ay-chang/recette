@@ -10,7 +10,7 @@ struct RecipeCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            RecipeImage(imageUrlString: imageurl, frameHeight: 300, frameWidth: CGFloat?.none)
+            RecipeImage(imageUrlString: imageurl, frameHeight: 350, frameWidth: CGFloat?.none)
 
             Text(title)
                 .foregroundColor(Color.black)
@@ -27,7 +27,7 @@ struct RecipeCard: View {
                     difficulty: difficulty,
                     servingSize: servingSize,
                     cookTimeInMinutes: cookTimeInMinutes,
-                    iconSize: 22,
+                    iconSize: 21,
                     fontSize: 14
                 )
                 .padding(.top)
@@ -35,7 +35,7 @@ struct RecipeCard: View {
             }
             
             Text(description)
-                .font(.subheadline)
+                .font(.system(size: 14))
                 .foregroundColor(Color.gray)
                 .lineLimit(2)
                 .truncationMode(.tail)
