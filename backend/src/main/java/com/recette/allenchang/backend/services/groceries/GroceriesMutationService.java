@@ -48,7 +48,7 @@ public class GroceriesMutationService {
     }
 
     @Transactional
-    public Grocery toggleChecked(Integer id, boolean checked) {
+    public Grocery toggleChecked(UUID id, boolean checked) {
         groceryRepository.updateChecked(id, checked);
         return groceryRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Grocery not found with id: " + id));

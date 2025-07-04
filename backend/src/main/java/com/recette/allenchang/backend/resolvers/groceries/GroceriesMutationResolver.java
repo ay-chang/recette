@@ -27,7 +27,7 @@ public class GroceriesMutationResolver {
 
     /** UPDATE: toggle checked for grocery item */
     @MutationMapping
-    public Grocery toggleGroceryCheck(@Argument int id, @Argument boolean checked) {
+    public Grocery toggleGroceryCheck(@Argument UUID id, @Argument boolean checked) {
         return groceriesMutationService.toggleChecked(id, checked);
     }
 
