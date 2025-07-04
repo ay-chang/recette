@@ -15,7 +15,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface GroceryRepository extends JpaRepository<Grocery, UUID> {
-    List<Grocery> findByUserId(Long userId);
+    List<Grocery> findByUserId(UUID userId);
 
     @Modifying
     @Transactional

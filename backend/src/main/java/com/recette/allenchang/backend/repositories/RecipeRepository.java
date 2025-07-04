@@ -13,5 +13,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface RecipeRepository extends JpaRepository<Recipe, UUID> {
-    List<Recipe> findByUserId(Long userId);
+    List<Recipe> findByUserId(UUID userId);
 }
