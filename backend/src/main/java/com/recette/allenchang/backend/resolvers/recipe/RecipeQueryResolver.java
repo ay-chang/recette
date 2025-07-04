@@ -1,6 +1,7 @@
 package com.recette.allenchang.backend.resolvers.recipe;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
@@ -33,7 +34,7 @@ public class RecipeQueryResolver {
     /** GET a recipe by its id */
     @QueryMapping
     public Recipe recipeById(@Argument String id) {
-        return recipeQueryervice.getRecipeById(id);
+        return recipeQueryervice.getRecipeById(UUID.fromString(id));
     }
 
     /** GET a list of user created recipes based off a filter */

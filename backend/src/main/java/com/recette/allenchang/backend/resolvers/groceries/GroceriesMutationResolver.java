@@ -1,6 +1,7 @@
 package com.recette.allenchang.backend.resolvers.groceries;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -21,7 +22,7 @@ public class GroceriesMutationResolver {
     @MutationMapping
     public List<Grocery> addGroceries(@Argument List<Grocery> groceries, @Argument String email,
             @Argument String recipeId) {
-        return groceriesMutationService.addGroceries(groceries, email, recipeId);
+        return groceriesMutationService.addGroceries(groceries, email, UUID.fromString(recipeId));
     }
 
     /** UPDATE: toggle checked for grocery item */
@@ -33,7 +34,7 @@ public class GroceriesMutationResolver {
     /** DELETE: delete a recipe group from the grocery list */
     @MutationMapping
     public boolean removeRecipeFromGroceries(@Argument String email, @Argument String recipeId) {
-        return groceriesMutationService.removeRecipeFromGroceries(email, recipeId);
+        return groceriesMutationService.removeRecipeFromGroceries(email, UUID.fromString(recipeId));
     }
 
 }

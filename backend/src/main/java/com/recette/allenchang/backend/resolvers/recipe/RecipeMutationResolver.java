@@ -1,5 +1,7 @@
 package com.recette.allenchang.backend.resolvers.recipe;
 
+import java.util.UUID;
+
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.stereotype.Controller;
@@ -23,7 +25,7 @@ public class RecipeMutationResolver {
     /** DELETE: a recipe by its id */
     @MutationMapping
     public boolean deleteRecipe(@Argument String id) {
-        return recipeMutationService.deleteRecipe(id);
+        return recipeMutationService.deleteRecipe(UUID.fromString(id));
     }
 
     /** POST: a recipe to database */
@@ -35,7 +37,7 @@ public class RecipeMutationResolver {
     /** UPDATE: a recipes image */
     @MutationMapping
     public Recipe updateRecipeImage(@Argument String recipeId, @Argument String imageurl) {
-        return recipeImageService.updateRecipeImage(recipeId, imageurl);
+        return recipeImageService.updateRecipeImage(UUID.fromString(recipeId), imageurl);
     }
 
     /** UPDATE: recipe details */

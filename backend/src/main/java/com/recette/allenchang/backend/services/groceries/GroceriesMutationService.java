@@ -1,6 +1,7 @@
 package com.recette.allenchang.backend.services.groceries;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -26,15 +27,15 @@ public class GroceriesMutationService {
         this.recipeRepository = recipeRepository;
     }
 
-    public List<Grocery> addGroceries(List<Grocery> groceries, String email, String recipeId) {
+    public List<Grocery> addGroceries(List<Grocery> groceries, String email, UUID recipeId) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
 
         Recipe recipe;
-        if (recipeId.isEmpty() || recipeId == null) {
+        if (recipeId == null) {
             recipe = null;
         } else {
-            recipe = recipeRepository.findById(Integer.parseInt(recipeId))
+            recipe = recipeRepository.findById(recipeId)
                     .orElseThrow(() -> new IllegalArgumentException("Recipe not found with id: " + recipeId));
         }
 
@@ -54,11 +55,11 @@ public class GroceriesMutationService {
     }
 
     @Transactional
-    public boolean removeRecipeFromGroceries(String email, String recipeId) {
+    public boolean removeRecipeFromGroceries(String email, UUID recipeId) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
 
-        Recipe recipe = recipeRepository.findById(Integer.parseInt(recipeId))
+        Recipe recipe = recipeRepository.findById(recipeId)
                 .orElseThrow(() -> new IllegalArgumentException("Recipe not found with id: " + recipeId));
 
         groceryRepository.deleteByUserAndRecipe(user, recipe);

@@ -2,6 +2,7 @@ package com.recette.allenchang.backend.services.recipe;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -68,7 +69,7 @@ public class RecipeMutationService {
 
     /** Delete a recipe given its id */
     @Transactional
-    public boolean deleteRecipe(String id) {
+    public boolean deleteRecipe(UUID id) {
         Recipe recipe = findRecipeById(id);
         recipe.getTags().clear();
         recipeRepository.delete(recipe);
@@ -84,8 +85,8 @@ public class RecipeMutationService {
     }
 
     /** Setting the recipe in a mutation function */
-    private Recipe findRecipeById(String id) {
-        return recipeRepository.findById(Integer.parseInt(id))
+    private Recipe findRecipeById(UUID id) {
+        return recipeRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Recipe not found with id: " + id));
     }
 

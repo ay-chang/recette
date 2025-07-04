@@ -2,6 +2,7 @@ package com.recette.allenchang.backend.services.recipe;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -40,8 +41,8 @@ public class RecipeQueryService {
     }
 
     /** Take a recipe id as an arg and returns a single Recipe */
-    public Recipe getRecipeById(String id) {
-        return recipeRepository.findById(Integer.parseInt(id)).orElse(null);
+    public Recipe getRecipeById(UUID id) {
+        return recipeRepository.findById(id).orElse(null);
     }
 
     /**

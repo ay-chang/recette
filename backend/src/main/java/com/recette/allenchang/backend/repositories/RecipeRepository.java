@@ -10,8 +10,8 @@ package com.recette.allenchang.backend.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.recette.allenchang.backend.models.Recipe;
 import java.util.List;
+import java.util.UUID;
 
-public interface RecipeRepository extends JpaRepository<Recipe, Integer> {
+public interface RecipeRepository extends JpaRepository<Recipe, UUID> {
     List<Recipe> findByUserId(Long userId);
-
 }
