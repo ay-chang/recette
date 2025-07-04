@@ -43,7 +43,7 @@ struct RecipeCard: View {
                 .padding(.horizontal)
             
         }
-        .frame(maxWidth: .infinity, alignment: .center)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .contentShape(Rectangle())
         .background(Color.white)
         .cornerRadius(12)
