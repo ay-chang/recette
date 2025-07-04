@@ -3,14 +3,7 @@ import SwiftUI
 struct FilterSheetView: View {
     @ObservedObject var filterRecipesModel = FilterRecipesModel()
     @EnvironmentObject var session: UserSession
-    
-    @State private var medium = false
-    @State private var hard = false
-    
-    @State private var under30 = false
-    @State private var under1 = false
-    @State private var under2 = false
-    @State private var over2 = false
+    var onApply: () -> Void
     
     var body: some View {
         VStack(spacing: 0) {
@@ -37,68 +30,32 @@ struct FilterSheetView: View {
                     .padding(.vertical, 16)
 
                     
-                    // Difficulty title
-                    Text("Difficulty")
-                        .font(.title3)
-                        .bold()
-                        .padding(.vertical, 8)
-                    Divider()
                     
-                    /** Difficulty items */
-                    filterRow(label: "Easy", isChecked: Binding(
-                        get: { filterRecipesModel.selectedDifficulties.contains("Easy") },
-                        set: { newValue in
-                            if newValue {
-                                filterRecipesModel.selectedDifficulties.append("Easy")
-                            } else {
-                                filterRecipesModel.selectedDifficulties.removeAll { $0 == "Easy" }
-                            }
-                        }
-                    ))
-
-                    filterRow(label: "Medium", isChecked: Binding(
-                        get: { filterRecipesModel.selectedDifficulties.contains("Medium") },
-                        set: { newValue in
-                            if newValue {
-                                filterRecipesModel.selectedDifficulties.append("Medium")
-                            } else {
-                                filterRecipesModel.selectedDifficulties.removeAll { $0 == "Medium" }
-                            }
-                        }
-                    ))
+                    /** Difficulties section */
+                    FilterSheetDifficulties(filterRecipesModel: filterRecipesModel)
                     
-                    filterRow(label: "Hard", isChecked: Binding(
-                        get: { filterRecipesModel.selectedDifficulties.contains("Hard") },
-                        set: { newValue in
-                            if newValue {
-                                filterRecipesModel.selectedDifficulties.append("Hard")
-                            } else {
-                                filterRecipesModel.selectedDifficulties.removeAll { $0 == "Hard" }
-                            }
-                        }
-                    ))
-                    
-                    // Time title
-                    Text("Time")
-                        .font(.title3)
-                        .bold()
-                        .padding(.top, 16)
-                        .padding(.bottom, 8)
-                    Divider()
-                    
-                    // Time items
-                    filterRow(label: "Under 30 mins", isChecked: $under30)
-                    filterRow(label: "Under 1 hour", isChecked: $under1)
-                    filterRow(label: "Under 2 hours", isChecked: $under2)
-                    filterRow(label: "2+ hours", isChecked: $over2)
+                    /** Time options*/
+                    FilterSheetTimeOptions(filterRecipesModel: filterRecipesModel)
                     
                     Spacer()
+                    
+//                    HStack () {
+//                        Spacer()
+//                        Button(
+//                            action: print("Apply!")
+//                        ) {
+//                            Text("Apply")
+//                                .padding(.vertical, 12)
+//                                .padding(.horizontal, 24)
+//                                .background(.black)
+//                                .foregroundColor(.white)
+//                                .cornerRadius(8)
+//                        }
+//                    }
+
                 }
                 .padding(.horizontal)
-            }
-            
-
-            
+            }            
         }
         .frame(maxWidth: .infinity)
         .onAppear {
@@ -107,25 +64,28 @@ struct FilterSheetView: View {
             }
         }
     }
+}
 
-    
-    private func filterRow(label: String, isChecked: Binding<Bool>) -> some View {
+struct FilterRow: View {
+    let label: String
+    @Binding var isChecked: Bool
+
+    var body: some View {
         HStack {
             Button(action: {
-                isChecked.wrappedValue.toggle()
+                isChecked.toggle()
             }) {
                 HStack {
-                    Image(systemName: isChecked.wrappedValue ? "checkmark.square.fill" : "square")
-                        .foregroundColor(isChecked.wrappedValue ? Color(hex: "#e9c46a") : .black)
+                    Image(systemName: isChecked ? "checkmark.square.fill" : "square")
+                        .foregroundColor(isChecked ? Color(hex: "#e9c46a") : .black)
                     Text(label)
                         .foregroundColor(.black)
                 }
             }
             .buttonStyle(BorderlessButtonStyle())
-            
+
             Spacer()
         }
         .padding(.vertical, 12)
     }
-    
 }

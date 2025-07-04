@@ -4,7 +4,11 @@ class FilterRecipesModel: ObservableObject {
     @Published var availableTags: [String] = []
     @Published var selectedTags: Set<String> = []
     @Published var selectedDifficulties: [String] = []
-    @Published var maxCookTimeInMinutes: Int?
+    @Published var maxCookTimeInMinutes: TimeOption? = nil
+    
+    
+    
+    
     
     func loadUserTags(email: String) {
         let getUserTagsQuery = RecetteSchema.GetUserTagsQuery(email: email)

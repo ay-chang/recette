@@ -1,0 +1,16 @@
+query GetUserFilteredRecipes($email: String!, $recipeFilterInput: RecipeFilterInput!) {
+  filterUserRecipes(email: $email, recipeFilterInput: $recipeFilterInput) {
+    id
+    title
+    description
+    steps
+    imageurl
+    tags {
+      id
+      name
+    }
+    difficulty
+    servingSize
+    cookTimeInMinutes
+  }
+}

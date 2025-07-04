@@ -55,8 +55,5 @@ struct MenuBar: View {
             alignment: .bottom
         )
         .background(Color.white)
-        .sheet(isPresented: $showFilterSheet) {
-            FilterSheetView()
-        }
     }
 }

@@ -127,6 +127,8 @@
 				RecipeList/MenuBar.swift,
 				RecipeList/RecipeCard.swift,
 				RecipeList/RecipeCardListView.swift,
+				RecipeList/RecipeFilter/FilterSheetDifficulties.swift,
+				RecipeList/RecipeFilter/FilterSheetTimeOptions.swift,
 				RecipeList/RecipeFilter/FilterSheetView.swift,
 				RecipeList/RecipeListCard.swift,
 				RecipeList/RecipeListView.swift,
@@ -137,6 +139,7 @@
 		97A3A1552DDDDF9F0009272B /* Exceptions for "graphql" folder in "frontend-ios" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				GetUserFilteredRecipes.graphql,
 				GetUserRecipesFullDetails.graphql,
 				ToggleGroceryCheck.graphql,
 			);
@@ -160,6 +163,7 @@
 			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
 			buildPhase = 971C4CE12DA6ADD100A8CBAD /* Sources */;
 			membershipExceptions = (
+				GetUserFilteredRecipes.graphql,
 				GetUserRecipesFullDetails.graphql,
 				ToggleGroceryCheck.graphql,
 			);

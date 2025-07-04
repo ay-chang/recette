@@ -8,8 +8,9 @@ import SwiftUI
 
 struct RecipesView: View {
     @EnvironmentObject var session: UserSession
-    @State private var isListView = false
     @StateObject private var model = RecipeListModel()
+    @StateObject private var filterRecipesModel = FilterRecipesModel()
+    @State private var isListView = false
     @State private var hasLoaded = false
     @State private var showFilterSheet = false
     
@@ -28,16 +29,19 @@ struct RecipesView: View {
         }
         .onAppear {
             if let email = session.userEmail {
-                model.loadRecipes(email: email)
+                model.loadAllUserRecipes(email: email)
             }
         }
         .onChange(of: session.shouldRefreshRecipes) {
             if session.shouldRefreshRecipes {
                 if let email = session.userEmail {
-                    model.loadRecipes(email: email)
+                    model.loadAllUserRecipes(email: email)
                     session.shouldRefreshRecipes = false
                 }
             }
+        }
+        .sheet(isPresented: $showFilterSheet) {
+            FilterSheetView(filterRecipesModel: filterRecipesModel)
         }
     }
 }

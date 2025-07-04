@@ -20,7 +20,7 @@ class RecipeListModel: ObservableObject {
      * cache is empty. This is great for performance, but bad if we just created or deleted
      * data — because we might get stale results.
      */
-    func loadRecipes(email: String) {
+    func loadAllUserRecipes(email: String) {
         errorMessage = nil
 
         let query = RecetteSchema.GetUserRecipesFullDetailsQuery(email: email)
@@ -57,4 +57,59 @@ class RecipeListModel: ObservableObject {
             }
         }
     }
+    
+    func loadFilteredRecipes(email: String, filter: FilterRecipesModel) {
+        errorMessage = nil
+
+        let gqlFilterInput = RecetteSchema.RecipeFilterInput(
+            tags: filter.selectedTags.isEmpty ? nil : .some(Array(filter.selectedTags)),
+            maxCookTimeInMinutes: filter.maxCookTimeInMinutes != nil ? .some(filter.maxCookTimeInMinutes!.minutesValue) : nil,
+            difficulties: filter.selectedDifficulties.isEmpty ? nil : .some(filter.selectedDifficulties)
+        )
+
+        let query = RecetteSchema.GetUserFilteredRecipesQuery(
+            email: email,
+            recipeFilterInput: gqlFilterInput
+        )
+
+        Network.shared.apollo.fetch(query: query, cachePolicy: .fetchIgnoringCacheCompletely) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let graphQLResult):
+                    if let gqlRecipes = graphQLResult.data?.filterUserRecipes {
+                        self.recipes = gqlRecipes.map {
+                            RecipeListItems(
+                                id: $0.id,
+                                title: $0.title,
+                                description: $0.description,
+                                imageurl: $0.imageurl,
+                                difficulty: $0.difficulty,
+                                servingSize: $0.servingSize,
+                                cookTimeInMinutes: $0.cookTimeInMinutes
+                            )
+                        }
+                    } else if let errors = graphQLResult.errors {
+                        self.errorMessage = errors.map { $0.localizedDescription }.joined(separator: "\n")
+                    } else {
+                        self.errorMessage = "No recipes found."
+                    }
+                case .failure(let error):
+                    self.errorMessage = error.localizedDescription
+                }
+            }
+        }
+    }
+
 }
+
+extension TimeOption {
+    var minutesValue: Int {
+        switch self {
+        case .under30: return 30
+        case .under1: return 60
+        case .under2: return 120
+        case .over2: return 10000
+        }
+    }
+}
+

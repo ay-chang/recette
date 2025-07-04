@@ -5,6 +5,7 @@ type Query {
   getUsername(email: String!): String!
   userTags(email: String!): [Tag!]!
   getUserGroceries(email: String!): [Grocery!]!
+  filterUserRecipes(email: String!, recipeFilterInput: RecipeFilterInput): [Recipe!]!
 }
 
 type Mutation {
@@ -110,4 +111,10 @@ input SignUpInput {
 input LoginInput {
   email: String!
   password: String!
+}
+
+input RecipeFilterInput {
+  tags: [String]
+  maxCookTimeInMinutes: Int
+  difficulties: [String]
 }
