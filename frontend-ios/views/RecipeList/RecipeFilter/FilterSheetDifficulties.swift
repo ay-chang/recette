@@ -4,12 +4,11 @@ struct FilterSheetDifficulties: View {
     @ObservedObject var filterRecipesModel: FilterRecipesModel
     
     var body: some View {
-        VStack (alignment: .leading, spacing: 0) {
+        VStack (alignment: .leading, spacing: 12) {
             /** Title */
             Text("Difficulty")
                 .font(.title3)
                 .bold()
-                .padding(.vertical, 8)
             Divider()
             
             FilterRow(label: "Easy", isChecked: Binding(

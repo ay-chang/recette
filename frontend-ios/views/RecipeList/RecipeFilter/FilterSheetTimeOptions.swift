@@ -11,13 +11,11 @@ struct FilterSheetTimeOptions: View {
     @ObservedObject var filterRecipesModel: FilterRecipesModel
     
     var body: some View {
-        VStack (alignment: .leading, spacing: 0) {
+        VStack (alignment: .leading, spacing: 12) {
             /** Title */
             Text("Time")
                 .font(.title3)
                 .bold()
-                .padding(.top, 16)
-                .padding(.bottom, 8)
             Divider()
             
             ForEach(TimeOption.allCases, id: \.self) { option in

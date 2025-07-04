@@ -7,7 +7,7 @@ struct FilterSheetView: View {
     var onApply: () -> Void
     
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: 12) {
             Capsule()
                 .frame(width: 40, height: 6)
                 .foregroundColor(.gray.opacity(0.8))
@@ -15,51 +15,41 @@ struct FilterSheetView: View {
                 .padding(.bottom, 10)
             
             ScrollView {
-                VStack(alignment: .leading, spacing: 0) {
-                    // Tags title
-                    Text("Tags")
-                        .font(.title3)
-                        .bold()
-                        .padding(.vertical, 8)
-                    Divider()
+                VStack(alignment: .leading, spacing: 12) {
                     
-                    TagContainerView(
-                        selectedTags: $filterRecipesModel.selectedTags,
-                        availableTags: $filterRecipesModel.availableTags,
-                        showsAddTagButton: false
-                    )
-                    .padding(.vertical, 16)
+                    /** Tags section*/
+                    FilterSheetTags(filterRecipesModel: filterRecipesModel)
                     
                     /** Difficulties section */
                     FilterSheetDifficulties(filterRecipesModel: filterRecipesModel)
                     
                     /** Time options*/
                     FilterSheetTimeOptions(filterRecipesModel: filterRecipesModel)
-                    
-                    Spacer()
-                    
-                    HStack {
-                        Spacer()
-                        Button(action: {
-                            if let email = session.userEmail {
-                                filterRecipesModel.applyFilter(email: email, recipeListModel: recipeListModel) {
-                                    onApply() // Close the sheet
-                                }
-                            }
-                        }) {
-                            Text("Apply")
-                                .padding(.vertical, 12)
-                                .padding(.horizontal, 24)
-                                .background(.black)
-                                .foregroundColor(.white)
-                                .cornerRadius(8)
+                }
+            }
+            
+            Spacer()
+            
+            HStack {
+                Spacer()
+                Button(action: {
+                    if let email = session.userEmail {
+                        filterRecipesModel.applyFilter(email: email, recipeListModel: recipeListModel) {
+                            onApply() // Close the sheet
                         }
                     }
-
+                }) {
+                    Text("Apply")
+                        .padding(.vertical, 12)
+                        .padding(.horizontal, 24)
+                        .background(.black)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
                 }
-                .padding(.horizontal)
-            }            
+            }
+            
         }
+        .padding(.horizontal)
         .frame(maxWidth: .infinity)
         .onAppear {
             if let email = session.userEmail {
@@ -89,6 +79,5 @@ struct FilterRow: View {
 
             Spacer()
         }
-        .padding(.vertical, 12)
     }
 }
