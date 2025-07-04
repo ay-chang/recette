@@ -11,7 +11,6 @@ class FilterRecipesModel: ObservableObject {
         onComplete()
     }
     
-    
     func loadUserTags(email: String) {
         let getUserTagsQuery = RecetteSchema.GetUserTagsQuery(email: email)
         
@@ -29,3 +28,15 @@ class FilterRecipesModel: ObservableObject {
         }
     }
 }
+
+/** Variable that tells us if any filter option is selected */
+extension FilterRecipesModel {
+    var isFilterActive: Bool {
+        return !selectedTags.isEmpty ||
+               !selectedDifficulties.isEmpty ||
+               maxCookTimeInMinutes != nil
+    }
+}
+
+
+

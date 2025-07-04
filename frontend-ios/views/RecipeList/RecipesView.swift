@@ -29,15 +29,23 @@ struct RecipesView: View {
         }
         .onAppear {
             if let email = session.userEmail {
-                model.loadAllUserRecipes(email: email)
+                if filterRecipesModel.isFilterActive {
+                    model.loadFilteredRecipes(email: email, filter: filterRecipesModel)
+                } else {
+                    model.loadAllUserRecipes(email: email)
+                }
             }
         }
         .onChange(of: session.shouldRefreshRecipes) {
             if session.shouldRefreshRecipes {
                 if let email = session.userEmail {
-                    model.loadAllUserRecipes(email: email)
-                    session.shouldRefreshRecipes = false
+                    if filterRecipesModel.isFilterActive {
+                        model.loadFilteredRecipes(email: email, filter: filterRecipesModel)
+                    } else {
+                        model.loadAllUserRecipes(email: email)
+                    }
                 }
+                session.shouldRefreshRecipes = false
             }
         }
         .sheet(isPresented: $showFilterSheet) {
