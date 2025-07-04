@@ -14,7 +14,7 @@ class FilterRecipesModel: ObservableObject {
     func loadUserTags(email: String) {
         let getUserTagsQuery = RecetteSchema.GetUserTagsQuery(email: email)
         
-        Network.shared.apollo.fetch(query: getUserTagsQuery) { result in
+        Network.shared.apollo.fetch(query: getUserTagsQuery, cachePolicy: .fetchIgnoringCacheCompletely) { result in
             switch result {
             case .success(let graphQLResult):
                 if let tags = graphQLResult.data?.userTags {
