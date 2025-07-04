@@ -2,14 +2,16 @@ package com.recette.allenchang.backend.models;
 
 import jakarta.persistence.*;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "tags")
 public class Tag {
 
     /** Set id as the primary key, system auto increments by one */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @GeneratedValue
+    private UUID id;
     private String name;
 
     /** Many to one relationship between tags and a user. Many tags for one user */
@@ -26,7 +28,7 @@ public class Tag {
         this.user = user;
     }
 
-    public Integer getId() {
+    public UUID getId() {
         return id;
     }
 
