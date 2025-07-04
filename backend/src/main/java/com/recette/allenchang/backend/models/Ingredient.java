@@ -2,19 +2,20 @@ package com.recette.allenchang.backend.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+
+import java.util.UUID;
 
 @Entity
 @Table(name = "ingredients")
 public class Ingredient {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @GeneratedValue
+    private UUID id;
     private String name;
     private String measurement;
 
@@ -36,7 +37,7 @@ public class Ingredient {
         this.recipe = recipe;
     }
 
-    public Integer getId() {
+    public UUID getId() {
         return id;
     }
 
