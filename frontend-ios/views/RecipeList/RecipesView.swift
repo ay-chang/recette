@@ -41,7 +41,13 @@ struct RecipesView: View {
             }
         }
         .sheet(isPresented: $showFilterSheet) {
-            FilterSheetView(filterRecipesModel: filterRecipesModel)
+            FilterSheetView(
+                filterRecipesModel: filterRecipesModel,
+                recipeListModel: model
+            ) {
+                showFilterSheet = false
+            }
         }
+
     }
 }

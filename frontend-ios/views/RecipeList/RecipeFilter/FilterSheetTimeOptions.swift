@@ -11,7 +11,7 @@ struct FilterSheetTimeOptions: View {
     @ObservedObject var filterRecipesModel: FilterRecipesModel
     
     var body: some View {
-        VStack {
+        VStack (alignment: .leading, spacing: 0) {
             /** Title */
             Text("Time")
                 .font(.title3)

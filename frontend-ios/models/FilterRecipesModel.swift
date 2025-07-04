@@ -6,8 +6,10 @@ class FilterRecipesModel: ObservableObject {
     @Published var selectedDifficulties: [String] = []
     @Published var maxCookTimeInMinutes: TimeOption? = nil
     
-    
-    
+    func applyFilter(email: String, recipeListModel: RecipeListModel, onComplete: @escaping () -> Void) {
+        recipeListModel.loadFilteredRecipes(email: email, filter: self)
+        onComplete()
+    }
     
     
     func loadUserTags(email: String) {

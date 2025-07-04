@@ -1,7 +1,8 @@
 import SwiftUI
 
 struct FilterSheetView: View {
-    @ObservedObject var filterRecipesModel = FilterRecipesModel()
+    @ObservedObject var filterRecipesModel: FilterRecipesModel
+    @ObservedObject var recipeListModel: RecipeListModel
     @EnvironmentObject var session: UserSession
     var onApply: () -> Void
     
@@ -28,8 +29,6 @@ struct FilterSheetView: View {
                         showsAddTagButton: false
                     )
                     .padding(.vertical, 16)
-
-                    
                     
                     /** Difficulties section */
                     FilterSheetDifficulties(filterRecipesModel: filterRecipesModel)
@@ -39,19 +38,23 @@ struct FilterSheetView: View {
                     
                     Spacer()
                     
-//                    HStack () {
-//                        Spacer()
-//                        Button(
-//                            action: print("Apply!")
-//                        ) {
-//                            Text("Apply")
-//                                .padding(.vertical, 12)
-//                                .padding(.horizontal, 24)
-//                                .background(.black)
-//                                .foregroundColor(.white)
-//                                .cornerRadius(8)
-//                        }
-//                    }
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            if let email = session.userEmail {
+                                filterRecipesModel.applyFilter(email: email, recipeListModel: recipeListModel) {
+                                    onApply() // Close the sheet
+                                }
+                            }
+                        }) {
+                            Text("Apply")
+                                .padding(.vertical, 12)
+                                .padding(.horizontal, 24)
+                                .background(.black)
+                                .foregroundColor(.white)
+                                .cornerRadius(8)
+                        }
+                    }
 
                 }
                 .padding(.horizontal)

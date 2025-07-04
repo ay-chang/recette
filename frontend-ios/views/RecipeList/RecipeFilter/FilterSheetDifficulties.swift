@@ -4,7 +4,7 @@ struct FilterSheetDifficulties: View {
     @ObservedObject var filterRecipesModel: FilterRecipesModel
     
     var body: some View {
-        VStack {
+        VStack (alignment: .leading, spacing: 0) {
             /** Title */
             Text("Difficulty")
                 .font(.title3)
