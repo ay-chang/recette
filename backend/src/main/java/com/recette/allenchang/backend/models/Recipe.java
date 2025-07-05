@@ -21,8 +21,11 @@ import jakarta.persistence.ElementCollection;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.JoinTable;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 /**
  * The @Entity anotations marks the class as a JPA entity, which means
@@ -78,6 +81,10 @@ public class Recipe {
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Grocery> groceries;
+
+    @CreationTimestamp
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
 
     /** Constructor, getters, and setters */
     public Recipe() {
@@ -183,6 +190,14 @@ public class Recipe {
 
     public void setServingSize(Integer servingSize) {
         this.servingSize = servingSize;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return this.createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
 }

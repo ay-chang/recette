@@ -1,5 +1,7 @@
 package com.recette.allenchang.backend.repositories;
 
+import org.springframework.data.domain.Sort;
+
 /*
  * The RecipeRepository interface extends JpaRepository, which is a Spring Data JPA 
  * interface providing basic CRUD (Create, Read, Update, Delete) operations. This 
@@ -13,5 +15,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface RecipeRepository extends JpaRepository<Recipe, UUID> {
-    List<Recipe> findByUserId(UUID userId);
+    List<Recipe> findByUserId(UUID userId, Sort sort);
 }

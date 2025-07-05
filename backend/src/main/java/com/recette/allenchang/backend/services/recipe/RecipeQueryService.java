@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.recette.allenchang.backend.inputs.RecipeFilterInput;
@@ -36,7 +37,9 @@ public class RecipeQueryService {
     /** Returns all recipes for user with matching email */
     public List<Recipe> getRecipesByUserEmail(String email) {
         return userRepository.findByEmail(email)
-                .map(user -> recipeRepository.findByUserId(user.getId()))
+                .map(user -> recipeRepository.findByUserId(
+                        user.getId(),
+                        Sort.by(Sort.Direction.DESC, "createdAt")))
                 .orElse(List.of());
     }
 
