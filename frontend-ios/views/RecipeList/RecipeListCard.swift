@@ -11,8 +11,9 @@ struct RecipeListCard: View {
                     .font(.headline)
 
                 Text(description)
-                    .font(.subheadline)
-                    .lineLimit(3)
+                    .font(.system(size: 14))
+                    .foregroundColor(Color.gray)
+                    .lineLimit(2)
                     .truncationMode(.tail)
                     
             }

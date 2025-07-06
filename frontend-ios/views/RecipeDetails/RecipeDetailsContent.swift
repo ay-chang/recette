@@ -18,7 +18,7 @@ struct RecipeDetailsContent: View {
                     difficulty: recipe.difficulty,
                     servingSize: recipe.servingSize,
                     cookTimeInMinutes: recipe.cookTimeInMinutes,
-                    iconSize: 22,
+                    iconSize: 20,
                     fontSize: 14
                 )
             }

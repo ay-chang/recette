@@ -8,7 +8,6 @@ struct GroceriesView: View {
         GroceryList()
             .onAppear{
                 if let email = session.userEmail {
-                    print("loaded grocery list...")
                     groceriesModel.loadGroceries(email: email)
                 }
             }

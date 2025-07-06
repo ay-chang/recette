@@ -189,69 +189,51 @@ struct servingSizeSelector: View {
 
 struct cookTimeSelector: View {
     @Binding var cookTimeInMinutes: Int
-    
+
     var body: some View {
-        
-        VStack(alignment: .center) {
+        VStack(alignment: .center, spacing: 16) {
             Text("Cook time")
                 .font(.headline)
                 .frame(maxWidth: .infinity, alignment: .leading)
+            
+            VStack(spacing: 8) {
+                // Fixed width time display
+                Text(formattedTime(minutes: cookTimeInMinutes))
+                    .font(.body)
+                    .frame(width: 115, height: 36) // fixed size
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 6)
+                            .stroke(Color.gray.opacity(0.5), lineWidth: 1)
+                    )
 
-            ZStack {
-                // Continuous Highlight Bar
-                RoundedRectangle(cornerRadius: 8)
-                    .fill(Color.gray.opacity(0.15))
-                    .frame(height: 36)
-                    .padding(.horizontal, 32)
-
-                HStack(spacing: 32) {
-                    // Hour Picker + label
-                    HStack(spacing: 4) {
-                        Picker("Hours", selection: Binding(
-                            get: { cookTimeInMinutes / 60 },
-                            set: { cookTimeInMinutes = $0 * 60 + (cookTimeInMinutes % 60) }
-                        )) {
-                            ForEach(0..<13) { hour in
-                                Text("\(hour)")
-                                    .frame(maxWidth: .infinity)
-                                    .background(Color.clear) // remove default highlight
-                                    .clipped()
-                            }
-                        }
-                        .pickerStyle(.wheel)
-                        .frame(width: 60)
-                        .clipped()
-
-                        Text("hr")
-                            .foregroundColor(.gray)
-                    }
-
-                    // Minute Picker + label
-                    HStack(spacing: 4) {
-                        Picker("Minutes", selection: Binding(
-                            get: { cookTimeInMinutes % 60 },
-                            set: { cookTimeInMinutes = (cookTimeInMinutes / 60) * 60 + $0 }
-                        )) {
-                            ForEach(Array(stride(from: 0, through: 55, by: 5)), id: \.self) { min in
-                                Text("\(min)")
-                                    .frame(maxWidth: .infinity)
-                                    .background(Color.clear)
-                                    .clipped()
-                            }
-                        }
-                        .pickerStyle(.wheel)
-                        .frame(width: 60)
-                        .clipped()
-
-                        Text("min")
-                            .foregroundColor(.gray)
-                    }
-                }
+                Slider(
+                    value: Binding(
+                        get: { Double(cookTimeInMinutes) },
+                        set: { cookTimeInMinutes = Int($0) }
+                    ),
+                    in: 0...(12 * 60),
+                    step: 5
+                )
+                .accentColor(Color(hex: "#e9c46a")) // Recette background color
+                .frame(width: 250)
             }
-            .frame(maxWidth: .infinity)
         }
-        
-        
+    }
+
+    func formattedTime(minutes: Int) -> String {
+        let hrs = minutes / 60
+        let mins = minutes % 60
+        if hrs > 0 {
+            if mins > 0 {
+                return "\(hrs) hr \(mins) min"
+            } else {
+                return "\(hrs) hr"
+            }
+        } else {
+            return "\(mins) min"
+        }
     }
 }
+
+
 

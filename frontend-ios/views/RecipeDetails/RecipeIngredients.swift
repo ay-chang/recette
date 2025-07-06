@@ -59,7 +59,7 @@ struct RecipeIngredients: View {
                     .foregroundColor(Color.gray.opacity(0.3)), alignment: .bottom
             )
             
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: 12) {
                 ForEach(ingredients) { ingredient in
                     Text("\(ingredient.measurement) \(ingredient.name)")
                         .font(.system(size: 16))

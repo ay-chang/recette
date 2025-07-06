@@ -48,7 +48,6 @@ struct GroceryList: View {
                             .foregroundColor(isEditing ? Color(hex: "#e9c46a") : .gray)
                     }
                 }
-                .background(Color.red)
    
                 VStack(alignment: .leading) {
                     if groceriesModel.items.isEmpty {
@@ -69,10 +68,12 @@ struct GroceryList: View {
                             GroceryListRecipeGroup(groceriesModel: groceriesModel, session: session, isEditing: isEditing)
                         }
                         .listStyle(.plain)
+                        .scrollIndicators(.hidden)
                     }
                 }
             }
-            .padding()
+            .padding(.horizontal)
+            .padding(.bottom)
         }
         .onDisappear {
             isEditing = false
