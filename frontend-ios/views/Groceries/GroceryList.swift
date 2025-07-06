@@ -47,8 +47,8 @@ struct GroceryList: View {
                         Image(systemName: "pencil")
                             .foregroundColor(isEditing ? Color(hex: "#e9c46a") : .gray)
                     }
-
                 }
+                .background(Color.red)
    
                 VStack(alignment: .leading) {
                     if groceriesModel.items.isEmpty {

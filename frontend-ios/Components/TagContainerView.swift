@@ -5,7 +5,7 @@ struct TagContainerView: View {
     @Binding var availableTags: [String]
     var addTagAction: (() -> Void)? = nil
     var isReadOnly: Bool = false
-    var showsAddTagButton: Bool = true  // NEW!
+    var showsAddTagButton: Bool = true
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {

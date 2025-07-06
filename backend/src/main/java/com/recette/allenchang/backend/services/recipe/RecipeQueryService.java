@@ -73,9 +73,10 @@ public class RecipeQueryService {
                 predicates.add(root.get("difficulty").in(recipeFilterInput.getDifficulties()));
             }
 
-            if (recipeFilterInput.getCookTimeInMinutes() != null) {
+            if (recipeFilterInput.getMaxCookTimeInMinutes() != null) {
                 predicates.add(
-                        cb.lessThanOrEqualTo(root.get("cookTimeInMinutes"), recipeFilterInput.getCookTimeInMinutes()));
+                        cb.lessThanOrEqualTo(root.get("cookTimeInMinutes"),
+                                recipeFilterInput.getMaxCookTimeInMinutes()));
             }
 
             if (recipeFilterInput.getTags() != null && !recipeFilterInput.getTags().isEmpty()) {
@@ -88,7 +89,6 @@ public class RecipeQueryService {
             }
 
             query.select(root).where(predicates.toArray(new Predicate[0]));
-
             return entityManager.createQuery(query).getResultList();
 
         }).orElse(List.of());

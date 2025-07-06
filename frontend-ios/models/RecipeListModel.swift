@@ -102,7 +102,12 @@ class RecipeListModel: ObservableObject {
 
 }
 
-extension TimeOption {
+enum TimeOption: String, CaseIterable {
+    case under30 = "30 mins or less"
+    case under1 = "1 hour or less"
+    case under2 = "2 hours or less"
+    case over2 = "2+ hours"
+
     var minutesValue: Int {
         switch self {
         case .under30: return 30

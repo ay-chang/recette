@@ -23,11 +23,11 @@ public class RecipeFilterInput {
         this.difficulties = difficulties;
     }
 
-    public Integer getCookTimeInMinutes() {
+    public Integer getMaxCookTimeInMinutes() {
         return this.maxCookTimeInMinutes;
     }
 
-    public void setCookTimeInMinutes(Integer cookTimeInMinutes) {
+    public void setMaxCookTimeInMinutes(Integer cookTimeInMinutes) {
         this.maxCookTimeInMinutes = cookTimeInMinutes;
     }
 

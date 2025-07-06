@@ -15,16 +15,20 @@ struct RecipesView: View {
     @State private var showFilterSheet = false
     
     var body: some View {
-        VStack (spacing: 0){
+        VStack (spacing: 0) {
             MenuBar(isListView: $isListView, showFilterSheet: $showFilterSheet)
-                
-            // Decide whether to display list or image view
-            if isListView {
+
+            /** Main content */
+            if !model.recipes.isEmpty && isListView {
                 RecipeListView(recipes: model.recipes)
-            } else {
+            } else if !model.recipes.isEmpty && !isListView {
                 RecipeCardListView(recipes: model.recipes)
+            } else {
+                Spacer()
+                Text("You have no recipes yet!")
+                    .font(.headline)
+                    .foregroundColor(.gray)
             }
-        
             Spacer()
         }
         .onAppear {
