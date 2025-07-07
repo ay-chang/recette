@@ -112,7 +112,7 @@ class UserSession: ObservableObject {
     
     }
         
-    /** Helper functino to reset sessino variables*/
+    /** Helper function to reset session variables*/
     private func clearSession() {
         DispatchQueue.main.async {
             self.isLoggedIn = false

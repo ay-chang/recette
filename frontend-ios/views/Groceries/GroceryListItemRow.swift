@@ -21,6 +21,7 @@ struct GroceryListItemRow: View {
                     Text(item.name)
                         .strikethrough(item.isChecked)
                         .foregroundColor(item.isChecked ? .gray : .black)
+                        .font(.callout)
                 }
             }
             .buttonStyle(BorderlessButtonStyle())
@@ -29,8 +30,10 @@ struct GroceryListItemRow: View {
             
             Text(item.measurement)
                 .foregroundColor(.black)
+                .font(.callout)
         }
-        .padding(.vertical, 12)
+        .padding(.top, 8)       // hardcoded to make spacing even
+        .padding(.bottom, 16)   // hardcoded to make spacing even
         .overlay(
             Rectangle()
                 .frame(height: 1)
