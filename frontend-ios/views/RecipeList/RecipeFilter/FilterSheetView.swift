@@ -52,7 +52,7 @@ struct FilterSheetView: View {
         .frame(maxWidth: .infinity)
         .onAppear {
             if let email = session.userEmail {
-                filterRecipesModel.loadUserTags(email: email)
+                session.loadUserTags(email: email)
             }
         }
     }

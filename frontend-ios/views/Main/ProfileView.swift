@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ProfileView: View {
     @EnvironmentObject var session: UserSession
+    @State private var showEditTags = false
     
     var body: some View {
         VStack(spacing: 20) {
@@ -25,9 +26,9 @@ struct ProfileView: View {
                     .foregroundColor(.gray)
             }
             
-            // Edit Tags button
+            /** Edit Tags button */
             Button(action: {
-                // Edit tags action
+                showEditTags = true
             }) {
                 HStack {
                     Image(systemName: "pencil")
@@ -62,5 +63,9 @@ struct ProfileView: View {
             Spacer()
         }
         .padding()
+        .sheet(isPresented: $showEditTags) {
+            ProfileEditUserTags()
+                .environmentObject(session)
+        }
     }
 }

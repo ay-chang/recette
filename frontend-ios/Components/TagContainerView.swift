@@ -6,6 +6,7 @@ struct TagContainerView: View {
     var addTagAction: (() -> Void)? = nil
     var isReadOnly: Bool = false
     var showsAddTagButton: Bool = true
+    var isInEditMode: Bool = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -13,27 +14,30 @@ struct TagContainerView: View {
                 HStack(alignment: .center, spacing: 8) {
                     ForEach(rowWrapper.row, id: \.self) { tag in
                         if tag == "+ Add tag", !isReadOnly, showsAddTagButton, let action = addTagAction {
-                            Button(action: action) {
-                                Text("+ Add tag")
-                                    .font(.callout)
-                                    .padding(.vertical, 4)
-                                    .padding(.horizontal, 8)
-                                    .foregroundColor(.black)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 8)
-                                            .fill(Color.gray.opacity(0.1))
-                                    )
-                            }
+                            TagChipView(
+                                title: tag,
+                                isSelected: false,
+                                isReadOnly: false,
+                                isInEditMode: false,
+                                toggleAction: action,
+                                deleteAction: nil
+                            )
                         } else {
                             TagChipView(
                                 title: tag,
                                 isSelected: selectedTags.contains(tag),
                                 isReadOnly: isReadOnly,
+                                isInEditMode: isInEditMode,
                                 toggleAction: {
                                     if selectedTags.contains(tag) {
                                         selectedTags.remove(tag)
                                     } else {
                                         selectedTags.insert(tag)
+                                    }
+                                },
+                                deleteAction: {
+                                    if let index = availableTags.firstIndex(of: tag) {
+                                        availableTags.remove(at: index)
                                     }
                                 }
                             )
@@ -86,7 +90,13 @@ struct TagContainerView: View {
             .font: UIFont.systemFont(ofSize: UIFont.systemFontSize)
         ]
         let size = (text as NSString).size(withAttributes: attributes)
-        return size.width + 30
+        
+        let baseWidth = size.width + 30 // original chip padding
+        
+        /** Add extra space if in edit mode to account for the "x" */
+        let xIconWidth: CGFloat = isInEditMode ? 14 : 0
+        
+        return baseWidth + xIconWidth
     }
 }
 

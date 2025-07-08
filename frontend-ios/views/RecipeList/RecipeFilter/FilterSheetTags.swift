@@ -2,6 +2,7 @@ import SwiftUI
 
 struct FilterSheetTags: View {
     @ObservedObject var filterRecipesModel: FilterRecipesModel
+    @EnvironmentObject var session: UserSession
     
     var body: some View {
         VStack (alignment: .leading, spacing: 12) {
@@ -13,7 +14,7 @@ struct FilterSheetTags: View {
             
             TagContainerView(
                 selectedTags: $filterRecipesModel.selectedTags,
-                availableTags: $filterRecipesModel.availableTags,
+                availableTags: $session.availableTags,
                 showsAddTagButton: false
             )
         }

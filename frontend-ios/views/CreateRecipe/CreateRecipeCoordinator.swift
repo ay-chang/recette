@@ -55,8 +55,17 @@ struct CreateRecipeCoordinator: View {
             }
         }
         .onAppear {
+            print("Loading user tags...")
             if let email = session.userEmail {
-                recipe.loadUserTags(email: email)
+                session.loadUserTags(email: email)
+            }
+        }
+        .onChange(of: session.shouldRefreshTags) {
+            if session.shouldRefreshTags {
+                if let email = session.userEmail {
+                    session.loadUserTags(email: email)
+                }
+                session.shouldRefreshTags = false
             }
         }
         .alert("", isPresented: $showErrorAlert, actions: {

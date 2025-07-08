@@ -10,23 +10,6 @@ class FilterRecipesModel: ObservableObject {
         recipeListModel.loadFilteredRecipes(email: email, filter: self)
         onComplete()
     }
-    
-    func loadUserTags(email: String) {
-        let getUserTagsQuery = RecetteSchema.GetUserTagsQuery(email: email)
-        
-        Network.shared.apollo.fetch(query: getUserTagsQuery, cachePolicy: .fetchIgnoringCacheCompletely) { result in
-            switch result {
-            case .success(let graphQLResult):
-                if let tags = graphQLResult.data?.userTags {
-                    DispatchQueue.main.async {
-                        self.availableTags = tags.map { $0.name }
-                    }
-                }
-            case .failure(let error):
-                print("Failed to load tags: \(error)")
-            }
-        }
-    }
 }
 
 /** Variable that tells us if any filter option is selected */

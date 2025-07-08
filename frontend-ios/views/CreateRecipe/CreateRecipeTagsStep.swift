@@ -2,6 +2,7 @@ import SwiftUI
 
 struct CreateRecipeTagsStep: View {
     @ObservedObject var recipe: CreateRecipeModel
+    @EnvironmentObject var session: UserSession
     var onNext: () -> Void
     var onBack: () -> Void
     var onCancel: () -> Void
@@ -58,7 +59,7 @@ struct CreateRecipeTagsStep: View {
                 
                 TagContainerView(
                     selectedTags: $recipe.selectedTags,
-                    availableTags: $recipe.availableTags,
+                    availableTags: $session.availableTags,
                     addTagAction: {
                         showAddTag = true
                     }
@@ -91,7 +92,7 @@ struct CreateRecipeTagsStep: View {
         }
         .padding()
         .fullScreenCover(isPresented: $showAddTag) {
-            AddTagView(recipe: recipe, showAddTag: $showAddTag)
+            AddTagView(showAddTag: $showAddTag)
         }
     }
 }

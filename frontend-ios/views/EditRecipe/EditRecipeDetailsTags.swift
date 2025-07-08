@@ -14,7 +14,7 @@ struct EditRecipeDetailsTags: View {
                 Spacer()
             }
 
-            // Reusable TagContainerView
+            /** Reusable TagContainerView **/
             TagContainerView(
                 selectedTags: $selectedTags,
                 availableTags: $availableTags,

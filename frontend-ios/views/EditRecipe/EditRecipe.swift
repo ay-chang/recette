@@ -66,7 +66,7 @@ struct EditRecipe: View {
                 /** Tags */
                 EditRecipeDetailsTags(
                     selectedTags: $model.selectedTags,
-                    availableTags: $model.availableTags,
+                    availableTags: $session.availableTags,
                     onAddTag: {
                         showAddTag = true
                     }
@@ -99,11 +99,11 @@ struct EditRecipe: View {
         }
         .onAppear {
             if let email = session.userEmail {
-                model.loadUserTags(email: email)
+                session.loadUserTags(email: email)
             }
         }
         .fullScreenCover(isPresented: $showAddTag) {
-            AddTagView(recipe: model, showAddTag: $showAddTag)
+            AddTagView(showAddTag: $showAddTag)
         }
         .alert("Error", isPresented: $showErrorAlert, actions: {
             Button("OK", role: .cancel) {}

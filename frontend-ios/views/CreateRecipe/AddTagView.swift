@@ -1,12 +1,12 @@
 import SwiftUI
 
-struct AddTagView<Model: TagManageable & ObservableObject>: View {
-    @ObservedObject var recipe: Model
+struct AddTagView: View {
+    @EnvironmentObject var session: UserSession
     @Binding var showAddTag: Bool
     @State private var newTagName: String = ""
     
     var body: some View {
-        // Header with Cancel / Save
+        /** Header with Cancel / Save */
         ZStack {
             Text("Add Tag")
                 .font(.headline)
@@ -22,8 +22,8 @@ struct AddTagView<Model: TagManageable & ObservableObject>: View {
                 Button("Save") {
                     let trimmedTagName = newTagName.trimmingCharacters(in: .whitespaces)
                     if !trimmedTagName.isEmpty {
-                        if let email = UserDefaults.standard.string(forKey: "loggedInEmail") {
-                            recipe.addTagToUser(email: email, tagName: trimmedTagName)
+                        if let email = session.userEmail {
+                            session.addTagToUser(email: email, tagName: trimmedTagName)
                             showAddTag = false
                         } else {
                             print("Error: No logged in email found")
@@ -40,7 +40,7 @@ struct AddTagView<Model: TagManageable & ObservableObject>: View {
             VStack(alignment: .leading, spacing: 12) {
                 Text("Every great dish starts with the right ingredients.")
                     .font(.title2)
-                    .fontWeight(.medium)// Options: .ultraLight, .thin, .light, .regular, .medium, .semibold, .bold, .heavy, .black
+                    .fontWeight(.medium)
                 
                 Text("Add them here, one at a time, along with how much you’ll need.")
                     .font(.subheadline)
@@ -49,7 +49,7 @@ struct AddTagView<Model: TagManageable & ObservableObject>: View {
                     .padding(.bottom, 8)
             }
             
-            // Tag Input
+            /** Tag Input */
             VStack(alignment: .leading, spacing: 12) {
                 HStack(spacing: 12) {
                     TextField("Tag", text: $newTagName)
@@ -63,7 +63,5 @@ struct AddTagView<Model: TagManageable & ObservableObject>: View {
             Spacer()
         }
         .padding()
-        
-        
     }
 }

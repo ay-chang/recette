@@ -9,7 +9,9 @@ class UserSession: ObservableObject {
     @Published var loginError: String?
     @Published var userEmail: String?
     @Published var userUsername: String?
-    @Published var shouldRefreshRecipes: Bool = false // used to refresh the recipe list 
+    @Published var shouldRefreshRecipes: Bool = false
+    @Published var shouldRefreshTags: Bool = false
+    @Published var availableTags: [String] = []
 
     /** Login function */
     func logIn(email: String, password: String) {
@@ -110,6 +112,48 @@ class UserSession: ObservableObject {
             }
         }
     
+    }
+    
+    /** Load the tags that belong to a user */
+    func loadUserTags(email: String) {
+        let getUserTagsQuery = RecetteSchema.GetUserTagsQuery(email: email)
+        
+        Network.shared.apollo.fetch(query: getUserTagsQuery, cachePolicy: .fetchIgnoringCacheCompletely) { result in
+            switch result {
+            case .success(let graphQLResult):
+                if let tags = graphQLResult.data?.userTags {
+                    DispatchQueue.main.async {
+                        self.availableTags = tags.map { $0.name }
+                    }
+                }
+            case .failure(let error):
+                print("Failed to load tags: \(error)")
+            }
+        }
+    }
+    
+    /** Add a tag to the users saved tags */
+    func addTagToUser(email: String, tagName: String) {
+        let addTagMutation = RecetteSchema.AddTagMutation(email: email, name: tagName)
+        
+        Network.shared.apollo.perform(mutation: addTagMutation) { result in
+            switch result {
+            case .success(let graphQLResult):
+                if let data = graphQLResult.data {
+                    let newTag = data.addTag.name
+                    DispatchQueue.main.async {
+                        if !self.availableTags.contains(newTag) {
+                            self.availableTags.append(newTag)
+                        }
+                        self.shouldRefreshTags = true
+                    }
+                } else if let errors = graphQLResult.errors {
+                    print("GraphQL errors: \(errors)")
+                }
+            case .failure(let error):
+                print("Failed to add tag: \(error)")
+            }
+        }
     }
         
     /** Helper function to reset session variables*/
