@@ -20,4 +20,8 @@ public class TagsMutationResolver {
         return tagsMutationService.addTag(email, name);
     }
 
+    @MutationMapping
+    public boolean deleteTag(@Argument String email, @Argument String name) {
+        return tagsMutationService.deleteTag(email, name);
+    }
 }

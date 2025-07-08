@@ -7,6 +7,7 @@ struct TagContainerView: View {
     var isReadOnly: Bool = false
     var showsAddTagButton: Bool = true
     var isInEditMode: Bool = false
+    var deleteAction: ((String) -> Void)? = nil
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -36,9 +37,7 @@ struct TagContainerView: View {
                                     }
                                 },
                                 deleteAction: {
-                                    if let index = availableTags.firstIndex(of: tag) {
-                                        availableTags.remove(at: index)
-                                    }
+                                        deleteAction?(tag)
                                 }
                             )
                         }

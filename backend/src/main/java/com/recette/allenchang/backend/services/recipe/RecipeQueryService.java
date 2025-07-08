@@ -90,5 +90,4 @@ public class RecipeQueryService {
 
         }).orElse(List.of());
     }
-
 }

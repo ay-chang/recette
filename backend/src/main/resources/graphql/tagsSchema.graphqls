@@ -4,6 +4,7 @@ extend type Query {
 
 extend type Mutation {
   addTag(email: String!, name: String!): Tag!
+  deleteTag(email: String!, name: String!): Boolean!
 }
 
 type Tag {

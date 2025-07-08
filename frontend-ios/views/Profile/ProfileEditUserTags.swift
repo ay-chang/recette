@@ -5,7 +5,7 @@ struct ProfileEditUserTags: View {
     @State private var showAddTag = false
     
     var body: some View {
-        VStack{
+        VStack {
             Capsule()
                 .frame(width: 40, height: 6)
                 .foregroundColor(.gray).opacity(0.8)
@@ -23,16 +23,26 @@ struct ProfileEditUserTags: View {
                         showAddTag = true
                     },
                     showsAddTagButton: true,
-                    isInEditMode: true
+                    isInEditMode: true,
+                    deleteAction: { tag in
+                        if let email = session.userEmail {
+                            session.deleteTagFromUser(email: email, tagName: tag)
+                        }
+                    }
                 )
             }
-            
+            .padding(.horizontal)
             Spacer()
         }
-        .padding(.horizontal)
         .onAppear {
             if let email = session.userEmail {
                 session.loadUserTags(email: email)
+            }
+        }
+        .onChange(of: session.shouldRefreshTags) {
+            if session.shouldRefreshTags, let email = session.userEmail {
+                session.loadUserTags(email: email)
+                session.shouldRefreshTags = false
             }
         }
         .fullScreenCover(isPresented: $showAddTag) {

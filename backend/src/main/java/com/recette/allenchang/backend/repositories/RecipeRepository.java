@@ -11,9 +11,12 @@ import org.springframework.data.domain.Sort;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.recette.allenchang.backend.models.Recipe;
+import com.recette.allenchang.backend.models.Tag;
 import java.util.List;
 import java.util.UUID;
 
 public interface RecipeRepository extends JpaRepository<Recipe, UUID> {
     List<Recipe> findByUserId(UUID userId, Sort sort);
+
+    List<Recipe> findAllByTagsContaining(Tag tag);
 }

@@ -75,9 +75,9 @@ class UserSession: ObservableObject {
         Network.shared.apollo.perform(mutation: logoutMutation) { result in
             switch result {
             case .success:
-                print("✅ Successfully logged out on backend")
+                print("Successfully logged out on backend")
             case .failure(let error):
-                print("❌ Logout failed on backend: \(error.localizedDescription)")
+                print("Logout failed on backend: \(error.localizedDescription)")
             }
             
             self.clearSession()
@@ -155,6 +155,31 @@ class UserSession: ObservableObject {
             }
         }
     }
+    
+    /** Deletes a tag from the user's list of tags */
+    func deleteTagFromUser(email: String, tagName: String) {
+        let mutation = RecetteSchema.DeleteTagMutation(email: email, name: tagName)
+        
+        Network.shared.apollo.perform(mutation: mutation) { result in
+            switch result {
+            case .success(let graphQLResult):
+                if graphQLResult.data?.deleteTag == true {
+                    DispatchQueue.main.async {
+                        self.availableTags.removeAll { $0 == tagName }
+                        self.shouldRefreshTags = true
+                    }
+                } else if let errors = graphQLResult.errors {
+                    print("GraphQL errors: \(errors)")
+                } else {
+                    print("Unexpected: deleteTag returned false or nil")
+                }
+            case .failure(let error):
+                print("Failed to delete tag: \(error)")
+            }
+        }
+    }
+
+
         
     /** Helper function to reset session variables*/
     private func clearSession() {
