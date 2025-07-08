@@ -12,9 +12,10 @@ struct EditRecipeDetailsDescription: View {
                 Spacer()
             }
             
-            TextField("Description", text: $description, axis: .vertical)
+            TextEditor(text: $description)
                 .font(.system(size: 16, weight: .light))
                 .padding(8)
+                .frame(height: 150)
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
                         .stroke(Color.gray.opacity(0.5), lineWidth: 1)
@@ -25,7 +26,7 @@ struct EditRecipeDetailsDescription: View {
                     }
                 }
             
-             CharacterCountView(currentCount: description.count, maxCount: 250)
+            CharacterCountView(currentCount: description.count, maxCount: 250)
         }
     }
 }

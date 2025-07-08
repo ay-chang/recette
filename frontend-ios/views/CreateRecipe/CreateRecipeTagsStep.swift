@@ -3,15 +3,15 @@ import SwiftUI
 struct CreateRecipeTagsStep: View {
     @ObservedObject var recipe: CreateRecipeModel
     @EnvironmentObject var session: UserSession
-    var onNext: () -> Void
     var onBack: () -> Void
+    var onFinish: () -> Void
     var onCancel: () -> Void
     
     @State private var showAddTag: Bool = false
     
     var body: some View {
         ZStack {
-            Text("Description & Tags")
+            Text("Tags")
                 .frame(maxWidth: .infinity, alignment: .center)
             HStack {
                 Button(action: onCancel) {
@@ -24,7 +24,7 @@ struct CreateRecipeTagsStep: View {
         .padding()
         
         /** Intro Box */
-        Text("Give your recipe a description and organize them with tags.")
+        Text("Organize your recipe with tags, select as many as you want or create more!")
             .font(.subheadline)
             .foregroundColor(.gray)
             .padding()
@@ -33,24 +33,7 @@ struct CreateRecipeTagsStep: View {
         
         /** Description box, tags, and nav buttons */
         VStack(alignment: .leading, spacing: 24) {
-            VStack(alignment: .leading, spacing: 8) {
-                Text("Give your recipe a description")
-                    .font(.headline)
-                TextEditor(text: Binding(
-                    get: { String(recipe.description.prefix(250)) },
-                    set: { newValue in
-                        recipe.description = String(newValue.prefix(250))
-                    }
-                ))
-                    .frame(height: 150)
-                    .padding(8)
-                    .background(Color.white)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.gray.opacity(0.4), lineWidth: 1)
-                    )
-                CharacterCountView(currentCount: recipe.description.count, maxCount: 250)
-            }
+            
             
             /** Tags */
             VStack(alignment: .leading, spacing: 12) {
@@ -79,8 +62,8 @@ struct CreateRecipeTagsStep: View {
                 
                 Spacer()
 
-                Button(action: onNext) {
-                    Text("Next")
+                Button(action: onFinish) {
+                    Text("Finish")
                         .padding(.vertical, 12)
                         .padding(.horizontal, 24)
                         .background(.black)

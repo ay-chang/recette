@@ -1,78 +1,36 @@
 import SwiftUI
 
 struct ServingSizeSelectorView: View {
-    @Binding var servingSize: Int
-    
+    @Binding var servingSize: Int  // 0 = none
+    @Binding var showSheet: Bool
+    @State private var tempSelection: String = "—"
+
+    private let options: [String] = ["—"] + (1...20).map { "\($0)" }
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text("Serving Size")
-                    .font(.headline)
-                Spacer()
+        VStack {
+            Text("Select Serving Size")
+                .font(.headline)
+                .padding()
+
+            Picker("Serving Size", selection: $tempSelection) {
+                ForEach(options, id: \.self) { option in
+                    Text(option).tag(option)
+                }
             }
+            .pickerStyle(.wheel)
+            .labelsHidden()
+            .frame(height: 150)
 
-            /** Minus Button*/
-            HStack(spacing: 8) {
-                Spacer()
-                Button(action: {
-                    if servingSize > 0 {
-                        servingSize -= 1
-                    }
-                }) {
-                    Text("–")
-                        .font(.title2)
-                        .frame(width: 40, height: 40)
-                        .background(servingSize == 0 ? Color.gray.opacity(0.1) : Color(hex: "#e9c46a"))
-                        .foregroundColor(servingSize == 0 ? Color.black : Color.white)
-                        .cornerRadius(8)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(servingSize == 0 ? Color.gray.opacity(0.1) : Color.clear, lineWidth: 1)
-                        )
-                }
-
-                /** Serving Size text*/
-                HStack(spacing: 0) {
-                    Text("\(servingSize)")
-                        .font(.body)
-                        .foregroundColor(.black)
-                    Text(" servings")
-                        .font(.body)
-                        .foregroundColor(.gray)
-                }
-                .frame(minWidth: 80)
-                .padding(.vertical, 8)
-                .padding(.horizontal, 12)
-                .background(Color.white)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 6)
-                        .stroke(Color.gray.opacity(0.6), lineWidth: 1)
-                )
-                .padding(8)
-
-                /** Plus Button */
-                Button(action: {
-                    if servingSize < 20 {
-                        servingSize += 1
-                    }
-                }) {
-                    Image(systemName: "plus")
-                        .font(.title2)
-                        .foregroundColor(.white)
-                        .frame(width: 40, height: 40)
-                        .background(servingSize == 20 ? Color.gray.opacity(0.1): Color(hex: "#e9c46a"))
-                        .foregroundColor(servingSize == 20 ? Color.black : Color.white)
-                        .cornerRadius(8)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(servingSize == 20 ? Color.gray.opacity(0.1) : Color.clear, lineWidth: 1)
-                        )
-                }
-                
-                
-                Spacer()
+            Button("Done") {
+                servingSize = (tempSelection == "—") ? 0 : Int(tempSelection) ?? 0
+                showSheet = false
             }
+            .padding()
         }
-        .frame(maxWidth: .infinity, alignment: .center)
+        .presentationDetents([.height(300)])
+        .onAppear {
+            tempSelection = servingSize == 0 ? "—" : "\(servingSize)"
+        }
     }
 }

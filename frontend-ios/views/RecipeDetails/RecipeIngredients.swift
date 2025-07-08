@@ -49,9 +49,6 @@ struct RecipeIngredients: View {
                         dismissButton: .default(Text("OK"))
                     )
                 }
-
-                
-
             }
             .overlay(
                 Rectangle()
