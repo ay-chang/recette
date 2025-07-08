@@ -8,13 +8,13 @@ struct EditRecipeOthers: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
             /** Difficulty */
-            DifficultySelector(selectedDifficulty: $difficulty)
+            DifficultySelectorView(selectedDifficulty: $difficulty)
 
             /** Serving Size */
-            servingSizeSelector(servingSize: $servingSize)
+            ServingSizeSelectorView(servingSize: $servingSize)
 
             /** Cook Time */
-            cookTimeSelector(cookTimeInMinutes: $cookTimeInMinutes)
+            CookTimeSelectorView(cookTimeInMinutes: $cookTimeInMinutes)
         }
     }
 }
