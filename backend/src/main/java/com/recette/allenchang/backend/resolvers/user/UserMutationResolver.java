@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import com.recette.allenchang.backend.inputs.UserInput;
 import com.recette.allenchang.backend.models.User;
 import com.recette.allenchang.backend.services.user.UserMutationService;
+import com.recette.allenchang.backend.exceptions.InvalidCredentialsException;
 
 @Controller
 public class UserMutationResolver {
@@ -21,13 +22,12 @@ public class UserMutationResolver {
     public String login(@Argument UserInput input) {
         return userMutationService.authenticate(input.getEmail().toLowerCase(), input.getPassword())
                 .map(user -> "Login successful!")
-                .orElseThrow(() -> new IllegalArgumentException("Invalid credentials"));
+                .orElseThrow(() -> new InvalidCredentialsException("Invalid username or password"));
     }
 
     /** User sign up */
     @MutationMapping
     public User signUp(@Argument UserInput input) {
-        // Uses registerUser function in UserService to create a new user
         return userMutationService.registerUser(input.getEmail().toLowerCase(), input.getPassword());
     }
 
