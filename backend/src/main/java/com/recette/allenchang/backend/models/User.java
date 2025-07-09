@@ -20,6 +20,8 @@ public class User {
     private String username;
     private String email;
     private String password;
+    private String firstName;
+    private String lastName;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Recipe> recipes;
@@ -77,6 +79,22 @@ public class User {
 
     public void setTags(List<Tag> tags) {
         this.tags = tags;
+    }
+
+    public String getFirstName() {
+        return this.firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return this.lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
 }

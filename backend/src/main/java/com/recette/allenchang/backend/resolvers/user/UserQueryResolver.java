@@ -4,27 +4,25 @@ import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
-import com.recette.allenchang.backend.repositories.UserRepository;
+import com.recette.allenchang.backend.models.User;
+import com.recette.allenchang.backend.services.user.UserQueryService;
 
 @Controller
 public class UserQueryResolver {
-    private final UserRepository userRepository;
+    private final UserQueryService userQueryService;
 
-    public UserQueryResolver(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserQueryResolver(UserQueryService userQueryService) {
+        this.userQueryService = userQueryService;
     }
 
     @QueryMapping
     public String getUsername(@Argument String email) {
-        System.out.println("getUsername called with email: " + email);
-        return userRepository.findByEmail(email.toLowerCase())
-                .map(user -> {
-                    return user.getUsername();
-                })
-                .orElseThrow(() -> {
-                    System.out.println("User not found with email: " + email);
-                    return new RuntimeException("User not found");
-                });
+        return userQueryService.getUsername(email);
+    }
+
+    @QueryMapping
+    public User userDetails(@Argument String email) {
+        return userQueryService.getUserDetails(email);
     }
 
 }

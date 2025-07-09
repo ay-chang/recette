@@ -1,5 +1,6 @@
 extend type Query {
   getUsername(email: String!): String!
+  userDetails(email: String!): User!
 }
 
 extend type Mutation {
@@ -12,6 +13,8 @@ type User {
   id: ID!
   email: String!
   username: String
+  firstName: String
+  lastName: String
   recipes: [Recipe!]! # Recipes associated with the user
 }
 
