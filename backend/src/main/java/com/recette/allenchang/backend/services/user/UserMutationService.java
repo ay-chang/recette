@@ -1,12 +1,13 @@
 package com.recette.allenchang.backend.services.user;
 
-import java.util.Optional;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.recette.allenchang.backend.models.User;
 import com.recette.allenchang.backend.repositories.UserRepository;
+import com.recette.allenchang.backend.exceptions.InvalidCredentialsException;
+import com.recette.allenchang.backend.exceptions.InvalidInputException;
+import com.recette.allenchang.backend.exceptions.EmailAlreadyInUseException;
 
 @Service
 public class UserMutationService {
@@ -23,13 +24,18 @@ public class UserMutationService {
      * password that is encoded.
      */
     public User registerUser(String email, String password) {
+        email = email.toLowerCase().trim();
+        validateEmail(email);
+        validatePassword(password);
+
         if (userRepository.findByEmail(email).isPresent()) {
-            throw new IllegalArgumentException("Email already in use");
+            throw new EmailAlreadyInUseException("Email already in use");
         }
+
         User user = new User();
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(password));
-        user.setUsername(email.split("@")[0]); // TODO: Implement an actual username system
+        user.setUsername(email.split("@")[0]); // TODO: Support custom usernames later
 
         return userRepository.save(user);
     }
@@ -39,9 +45,26 @@ public class UserMutationService {
      * (username exists and password matches), it contains the User. If
      * authentication fails, it returns an empty Optional.
      */
-    public Optional<User> authenticate(String email, String password) {
+    public User authenticate(String email, String password) {
+        email = email.toLowerCase().trim();
+
         return userRepository.findByEmail(email)
-                .filter(user -> passwordEncoder.matches(password, user.getPassword()));
+                .filter(user -> passwordEncoder.matches(password, user.getPassword()))
+                .orElseThrow(() -> new InvalidCredentialsException("Invalid username or password"));
+    }
+
+    /** -------------------- Private helper functions -------------------- */
+
+    private void validateEmail(String email) {
+        if (!email.matches("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+            throw new InvalidInputException("Invalid email format");
+        }
+    }
+
+    private void validatePassword(String password) {
+        if (password.length() < 8 || !password.matches(".*[A-Z].*")) {
+            throw new InvalidInputException("Password must be at least 8 characters and contain an uppercase letter.");
+        }
     }
 
 }

@@ -2,9 +2,11 @@ import Foundation
 import Apollo
 
 class UserSession: ObservableObject {
-    // @Published means its a variable that is being watched for change because of
-    // the ObservableObject class. That means isLoggedIn is a value that can change and
-    // Whenever it changes, SwiftUI will automatically refresh any views that care about it.
+    /**
+     * @Published means its a variable that is being watched for change because of
+     * the ObservableObject class. That means isLoggedIn is a value that can change and
+     * Whenever it changes, SwiftUI will automatically refresh any views that care about it.
+     */
     @Published var isLoggedIn: Bool = false
     @Published var loginError: String?
     @Published var userEmail: String?
@@ -204,6 +206,14 @@ class UserSession: ObservableObject {
             self.isLoggedIn = true
         }
     }
+    
+    /** Ensure that the error message from login doesnt persist into sign up or reversed*/
+    func clearLoginError() {
+        DispatchQueue.main.async {
+            self.loginError = nil
+        }
+    }
+
 
 }
 

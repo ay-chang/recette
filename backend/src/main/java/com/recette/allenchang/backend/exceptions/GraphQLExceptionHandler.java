@@ -14,13 +14,16 @@ public class GraphQLExceptionHandler implements DataFetcherExceptionResolver {
 
     @Override
     public Mono<List<GraphQLError>> resolveException(Throwable ex, DataFetchingEnvironment env) {
-        if (ex instanceof InvalidCredentialsException) {
+        if (ex instanceof InvalidCredentialsException ||
+                ex instanceof EmailAlreadyInUseException ||
+                ex instanceof InvalidInputException) {
             return Mono.just(List.of(
                     GraphqlErrorBuilder.newError(env)
                             .message(ex.getMessage())
                             .build()));
         }
 
+        // Fallback: generic error message
         return Mono.just(List.of(
                 GraphqlErrorBuilder.newError(env)
                         .message("Unexpected server error")

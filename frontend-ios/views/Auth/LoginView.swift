@@ -3,7 +3,7 @@ import SwiftUI
 struct LoginView: View {
     @State private var email = ""
     @State private var password = ""
-    @State private var showSignUp = false // state variable for the sign up .sheet
+    @State private var showSignUp = false
     @EnvironmentObject var session: UserSession
 
     var body: some View {
@@ -15,7 +15,7 @@ struct LoginView: View {
                 .bold()
                 .padding(.bottom, 36)
 
-            /* Login and Sign up form*/
+            /* Login and Sign up form */
             VStack(spacing: 12) {
                 TextField("Email", text: $email)
                     .keyboardType(.emailAddress)
@@ -38,7 +38,7 @@ struct LoginView: View {
                     )
 
                 Button(action: {
-                    session.logIn(email: email, password: password) // calling the logIn function from UserSession
+                    session.logIn(email: email, password: password)
                 }) {
                     Text("Continue")
                         .frame(maxWidth: .infinity)
@@ -89,6 +89,9 @@ struct LoginView: View {
         }
         .padding()
         .background(Color.white.ignoresSafeArea())
+        .onAppear {
+            session.clearLoginError()
+        }
     }
 }
 
@@ -116,7 +119,3 @@ struct SocialLoginButton: View {
         }
     }
 }
-
-//#Preview {
-//    LoginView()
-//}

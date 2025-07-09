@@ -16,6 +16,7 @@ struct TagChipView: View {
         HStack (spacing: 4){
             Text(title)
                 .font(.callout)
+                .fontWeight(.medium)
                 .lineLimit(1)
                 .minimumScaleFactor(0.5)
                 .allowsTightening(true)

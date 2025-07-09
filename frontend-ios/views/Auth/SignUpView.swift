@@ -77,5 +77,9 @@ struct SignUpView: View {
         }
         .padding()
         .background(Color.white.ignoresSafeArea())
+        .onAppear {
+            session.clearLoginError()
+        }
+
     }
 }
