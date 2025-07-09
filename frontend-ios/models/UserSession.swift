@@ -123,6 +123,60 @@ class UserSession: ObservableObject {
     
     }
     
+    /** Update the users first and last name */
+    func updateAccountDetails(firstName: String, lastName: String, onComplete: @escaping () -> Void = {}) {
+        guard let email = userEmail else { return }
+
+        let input = RecetteSchema.AccountDetailsInput(
+            firstName: .some(firstName),
+            lastName: .some(lastName)
+        )
+
+        let mutation = RecetteSchema.UpdateAccountDetailsMutation(email: email, input: input)
+
+        Network.shared.apollo.perform(mutation: mutation) { result in
+            switch result {
+            case .success(let graphQLResult):
+                if let _ = graphQLResult.data?.updateAccountDetails {
+                    DispatchQueue.main.async {
+                        self.refreshUserDetails()
+                        onComplete()
+                    }
+                } else if let errors = graphQLResult.errors {
+                    print("GraphQL Errors: \(errors.compactMap { $0.message }.joined(separator: "\n"))")
+                }
+            case .failure(let error):
+                print("Network Error: \(error.localizedDescription)")
+            }
+        }
+    }
+
+    /** Used for when updating a users account details */
+    func refreshUserDetails() {
+        guard let email = userEmail else { return }
+
+        let query = RecetteSchema.GetUserDetailsQuery(email: email)
+        Network.shared.apollo.fetch(query: query, cachePolicy: .fetchIgnoringCacheCompletely) { result in
+            switch result {
+            case .success(let graphQLResult):
+                if let user = graphQLResult.data?.userDetails {
+                    DispatchQueue.main.async {
+                        self.userUsername = user.username
+                        self.userFirstName = user.firstName
+                        self.userLastName = user.lastName
+
+                        UserDefaults.standard.set(user.username, forKey: "loggedInUsername")
+                        UserDefaults.standard.set(user.firstName, forKey: "loggedInFirstName")
+                        UserDefaults.standard.set(user.lastName, forKey: "loggedInLastName")
+                    }
+                }
+            case .failure(let error):
+                print("Failed to refresh user details: \(error)")
+            }
+        }
+    }
+
+    
     /** Load the tags that belong to a user */
     func loadUserTags(email: String) {
         let getUserTagsQuery = RecetteSchema.GetUserTagsQuery(email: email)

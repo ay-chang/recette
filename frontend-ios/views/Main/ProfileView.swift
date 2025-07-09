@@ -17,12 +17,12 @@ struct ProfileView: View {
                     .foregroundColor(.gray)
                 
                 /** First and Last Name */
-//                if let firstName = session.userFirstName,
-//                   let lastName = session.userLastName {
-//                    Text("\(firstName) \(lastName)")
-//                        .foregroundColor(Color.black)
-//                        .font(.headline)
-//                }
+                if let firstName = session.userFirstName,
+                   let lastName = session.userLastName {
+                    Text("\(firstName) \(lastName)")
+                        .foregroundColor(Color.black)
+                        .font(.headline)
+                }
                 
                 /** Username **/
                 if let username = session.userUsername {
@@ -32,8 +32,7 @@ struct ProfileView: View {
                 }
                 
             }
-            
-            
+
             
             /** Profiile Options */
             ProfileOptionsList()

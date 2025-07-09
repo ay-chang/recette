@@ -1,0 +1,10 @@
+mutation UpdateAccountDetails($email: String!, $input: AccountDetailsInput!) {
+  updateAccountDetails(email: $email, input: $input) {
+    id
+    email
+    username
+    firstName
+    lastName
+  }
+}
+

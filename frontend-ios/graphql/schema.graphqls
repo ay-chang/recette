@@ -22,6 +22,7 @@ type Mutation {
   removeRecipeFromGroceries(email: String!, recipeId: String!): Boolean!
   toggleGroceryCheck(id: ID!, checked: Boolean!): Grocery!
   deleteTag(email: String!, name: String!): Boolean!
+  updateAccountDetails(email: String!, input: AccountDetailsInput!): User!
 }
 
 type User {
@@ -121,4 +122,9 @@ input RecipeFilterInput {
   tags: [String]
   maxCookTimeInMinutes: Int
   difficulties: [String]
+}
+
+input AccountDetailsInput {
+  firstName: String
+  lastName: String
 }

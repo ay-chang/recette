@@ -3,6 +3,7 @@ import SwiftUI
 struct ProfileOptionsList: View {
     @EnvironmentObject var session: UserSession
     @State private var showEditTags = false
+    @State private var showAccountDetails = false
     
     var body: some View {
         VStack (alignment: .leading, spacing: 16) {
@@ -17,7 +18,7 @@ struct ProfileOptionsList: View {
             ProfileOptionsButton(
                 buttonText: "Account Settings",
                 buttonImage: "gearshape",
-                buttonAction: { }
+                buttonAction: { showAccountDetails = true }
             )
             
             /** Logout Button*/
@@ -41,8 +42,12 @@ struct ProfileOptionsList: View {
 
             
         }
-        .sheet(isPresented: $showEditTags) {
+        .fullScreenCover(isPresented: $showEditTags) {
             ProfileEditUserTags()
+                .environmentObject(session)
+        }
+        .fullScreenCover(isPresented: $showAccountDetails) {
+            ProfileAccountSettingsView()
                 .environmentObject(session)
         }
     }
