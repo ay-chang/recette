@@ -11,6 +11,8 @@ class UserSession: ObservableObject {
     @Published var loginError: String?
     @Published var userEmail: String?
     @Published var userUsername: String?
+    @Published var userFirstName: String?
+    @Published var userLastName: String?
     @Published var shouldRefreshRecipes: Bool = false
     @Published var shouldRefreshTags: Bool = false
     @Published var availableTags: [String] = []
@@ -19,6 +21,7 @@ class UserSession: ObservableObject {
     func logIn(email: String, password: String) {
         let loginMutation = RecetteSchema.LoginMutation(email: email, password: password)
 
+        /** Perform the login mutation using Apollo's shared network client. */
         Network.shared.apollo.perform(mutation: loginMutation) { result in
             switch result {
             case .success(let graphQLResult):
@@ -37,19 +40,23 @@ class UserSession: ObservableObject {
                         UserDefaults.standard.set(true, forKey: "isLoggedIn")
                     }
                     
-                    // Fetch username after login
-                    let usernameQuery = RecetteSchema.GetUsernameQuery(email: email)
-                    Network.shared.apollo.fetch(query: usernameQuery) { result in
+                    /** Fetch username after login */
+                    let userDetailsQuery = RecetteSchema.GetUserDetailsQuery(email: email)
+                    Network.shared.apollo.fetch(query: userDetailsQuery) { result in
                         switch result {
                         case .success(let graphQLResult):
-                            if let username = graphQLResult.data?.getUsername {
+                            if let user = graphQLResult.data?.userDetails {
                                 DispatchQueue.main.async {
-                                    self.userUsername = username
-                                    UserDefaults.standard.set(username, forKey: "loggedInUsername")
+                                    self.userUsername = user.username
+                                    self.userFirstName = user.firstName
+                                    self.userLastName = user.lastName
+                                    
+                                    UserDefaults.standard.set(user.firstName, forKey: "loggedInFirstName")
+                                    UserDefaults.standard.set(user.lastName, forKey: "loggedInLastName")
                                 }
                             }
                         case .failure(let error):
-                            print("Failed to fetch username: \(error)")
+                            print("Failed to fetch user details: \(error)")
                         }
                     }
                 } else if let errors = graphQLResult.errors {
@@ -200,12 +207,35 @@ class UserSession: ObservableObject {
     
     /** Loading in user sessions */
     func loadSavedSession() {
-        if UserDefaults.standard.bool(forKey: "isLoggedIn") {
-            self.userEmail = UserDefaults.standard.string(forKey: "loggedInEmail")
-            self.userUsername = UserDefaults.standard.string(forKey: "loggedInUsername")
+        if UserDefaults.standard.bool(forKey: "isLoggedIn"),
+           let email = UserDefaults.standard.string(forKey: "loggedInEmail") {
+            
+            self.userEmail = email
             self.isLoggedIn = true
+            
+            /** Fetch full user details on startup */
+            let userDetailsQuery = RecetteSchema.GetUserDetailsQuery(email: email)
+            Network.shared.apollo.fetch(query: userDetailsQuery) { result in
+                switch result {
+                case .success(let graphQLResult):
+                    if let user = graphQLResult.data?.userDetails {
+                        DispatchQueue.main.async {
+                            self.userUsername = user.username
+                            self.userFirstName = user.firstName
+                            self.userLastName = user.lastName
+
+                            UserDefaults.standard.set(user.username, forKey: "loggedInUsername")
+                            UserDefaults.standard.set(user.firstName, forKey: "loggedInFirstName")
+                            UserDefaults.standard.set(user.lastName, forKey: "loggedInLastName")
+                        }
+                    }
+                case .failure(let error):
+                    print("Failed to load user details at startup: \(error)")
+                }
+            }
         }
     }
+
     
     /** Ensure that the error message from login doesnt persist into sign up or reversed*/
     func clearLoginError() {

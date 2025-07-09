@@ -1,0 +1,10 @@
+query GetUserDetails($email: String!) {
+  userDetails(email: $email) {
+    id
+    email
+    username
+    firstName
+    lastName
+  }
+}
+
