@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.recette.allenchang.backend.models.User;
 import com.recette.allenchang.backend.repositories.UserRepository;
+import com.recette.allenchang.backend.inputs.AccountDetailsInput;
 import com.recette.allenchang.backend.exceptions.InvalidCredentialsException;
 import com.recette.allenchang.backend.exceptions.InvalidInputException;
 import com.recette.allenchang.backend.exceptions.EmailAlreadyInUseException;
@@ -51,6 +52,17 @@ public class UserMutationService {
         return userRepository.findByEmail(email)
                 .filter(user -> passwordEncoder.matches(password, user.getPassword()))
                 .orElseThrow(() -> new InvalidCredentialsException("Invalid username or password"));
+    }
+
+    /** Update a users first and last name, for now */
+    public User updateAccountDetails(String email, AccountDetailsInput input) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
+
+        user.setFirstName(input.getFirstName());
+        user.setLastName(input.getLastName());
+
+        return userRepository.save(user);
     }
 
     /** -------------------- Private helper functions -------------------- */

@@ -7,6 +7,7 @@ extend type Mutation {
   signUp(input: SignUpInput!): User! # User signup
   login(input: LoginInput!): String! # User login returns a token
   logout(email: String!): Boolean!
+  updateAccountDetails(email: String!, input: AccountDetailsInput!): User!
 }
 
 type User {
@@ -30,4 +31,9 @@ input SignUpInput {
 input LoginInput {
   email: String!
   password: String!
+}
+
+input AccountDetailsInput {
+  firstName: String
+  lastName: String
 }
