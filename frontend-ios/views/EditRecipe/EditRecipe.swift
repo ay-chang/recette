@@ -84,14 +84,12 @@ struct EditRecipe: View {
                     editingStepIndex: $editingStepIndex
                 )
                 
-                /** Difficulty */
-//                DifficultySelectorView(selectedDifficulty: $model.difficulty)
-                
-                /** Serving Size */
-//                ServingSizeSelectorView(servingSize: $model.servingSize)
-
-                /** Cook Time */
-//                CookTimeSelectorView(cookTimeInMinutes: $model.cookTimeInMinutes)
+                /** Other options */
+                EditRecipeOthers(
+                    difficulty: $model.difficulty,
+                    servingSize: $model.servingSize,
+                    cookTimeInMinutes: $model.cookTimeInMinutes
+                )
                 
  
             }

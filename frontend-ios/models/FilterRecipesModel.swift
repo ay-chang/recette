@@ -10,6 +10,12 @@ class FilterRecipesModel: ObservableObject {
         recipeListModel.loadFilteredRecipes(email: email, filter: self)
         onComplete()
     }
+    
+    func clearFilters() {
+        selectedTags = []
+        selectedDifficulties = []
+        maxCookTimeInMinutes = nil
+    }
 }
 
 /** Variable that tells us if any filter option is selected */

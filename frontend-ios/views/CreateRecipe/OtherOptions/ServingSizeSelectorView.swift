@@ -1,11 +1,11 @@
 import SwiftUI
 
 struct ServingSizeSelectorView: View {
-    @Binding var servingSize: Int  // 0 = none
+    @Binding var servingSize: Int
     @Binding var showSheet: Bool
-    @State private var tempSelection: String = "—"
+    @State private var tempSelection: Int = 0
 
-    private let options: [String] = ["—"] + (1...20).map { "\($0)" }
+    private let options: [Int] = [0] + Array(1...10)  // 0 maps to "—", 1–10 are real values
 
     var body: some View {
         VStack {
@@ -15,7 +15,7 @@ struct ServingSizeSelectorView: View {
 
             Picker("Serving Size", selection: $tempSelection) {
                 ForEach(options, id: \.self) { option in
-                    Text(option).tag(option)
+                    Text(displayText(for: option)).tag(option)
                 }
             }
             .pickerStyle(.wheel)
@@ -23,14 +23,22 @@ struct ServingSizeSelectorView: View {
             .frame(height: 150)
 
             Button("Done") {
-                servingSize = (tempSelection == "—") ? 0 : Int(tempSelection) ?? 0
+                servingSize = tempSelection
                 showSheet = false
             }
             .padding()
         }
         .presentationDetents([.height(300)])
         .onAppear {
-            tempSelection = servingSize == 0 ? "—" : "\(servingSize)"
+            tempSelection = servingSize
+        }
+    }
+
+    private func displayText(for option: Int) -> String {
+        switch option {
+        case 0: return "—"
+        case 10: return "10+"
+        default: return "\(option)"
         }
     }
 }

@@ -30,6 +30,14 @@ struct FilterSheetView: View {
             Spacer()
             
             HStack {
+                Button(action: {
+                        filterRecipesModel.clearFilters()
+                    }) {
+                        Text("Clear")
+                            .padding()
+                            .foregroundColor(.black)
+                            .underline()
+                    }
                 Spacer()
                 Button(action: {
                     if let email = session.userEmail {

@@ -90,7 +90,7 @@ struct CreateRecipeDescriptionStep: View {
                 }) {
                     HStack (spacing: 2) {
                         Text("Serving Size: ")
-                        Text("\(recipe.servingSize == 0 ? "None" : "\(recipe.servingSize)")")
+                        Text("\(recipe.servingSize == 0 ? "None" : (recipe.servingSize >= 10 ? "\(recipe.servingSize)+" : "\(recipe.servingSize)"))")
                             .fontWeight(.medium)
                         Spacer()
                         Image(systemName: "chevron.right")

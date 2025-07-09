@@ -26,18 +26,21 @@ struct OthersBarView: View {
             
             /** Serving size */
             if let servingSize = servingSize, servingSize > 0 {
-                HStack (alignment: .center){
+                let servingText = servingSize >= 10 ? "10+" : "\(servingSize)"
+                
+                HStack(alignment: .center) {
                     Image(systemName: "fork.knife")
                         .font(.system(size: iconSize))
                         .foregroundColor(Color(hex: "#e9c46a"))
-                    Text("Serves \(servingSize)")
-                        .foregroundColor(Color.black)
+                    
+                    Text("Serves \(servingText)")
+                        .foregroundColor(.black)
                         .font(.system(size: fontSize))
                         .fontWeight(.medium)
                 }
                 .padding(.trailing, 8)
             }
-            
+
             /** Cook time */
             if let cookTimeInMinutes = cookTimeInMinutes, cookTimeInMinutes > 0 {
                 let hours = cookTimeInMinutes / 60
