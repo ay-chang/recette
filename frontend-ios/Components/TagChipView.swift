@@ -34,7 +34,7 @@ struct TagChipView: View {
             }
 
         }
-        .padding(.vertical, 4)
+        .padding(.vertical, 5)
         .padding(.horizontal, 15)
         .foregroundColor(isReadOnly ? .white : (isSelected ? .white : .black.opacity(0.7)))
         .background(

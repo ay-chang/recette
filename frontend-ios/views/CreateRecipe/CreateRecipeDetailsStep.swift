@@ -9,7 +9,7 @@ struct CreateRecipeDetailsStep: View {
     @State private var photosPickerItem: PhotosPickerItem?
 
     var body: some View {
-        // Header Bar "X" and Create Recipe
+        /** Header Bar "X" and Create Recipe */
         ZStack {
             Text("Create Recipe")
                 .frame(maxWidth: .infinity, alignment: .center)
@@ -22,7 +22,8 @@ struct CreateRecipeDetailsStep: View {
             }
         }
         .padding()
-        // Intro box (full width)
+        
+        /** Intro box (full width) */
         Text("We’re excited to see your recipe! Let’s start with the basics…")
             .font(.subheadline)
             .foregroundColor(.gray)
@@ -32,7 +33,7 @@ struct CreateRecipeDetailsStep: View {
 
         /** Title, image picker, and nav buttons */
         VStack(spacing: 24) {
-            // Recipe Title Section with Character Limit
+            /** Recipe Title Section with Character Limit */
             VStack(alignment: .leading, spacing: 8) {
                 Text("Name your recipe")
                     .font(.headline)
@@ -48,6 +49,7 @@ struct CreateRecipeDetailsStep: View {
                     RoundedRectangle(cornerRadius: 8)
                         .stroke(Color.gray.opacity(0.4), lineWidth: 1)
                 )
+                .keyboardToolbarWithDone()
 
                 HStack{
                     Spacer()
@@ -58,8 +60,9 @@ struct CreateRecipeDetailsStep: View {
  
             }
             
+            
 
-            // Image Upload Section (same as before)
+            /** Image Upload Section (same as before) */
             VStack (alignment: .leading, spacing: 8) {
                 Text("Add a recipe photo")
                     .font(.headline)
@@ -67,15 +70,12 @@ struct CreateRecipeDetailsStep: View {
                 PhotosPicker(selection: $photosPickerItem, matching: .not(.videos)) {
                     ZStack {
                         if let image = recipe.selectedImage {
-                            GeometryReader { geometry in
-                                Image(uiImage: image)
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: geometry.size.width, height: 360)
-                                    .clipped()
-                                    .cornerRadius(12)
-                            }
-                            .frame(height: 360)
+                            Image(uiImage: image)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(height: 360)
+                                .clipped()
+                                .cornerRadius(12)
                         } else {
                             VStack(spacing: 8) {
                                 Image(systemName: "photo.on.rectangle")
@@ -123,5 +123,6 @@ struct CreateRecipeDetailsStep: View {
         }
         .padding()
     }
+    
 }
 

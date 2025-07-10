@@ -73,10 +73,3 @@ struct AddIngredientView: View {
         .padding()
     }
 }
-
-#Preview {
-    AddIngredientView(
-        recipe: CreateRecipeModel(),
-        showAddIngredient: .constant(true) // Use .constant(true) for preview
-    )
-}

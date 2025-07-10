@@ -53,8 +53,11 @@ struct CreateRecipeDescriptionStep: View {
                         RoundedRectangle(cornerRadius: 8)
                             .stroke(Color.gray.opacity(0.4), lineWidth: 1)
                     )
+                    
+                
                 CharacterCountView(currentCount: recipe.description.count, maxCount: 250)
             }
+            .keyboardToolbarWithDone()
             
             /** Other Option Selectors */
             VStack(alignment: .leading, spacing: 12) {

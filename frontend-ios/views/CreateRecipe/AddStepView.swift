@@ -70,7 +70,7 @@ struct AddStepView: View {
                         .stroke(Color.gray.opacity(0.5), lineWidth: 1)
                 )
 
-                // Character count
+                /** Character count */
                 HStack {
                     Spacer()
                     Text("\(newStepText.count) / 150")

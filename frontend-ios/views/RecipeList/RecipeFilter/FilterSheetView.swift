@@ -15,7 +15,7 @@ struct FilterSheetView: View {
                 .padding(.bottom, 10)
             
             ScrollView {
-                VStack(alignment: .leading, spacing: 12) {
+                VStack(alignment: .leading, spacing: 24) {
                     /** Tags section*/
                     FilterSheetTags(filterRecipesModel: filterRecipesModel)
                     

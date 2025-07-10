@@ -159,6 +159,8 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				CharacterCountView.swift,
+				hideKeyboardOnTap.swift,
+				KeyboardToolbarModifier.swift,
 				OthersBarView.swift,
 				RecipeImage.swift,
 				TagChipView.swift,
