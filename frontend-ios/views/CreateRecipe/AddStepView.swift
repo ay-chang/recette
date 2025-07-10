@@ -41,7 +41,7 @@ struct AddStepView: View {
         
 
         
-        VStack(spacing: 24) {
+        VStack(alignment: .leading, spacing: 24) {
             VStack(alignment: .leading, spacing: 12) {
                 Text("Now, let’s add a step to your recipe")
                     .font(.title2)

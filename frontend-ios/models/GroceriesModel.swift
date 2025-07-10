@@ -143,7 +143,6 @@ class GroceriesModel: ObservableObject {
     
     func hasRecipe(_ recipeId: String) -> Bool {
         let found = items.contains(where: { $0.recipeId == recipeId })
-        print("🔍 Checking if recipe \(recipeId) is already in grocery list → \(found)")
         return found
     }
 

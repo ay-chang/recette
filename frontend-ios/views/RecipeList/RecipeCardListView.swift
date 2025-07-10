@@ -8,6 +8,8 @@ struct RecipeCardListView: View {
     
     var body: some View {
         ZStack {
+            Color.white // ✅ Set the full background here (or Color(hex: "#fefefe") etc.)
+                           .ignoresSafeArea()
             ScrollView {
                 LazyVStack(spacing: 16) {
                     ForEach(recipes, id: \.id) { recipe in

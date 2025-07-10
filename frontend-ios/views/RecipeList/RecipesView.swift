@@ -29,7 +29,6 @@ struct RecipesView: View {
                     .font(.headline)
                     .foregroundColor(.gray)
             }
-            Spacer()
         }
         .onAppear {
             if let email = session.userEmail {

@@ -73,7 +73,6 @@ struct GroceryList: View {
                 }
             }
             .padding(.horizontal)
-            .padding(.bottom)
         }
         .onDisappear {
             isEditing = false

@@ -16,7 +16,7 @@ struct TagChipView: View {
         HStack (spacing: 4){
             Text(title)
                 .font(.callout)
-                .fontWeight(.medium)
+                .fontWeight(.regular)
                 .lineLimit(1)
                 .minimumScaleFactor(0.5)
                 .allowsTightening(true)
@@ -35,11 +35,11 @@ struct TagChipView: View {
 
         }
         .padding(.vertical, 4)
-        .padding(.horizontal, 10)
+        .padding(.horizontal, 15)
         .foregroundColor(isReadOnly ? .white : (isSelected ? .white : .black.opacity(0.7)))
         .background(
-            RoundedRectangle(cornerRadius: 10)
-                .fill(isReadOnly ? Color(hex: "#e9c46a") : (isSelected ? Color(hex: "#e9c46a") : Color.gray.opacity(0.1)))
+            RoundedRectangle(cornerRadius: 12)
+                .fill(isReadOnly ? Color(hex: "#e9c46a") : (isSelected ? Color(hex: "#e9c46a"): Color.gray.opacity(0.1)))
         )
         .onTapGesture {
             if !isReadOnly {

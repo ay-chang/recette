@@ -19,9 +19,12 @@ struct ProfileView: View {
                 /** First and Last Name */
                 if let firstName = session.userFirstName,
                    let lastName = session.userLastName {
-                    Text("\(firstName) \(lastName)")
-                        .foregroundColor(Color.black)
-                        .font(.headline)
+                    let fullName = "\(firstName) \(lastName)".trimmingCharacters(in: .whitespaces)
+                    if !fullName.isEmpty {
+                        Text(fullName)
+                            .foregroundColor(.black)
+                            .font(.headline)
+                    }
                 }
                 
                 /** Username **/

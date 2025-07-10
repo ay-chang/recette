@@ -58,18 +58,18 @@ struct LoginView: View {
             }
 
             /* Or Divider*/
-            HStack {
-                Rectangle().frame(height: 1).foregroundColor(.gray)
-                Text("or").foregroundColor(.gray).font(.footnote)
-                Rectangle().frame(height: 1).foregroundColor(.gray)
-            }
-            .padding()
+//            HStack {
+//                Rectangle().frame(height: 1).foregroundColor(.gray)
+//                Text("or").foregroundColor(.gray).font(.footnote)
+//                Rectangle().frame(height: 1).foregroundColor(.gray)
+//            }
+//            .padding()
             
             /* Social Login buttons */
-            VStack(spacing: 12) {
-                SocialLoginButton(label: "Continue with Apple", icon: "apple.logo")
-                SocialLoginButton(label: "Continue with Google", icon: "globe") // Replace with proper Google icon later
-            }
+//            VStack(spacing: 12) {
+//                SocialLoginButton(label: "Continue with Apple", icon: "apple.logo")
+//                SocialLoginButton(label: "Continue with Google", icon: "globe") // Replace with proper Google icon later
+//            }
 
             /* Sign up */
             HStack {

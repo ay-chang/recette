@@ -34,7 +34,7 @@ struct AddIngredientView: View {
         .padding()
         
         
-        VStack(spacing: 24) {
+        VStack(alignment: .leading, spacing: 24) {
             VStack(alignment: .leading, spacing: 12) {
                 Text("Every great dish starts with the right ingredients.")
                     .font(.title2)

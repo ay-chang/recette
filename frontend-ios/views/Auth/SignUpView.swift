@@ -61,17 +61,17 @@ struct SignUpView: View {
             }
 
             /* Or divider */
-            HStack {
-                Rectangle().frame(height: 1).foregroundColor(.gray)
-                Text("or").foregroundColor(.gray).font(.footnote)
-                Rectangle().frame(height: 1).foregroundColor(.gray)
-            }
-            .padding()
+//            HStack {
+//                Rectangle().frame(height: 1).foregroundColor(.gray)
+//                Text("or").foregroundColor(.gray).font(.footnote)
+//                Rectangle().frame(height: 1).foregroundColor(.gray)
+//            }
+//            .padding()
 
-            VStack(spacing: 12) {
-                SocialLoginButton(label: "Continue with Apple", icon: "apple.logo")
-                SocialLoginButton(label: "Continue with Google", icon: "globe")
-            }
+//            VStack(spacing: 12) {
+//                SocialLoginButton(label: "Continue with Apple", icon: "apple.logo")
+//                SocialLoginButton(label: "Continue with Google", icon: "globe")
+//            }
 
             Spacer()
         }

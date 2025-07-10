@@ -33,6 +33,7 @@ struct RecipeSteps: View {
                 }
             }
         }
+        .padding(.bottom, 96) // padding for the last step
     }
 }
 
