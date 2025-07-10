@@ -3,61 +3,81 @@ import SwiftUI
 /** This view acts as the navabar at the bottom of the screen */
 
 struct MainTabView: View {
-    @EnvironmentObject var session: UserSession
-    @State private var showCreateRecipe = false
     @State private var selectedTab = 0
-    
+    @State private var showCreateRecipe = false
+
     var body: some View {
-        TabView(selection: $selectedTab) {
-            HomeView(selectedTab: $selectedTab)
-                .tabItem {
-                    Label("Recipes", systemImage: "list.bullet.rectangle")
-                        .environment(\.symbolVariants, .none)
-                }
-                .tag(0)
-            
-            Color.clear // Invisible tab for "Create"
-                .tabItem {
-                    Label("Create", systemImage: "plus.app")
-                        .environment(\.symbolVariants, .none)
-                }
-                .tag(1)
-            
-            GroceriesView()
-                .tabItem {
-                    Label("Grocery", systemImage: "cart")
-                          .environment(\.symbolVariants, .none)
-                }
-                .tag(2)
-            
-            ProfileView()
-                .tabItem {
-                    Label("Profile", systemImage: "person")
-                        .environment(\.symbolVariants, .none)
-                }
-                .tag(3)
-        }
-        .tint(Color(hex: "#e9c46a"))
-        .onChange(of: selectedTab) { _, newTab in
-            if newTab == 1 {
-                selectedTab = 0
-                DispatchQueue.main.async {
-                    showCreateRecipe = true
+        VStack(spacing: 0) {
+            // Main content
+            Group {
+                switch selectedTab {
+                case 0: HomeView(selectedTab: $selectedTab)
+                case 1: GroceriesView()
+                case 2: ProfileView()
+                default: HomeView(selectedTab: $selectedTab)
                 }
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+
+            // Custom tab bar
+            HStack {
+                tabItem(label: "Recipes", image: "list.bullet.rectangle", index: 0)
+                Spacer()
+                createButton()
+                Spacer()
+                tabItem(label: "Grocery", image: "cart", index: 1)
+                Spacer()
+                tabItem(label: "Profile", image: "person", index: 2)
+            }
+            .padding(.bottom, 36)
+            .padding(.top, 10)
+            .padding(.horizontal, 28)
+            .background(Color.white)
+            .overlay(alignment: .top) {
+                Rectangle()
+                    .frame(height: 1)
+                    .foregroundColor(Color.gray.opacity(0.1))
+            }
         }
-        .background(Color.white)
+        .edgesIgnoringSafeArea(.bottom)
         .fullScreenCover(isPresented: $showCreateRecipe) {
             CreateRecipeCoordinator()
         }
-        Rectangle()
-                .fill(Color.gray.opacity(0.1))
-                .frame(height: 1)
-                .edgesIgnoringSafeArea(.bottom)
-                .offset(y: -65) // This is a hardcoded value
-        
+    }
+
+    @ViewBuilder
+    private func tabItem(label: String, image: String, index: Int) -> some View {
+        Button(action: {
+            selectedTab = index
+        }) {
+            VStack (spacing: 4) {
+                Image(systemName: image)
+                    .font(.system(size: 22))
+                    .fontWeight(.regular)
+                Text(label)
+                    .font(.system(size: 10))
+            }
+            .foregroundColor(selectedTab == index ? Color(hex: "#e9c46a") : .gray)
+        }
+    }
+
+    private func createButton() -> some View {
+        Button(action: {
+            showCreateRecipe = true
+        }) {
+            VStack (spacing: 4){
+                Image(systemName: "plus.app")
+                    .font(.system(size: 22))
+                Text("Create")
+                    .font(.system(size: 10))
+                    .fontWeight(.regular)
+            }
+            .foregroundColor(.gray)
+        }
     }
 }
+
 
 
 
