@@ -19,7 +19,7 @@ struct EditRecipeDetailsSteps: View {
                 ForEach(steps.indices, id: \.self) { index in
                     let step = $steps[index]
                     
-                    HStack (spacing: 12){
+                    HStack ( alignment: .center, spacing: 12) {
                         Button(action: {
                             steps.remove(at: index)
                             if editingStepIndex == index {
@@ -96,6 +96,7 @@ struct EditRecipeDetailsContent: View {
                         text = String(text.prefix(150))
                     }
                 }
+
             CharacterCountView(currentCount: text.count, maxCount: 150)
         }
     }

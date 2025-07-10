@@ -26,14 +26,19 @@ struct RecipeDetailsContent: View {
             /** Recipe description */
             Text(recipe.description)
                 .font(.system(size: 16))
-                .fontWeight(.light)
+                .fontWeight(.regular)
             
             /** List of tags */
             RecipeTags(tags: recipe.tags)
+                .padding(.bottom, 12)
     
-            /** List of Ingredients and Steps */
+            /** List of Ingredients */
             RecipeIngredients(ingredients: recipe.ingredients, recipeId: recipe.id)
+                .padding(.bottom, 12)
+            
+            /** List of Steps */
             RecipeSteps(steps: recipe.steps)
+                .padding(.bottom, 12)
            
         }
         .frame(maxWidth: .infinity, alignment: .leading)

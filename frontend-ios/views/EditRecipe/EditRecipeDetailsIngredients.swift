@@ -34,25 +34,24 @@ struct EditRecipeDetailsIngredients: View {
                         
                         
                         if editingIngredientIndex == index {
-                            Button (action: {
-                                editingIngredientIndex = index
-                            }){
-                                TextField("Name", text: ingredient.name)
-                                    .foregroundColor(Color.black)
-                                    .padding(8)
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 8)
-                                            .stroke(Color.gray.opacity(0.5), lineWidth: 1)
-                                    )
-                                Spacer()
-                                TextField("Measurement", text: ingredient.measurement)
-                                    .padding(8)
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 8)
-                                            .stroke(Color.gray.opacity(0.5), lineWidth: 1)
-                                    )
-                            }
-                            .contentShape(Rectangle())
+                            TextField("Name", text: ingredient.name)
+                                .foregroundColor(.black)
+                                .padding(8)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .stroke(Color.gray.opacity(0.5), lineWidth: 1)
+                                )
+
+                            TextField("Measurement", text: ingredient.measurement)
+                                .foregroundColor(.black)
+                                .padding(8)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .stroke(Color.gray.opacity(0.5), lineWidth: 1)
+                                )
+
                         } else {
                             Button (action: {
                                 editingIngredientIndex = index
@@ -62,7 +61,8 @@ struct EditRecipeDetailsIngredients: View {
                                         .foregroundColor(Color.black)
                                     Spacer()
                                     Text(ingredient.wrappedValue.measurement)
-                                        .foregroundColor(.gray)
+                                        .foregroundColor(Color.black)
+                                        .fontWeight(.medium)
                                 }
  
                             }

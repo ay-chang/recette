@@ -22,13 +22,17 @@ struct ProfileAccountSettingsView: View {
             Text("Account Settings")
                 .font(.title)
                 .fontWeight(.semibold)
-
+                
             /** First Name Field */
             VStack(alignment: .leading, spacing: 8) {
                 Text("First Name")
                     .font(.headline)
                 TextField("First Name", text: $firstName)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding(8)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.gray.opacity(0.4), lineWidth: 1)
+                    )
             }
 
             /** Last Name Field */
@@ -36,7 +40,11 @@ struct ProfileAccountSettingsView: View {
                 Text("Last Name")
                     .font(.headline)
                 TextField("Last Name", text: $lastName)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding(8)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.gray.opacity(0.4), lineWidth: 1)
+                    )
             }
 
             Spacer()

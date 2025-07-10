@@ -14,7 +14,7 @@ struct RecipeSteps: View {
                 .padding(.bottom, 12)
                 .overlay(Rectangle().frame(height: 1).foregroundColor(Color.gray.opacity(0.3)), alignment: .bottom)
             
-            VStack(alignment: .leading, spacing: 28) {
+            VStack(alignment: .leading, spacing: 36) {
                 ForEach(steps.indices, id: \.self) { i in
                     HStack(alignment: .top, spacing: 12) {
                         Text("\(i + 1)")
@@ -27,11 +27,12 @@ struct RecipeSteps: View {
 
                         Text(steps[i])
                             .font(.system(size: 16))
-                            .fontWeight(.light)
+                            .fontWeight(.regular)
                             .fixedSize(horizontal: false, vertical: true) // allows multiline wrapping
-                    }
+                    }                    
                 }
             }
+            
         }
         .padding(.bottom, 96) // padding for the last step
     }

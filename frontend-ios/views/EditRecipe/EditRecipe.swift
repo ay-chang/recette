@@ -93,6 +93,7 @@ struct EditRecipe: View {
                 
  
             }
+            .keyboardToolbarWithDone()
             .padding()
         }
         .onAppear {

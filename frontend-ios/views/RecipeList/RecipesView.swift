@@ -25,9 +25,10 @@ struct RecipesView: View {
                 RecipeCardListView(recipes: model.recipes)
             } else {
                 Spacer()
-                Text("You have no recipes yet!")
+                Text("No Recipes!")
                     .font(.headline)
                     .foregroundColor(.gray)
+                Spacer()
             }
         }
         .onAppear {

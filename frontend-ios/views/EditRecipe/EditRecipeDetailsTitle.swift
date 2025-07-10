@@ -24,8 +24,7 @@ struct EditRecipeDetailsTitle: View {
                     if title.count > 55 {
                         title = String(title.prefix(55))
                     }
-                }
-            
+                }            
              CharacterCountView(currentCount: title.count, maxCount: 55)
         }
     }

@@ -59,8 +59,6 @@ struct CreateRecipeDetailsStep: View {
                 }
  
             }
-            
-            
 
             /** Image Upload Section (same as before) */
             VStack (alignment: .leading, spacing: 8) {
@@ -73,7 +71,7 @@ struct CreateRecipeDetailsStep: View {
                             Image(uiImage: image)
                                 .resizable()
                                 .scaledToFill()
-                                .frame(height: 360)
+                                .frame(height: 380)
                                 .clipped()
                                 .cornerRadius(12)
                         } else {
@@ -85,7 +83,7 @@ struct CreateRecipeDetailsStep: View {
                                     .font(.footnote)
                                     .foregroundColor(.gray)
                             }
-                            .frame(maxWidth: .infinity, minHeight: 360)
+                            .frame(maxWidth: .infinity, minHeight: 380)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 12)
                                     .stroke(style: StrokeStyle(lineWidth: 1, dash: [4]))
@@ -95,7 +93,7 @@ struct CreateRecipeDetailsStep: View {
                             .cornerRadius(12)
                         }
                     }
-                    .frame(height: 360)
+                    .frame(height: 380)
                 }
                 .onChange(of: photosPickerItem) { _, _ in
                     Task {
