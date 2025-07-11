@@ -1,14 +1,27 @@
-# Use an official lightweight Java image
-FROM eclipse-temurin:17-jdk
+# Use the official Maven image to build the app
+FROM maven:3.9.6-eclipse-temurin-17 AS build
 
-# Set working directory
 WORKDIR /app
 
-# Copy the JAR file (replace with your JAR name)
-COPY target/*.jar app.jar
+# Copy the pom and source code
+COPY pom.xml .
+COPY src ./src
 
-# Expose port 8080
+# Build the application (skip tests for speed if needed)
+RUN mvn clean package -DskipTests
+
+# Use a minimal base image for running the app
+FROM eclipse-temurin:17-jdk
+
+WORKDIR /app
+
+# Copy the JAR from the build stage
+COPY --from=build /app/target/*.jar app.jar
+
+# Set environment variables if needed (optional fallback)
+ENV PORT=8080
+
 EXPOSE 8080
 
 # Run the app
-ENTRYPOINT ["java", "-jar", "app.jar"]
+CMD ["java", "-jar", "app.jar"]
