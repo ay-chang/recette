@@ -33,13 +33,13 @@ public class RecipeMutationService {
     }
 
     /** Add a recipe to the database */
-    public Recipe addRecipe(RecipeInput input) {
+    public Recipe addRecipe(RecipeInput input, String userEmail) {
         Recipe recipe = new Recipe();
         recipe.setTitle(input.getTitle());
         recipe.setDescription(input.getDescription());
         recipe.setImageurl(input.getImageurl());
         recipe.setSteps(new ArrayList<>(input.getSteps())); // wrap for safety
-        recipe.setUser(findUserByEmail(input.getUser().getEmail()));
+        recipe.setUser(findUserByEmail(userEmail));
         recipe.setIngredients(new ArrayList<>(mapIngredients(input.getIngredients(), recipe)));
         recipe.setTags(new ArrayList<>(mapTags(input.getTags())));
         recipe.setDifficulty(input.getDifficulty());
@@ -50,8 +50,12 @@ public class RecipeMutationService {
     }
 
     /** Update recipe details */
-    public Recipe updateRecipe(UpdateRecipeInput input) {
+    public Recipe updateRecipe(UpdateRecipeInput input, String userEmail) {
         Recipe recipe = findRecipeById(input.getId());
+
+        if (!recipe.getUser().getEmail().equalsIgnoreCase(userEmail)) {
+            throw new RuntimeException("Unauthorized to update this recipe");
+        }
 
         recipe.setTitle(input.getTitle());
         recipe.setDescription(input.getDescription());
@@ -69,8 +73,13 @@ public class RecipeMutationService {
 
     /** Delete a recipe given its id */
     @Transactional
-    public boolean deleteRecipe(UUID id) {
+    public boolean deleteRecipe(UUID id, String userEmail) {
         Recipe recipe = findRecipeById(id);
+
+        if (!recipe.getUser().getEmail().equalsIgnoreCase(userEmail)) {
+            throw new RuntimeException("Unauthorized to delete this recipe");
+        }
+
         recipe.getTags().clear();
         recipeRepository.delete(recipe);
         return true;

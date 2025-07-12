@@ -11,7 +11,8 @@ public class CorsConfig {
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("http://localhost:3000"); // Allow the frontend origin, can change eventually
+        configuration.addAllowedOrigin("https://recetteapp.com");
+        configuration.addAllowedOrigin("http://localhost:3000");
         configuration.addAllowedMethod("*"); // Allow all HTTP methods (GET, POST, etc.)
         configuration.addAllowedHeader("*"); // Allow all headers
         configuration.setAllowCredentials(true); // Allow cookies and credentials

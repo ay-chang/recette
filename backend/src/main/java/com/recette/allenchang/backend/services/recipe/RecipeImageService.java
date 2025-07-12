@@ -19,9 +19,14 @@ public class RecipeImageService {
      * Update the recipes image, triggered when users add an image to a recipe that
      * currently doesnt have an image or when changing the existing image.
      */
-    public Recipe updateRecipeImage(UUID recipeId, String imageurl) {
+    public Recipe updateRecipeImage(UUID recipeId, String imageurl, String userEmail) {
         Recipe recipe = recipeRepository.findById(recipeId)
                 .orElseThrow(() -> new IllegalArgumentException("Recipe not found with id: " + recipeId));
+
+        if (!recipe.getUser().getEmail().equalsIgnoreCase(userEmail)) {
+            throw new RuntimeException("Unauthorized to update image for this recipe");
+        }
+
         recipe.setImageurl(imageurl);
         return recipeRepository.save(recipe);
     }
