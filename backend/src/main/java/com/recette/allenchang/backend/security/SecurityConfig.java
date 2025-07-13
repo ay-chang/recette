@@ -8,8 +8,12 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * Use JWT authentication instead of sessions. Enable web security tells Spring
+ * to load HttpSecurity and enable web security.
+ */
 @Configuration
-@EnableWebSecurity // ✅ This tells Spring to load HttpSecurity and enable web security
+@EnableWebSecurity
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
@@ -23,11 +27,12 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/graphql").permitAll()
+                        .requestMatchers("/graphql").permitAll() // handle auth inside the resolver
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
+
 }

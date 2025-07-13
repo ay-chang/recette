@@ -13,6 +13,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Collections;
 
+/** This is the middleware that runs on every request to /graphql. */
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
@@ -30,8 +31,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
+
             if (jwtUtil.validateToken(token)) {
                 String email = jwtUtil.extractEmail(token);
+
                 var authentication = new UsernamePasswordAuthenticationToken(
                         email,
                         null,
@@ -42,4 +45,5 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
+
 }
