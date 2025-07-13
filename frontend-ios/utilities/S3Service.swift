@@ -20,6 +20,13 @@ enum S3Manager {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
 
+        /** Add Authorization header with Bearer token */
+        if let token = AuthManager.shared.jwtToken {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        } else {
+            throw NSError(domain: "AuthError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Missing JWT token"])
+        }
+
         let boundary = UUID().uuidString
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
 
@@ -50,23 +57,35 @@ enum S3Manager {
         return imageURL
     }
 
+
     
     static func deleteImage(at imageURL: String) {
-        guard let url = URL(string: "\(Config.backendBaseURL)/api/delete-image?url=\(imageURL)") else {
+        /** Make sure to percent-encode the image URL if it's a query param */
+        guard let encodedURL = imageURL.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+              let url = URL(string: "\(Config.backendBaseURL)/api/delete-image?url=\(encodedURL)") else {
             print("Invalid delete URL")
             return
         }
 
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
-        
-        print("DELETING IMAGE WITH URL: \(imageURL)")
+
+        /** Add the Bearer token */
+        if let token = AuthManager.shared.jwtToken {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        } else {
+            print("Missing JWT token")
+            return
+        }
 
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 print("Failed to delete image: \(error.localizedDescription)")
-            } else {
-                print("Image deleted from S3")
+            } else if let httpResponse = response as? HTTPURLResponse {
+                print("Delete response status: \(httpResponse.statusCode)")
+                if let data = data, let body = String(data: data, encoding: .utf8) {
+                    print("Response body: \(body)")
+                }
             }
         }.resume()
     }
