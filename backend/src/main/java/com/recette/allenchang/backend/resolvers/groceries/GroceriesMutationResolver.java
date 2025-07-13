@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 
 import com.recette.allenchang.backend.models.Grocery;
 import com.recette.allenchang.backend.services.groceries.GroceriesMutationService;
+import com.recette.allenchang.backend.security.JwtUtil;
 
 @Controller
 public class GroceriesMutationResolver {
@@ -20,9 +21,9 @@ public class GroceriesMutationResolver {
 
     /** POST: add grocery items */
     @MutationMapping
-    public List<Grocery> addGroceries(@Argument List<Grocery> groceries, @Argument String email,
-            @Argument String recipeId) {
-        return groceriesMutationService.addGroceries(groceries, email, UUID.fromString(recipeId));
+    public List<Grocery> addGroceries(@Argument List<Grocery> groceries, @Argument String recipeId) {
+        String userEmail = JwtUtil.getLoggedInUserEmail();
+        return groceriesMutationService.addGroceries(groceries, userEmail, UUID.fromString(recipeId));
     }
 
     /** UPDATE: toggle checked for grocery item */
@@ -33,8 +34,9 @@ public class GroceriesMutationResolver {
 
     /** DELETE: delete a recipe group from the grocery list */
     @MutationMapping
-    public boolean removeRecipeFromGroceries(@Argument String email, @Argument String recipeId) {
-        return groceriesMutationService.removeRecipeFromGroceries(email, UUID.fromString(recipeId));
+    public boolean removeRecipeFromGroceries(@Argument String recipeId) {
+        String userEmail = JwtUtil.getLoggedInUserEmail();
+        return groceriesMutationService.removeRecipeFromGroceries(userEmail, UUID.fromString(recipeId));
     }
 
 }

@@ -45,7 +45,7 @@ public class TagsMutationService {
         Tag tag = tagRepository.findByUserAndName(user, tagName)
                 .orElseThrow(() -> new IllegalArgumentException("Tag not found for user: " + tagName));
 
-        // Remove this tag from all recipes that contain it
+        /** Remove this tag from all recipes that contain it */
         List<Recipe> recipesWithTag = recipeRepository.findAllByTagsContaining(tag);
         for (Recipe recipe : recipesWithTag) {
             recipe.getTags().remove(tag);

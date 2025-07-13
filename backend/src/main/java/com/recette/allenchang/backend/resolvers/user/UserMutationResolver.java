@@ -39,8 +39,8 @@ public class UserMutationResolver {
 
     /** Logout */
     @MutationMapping
-    public boolean logout(@Argument String email) {
-        // TODO: In the future: invalidate session/token here
+    public boolean logout() {
+        /** Logout is a client side function so just ignore */
         return true;
     }
 

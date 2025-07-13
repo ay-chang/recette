@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 
 import com.recette.allenchang.backend.models.Tag;
 import com.recette.allenchang.backend.services.tags.TagsMutationService;
+import com.recette.allenchang.backend.security.JwtUtil;
 
 @Controller
 public class TagsMutationResolver {
@@ -16,12 +17,14 @@ public class TagsMutationResolver {
     }
 
     @MutationMapping
-    public Tag addTag(@Argument String email, @Argument String name) {
-        return tagsMutationService.addTag(email, name);
+    public Tag addTag(@Argument String name) {
+        String userEmail = JwtUtil.getLoggedInUserEmail();
+        return tagsMutationService.addTag(userEmail, name);
     }
 
     @MutationMapping
-    public boolean deleteTag(@Argument String email, @Argument String name) {
-        return tagsMutationService.deleteTag(email, name);
+    public boolean deleteTag(@Argument String name) {
+        String userEmail = JwtUtil.getLoggedInUserEmail();
+        return tagsMutationService.deleteTag(userEmail, name);
     }
 }
