@@ -14,14 +14,14 @@ type Mutation {
   deleteRecipe(id: ID!): Boolean!
   signUp(input: SignUpInput!): User! # User signup
   login(input: LoginInput!): String! # User login returns a token
-  logout(email: String!): Boolean!
-  addTag(email: String!, name: String!): Tag!
+  logout: Boolean!
+  addTag(name: String!): Tag!
   updateRecipeImage(recipeId: String!, imageurl: String!): Recipe!
   updateRecipe(input: UpdateRecipeInput!): Recipe!
-  addGroceries(groceries: [GroceryInput!]!, email: String!, recipeId: String!): [Grocery]
-  removeRecipeFromGroceries(email: String!, recipeId: String!): Boolean!
+  addGroceries(groceries: [GroceryInput!]!, recipeId: String!): [Grocery]
+  removeRecipeFromGroceries(recipeId: String!): Boolean!
   toggleGroceryCheck(id: ID!, checked: Boolean!): Grocery!
-  deleteTag(email: String!, name: String!): Boolean!
+  deleteTag(name: String!): Boolean!
   updateAccountDetails(email: String!, input: AccountDetailsInput!): User!
 }
 

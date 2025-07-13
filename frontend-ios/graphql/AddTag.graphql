@@ -1,5 +1,5 @@
-mutation AddTag($email: String!, $name: String!) {
-  addTag(email: $email, name: $name) {
+mutation AddTag($name: String!) {
+  addTag(name: $name) {
     id
     name
   }
