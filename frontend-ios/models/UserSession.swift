@@ -21,26 +21,22 @@ class UserSession: ObservableObject {
     func logIn(email: String, password: String) {
         let loginMutation = RecetteSchema.LoginMutation(email: email, password: password)
 
-        /** Perform the login mutation using Apollo's shared network client. */
         Network.shared.apollo.perform(mutation: loginMutation) { result in
             switch result {
             case .success(let graphQLResult):
                 if let token = graphQLResult.data?.login {
+                    AuthManager.shared.saveToken(token) // store the token securely
+                    Network.refresh()
+
                     DispatchQueue.main.async {
                         self.isLoggedIn = true
                         self.userEmail = email
-                        
-                        /**
-                         * UserDefaults is a built-in key-value storage system in iOS used for saving small, persistent data like:
-                         * Booleans (true / false)
-                         * Strings (like emails or tokens)
-                         * Integers, arrays, etc.*
-                         */
+
                         UserDefaults.standard.set(email, forKey: "loggedInEmail")
                         UserDefaults.standard.set(true, forKey: "isLoggedIn")
                     }
-                    
-                    /** Fetch username after login */
+
+                    /** Fetch user details after login */
                     let userDetailsQuery = RecetteSchema.GetUserDetailsQuery(email: email)
                     Network.shared.apollo.fetch(query: userDetailsQuery) { result in
                         switch result {
@@ -50,7 +46,7 @@ class UserSession: ObservableObject {
                                     self.userUsername = user.username
                                     self.userFirstName = user.firstName
                                     self.userLastName = user.lastName
-                                    
+
                                     UserDefaults.standard.set(user.firstName, forKey: "loggedInFirstName")
                                     UserDefaults.standard.set(user.lastName, forKey: "loggedInLastName")
                                 }
@@ -72,15 +68,11 @@ class UserSession: ObservableObject {
         }
     }
 
+
     /** Logout function, also clears out session variables through clearSession()*/
     func logOut() {
-        guard let email = userUsername else {
-            print("No email to log out with.")
-            clearSession()
-            return
-        }
-        
-        let logoutMutation = RecetteSchema.LogoutMutation(email: email)
+        let logoutMutation = RecetteSchema.LogoutMutation()  // no email argument
+
         Network.shared.apollo.perform(mutation: logoutMutation) { result in
             switch result {
             case .success:
@@ -88,10 +80,12 @@ class UserSession: ObservableObject {
             case .failure(let error):
                 print("Logout failed on backend: \(error.localizedDescription)")
             }
-            
+
+            AuthManager.shared.clearToken()  // clear token
             self.clearSession()
         }
     }
+
     
     /** Sign up function*/
     func signUp(email: String, password: String){
@@ -196,8 +190,8 @@ class UserSession: ObservableObject {
     }
     
     /** Add a tag to the users saved tags */
-    func addTagToUser(email: String, tagName: String) {
-        let addTagMutation = RecetteSchema.AddTagMutation(email: email, name: tagName)
+    func addTagToUser(tagName: String) {
+        let addTagMutation = RecetteSchema.AddTagMutation(name: tagName)
         
         Network.shared.apollo.perform(mutation: addTagMutation) { result in
             switch result {
@@ -220,8 +214,10 @@ class UserSession: ObservableObject {
     }
     
     /** Deletes a tag from the user's list of tags */
-    func deleteTagFromUser(email: String, tagName: String) {
-        let mutation = RecetteSchema.DeleteTagMutation(email: email, name: tagName)
+    func deleteTagFromUser(tagName: String) {
+        print("JWT Token:", AuthManager.shared.jwtToken ?? "nil")
+        
+        let mutation = RecetteSchema.DeleteTagMutation(name: tagName)
         
         Network.shared.apollo.perform(mutation: mutation) { result in
             switch result {

@@ -29,7 +29,13 @@ struct RecipeIngredients: View {
                                 showAlreadyAddedAlert = true
                             } else {
                                 print("Recipe not found in grocery list. Proceeding to add.")
-                                groceryModel.addGroceries(ingredients, email: email, recipeId: recipeId)
+                                groceryModel.addGroceries(ingredients, recipeId: recipeId) { success in
+                                    if success {
+                                        groceryModel.loadGroceries(email: email)
+                                    } else {
+                                        print("Failed to add groceries")
+                                    }
+                                }
                             }
                         }
                 } label: {

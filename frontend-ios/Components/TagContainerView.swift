@@ -93,7 +93,7 @@ struct TagContainerView: View {
         let baseWidth = size.width + 30 // original chip padding
         
         /** Add extra space if in edit mode to account for the "x" */
-        let xIconWidth: CGFloat = isInEditMode ? 28 : 0
+        let xIconWidth: CGFloat = isInEditMode ? 20 : 10 // adjust if changing tag padding
         
         return baseWidth + xIconWidth
     }

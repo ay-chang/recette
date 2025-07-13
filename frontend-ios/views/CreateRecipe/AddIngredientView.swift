@@ -59,7 +59,6 @@ struct AddIngredientView: View {
 
                     
                     TextField("Amount", text: $newIngredientMeasurement)
-                        .keyboardType(.numbersAndPunctuation)
                         .padding(8)
                         .overlay(
                             RoundedRectangle(cornerRadius: 8)

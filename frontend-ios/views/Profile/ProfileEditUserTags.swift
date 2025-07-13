@@ -29,9 +29,7 @@ struct ProfileEditUserTags: View {
                 showsAddTagButton: true,
                 isInEditMode: true,
                 deleteAction: { tag in
-                    if let email = session.userEmail {
-                        session.deleteTagFromUser(email: email, tagName: tag)
-                    }
+                    session.deleteTagFromUser(tagName: tag)
                 }
             )
         }

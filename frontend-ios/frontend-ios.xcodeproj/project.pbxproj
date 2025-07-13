@@ -77,6 +77,7 @@
 		971C4D712DA858E400A8CBAD /* Exceptions for "utilities" folder in "frontend-ios" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				AuthManager.swift,
 				"Color+Hex.swift",
 				Config.swift,
 				Network.swift,

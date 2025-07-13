@@ -22,12 +22,8 @@ struct AddTagView: View {
                 Button("Save") {
                     let trimmedTagName = newTagName.trimmingCharacters(in: .whitespaces)
                     if !trimmedTagName.isEmpty {
-                        if let email = session.userEmail {
-                            session.addTagToUser(email: email, tagName: trimmedTagName)
-                            showAddTag = false
-                        } else {
-                            print("Error: No logged in email found")
-                        }
+                        session.addTagToUser(tagName: trimmedTagName)
+                        showAddTag = false
                     }
                 }
                 .foregroundColor(.black)

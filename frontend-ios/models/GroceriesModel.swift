@@ -73,36 +73,37 @@ class GroceriesModel: ObservableObject {
         }
     }
     
-    func addGroceries(_ ingredients: [Ingredient], email: String, recipeId: String) {
+    func addGroceries(_ ingredients: [Ingredient], recipeId: String, completion: @escaping (Bool) -> Void) {
         let groceryInputs = ingredients.map {
             RecetteSchema.GroceryInput(name: $0.name, measurement: $0.measurement)
         }
 
         let mutation = RecetteSchema.AddGroceriesMutation(
             groceries: groceryInputs,
-            email: email,
             recipeId: recipeId
         )
 
-        Network.shared.apollo.perform(mutation: mutation) { [weak self] result in
+        Network.shared.apollo.perform(mutation: mutation) { result in
             switch result {
             case .success(let graphQLResult):
                 if let groceries = graphQLResult.data?.addGroceries {
                     print("Successfully added \(groceries.count) groceries")
-                    DispatchQueue.main.async {
-                        self?.loadGroceries(email: email)
-                    }
+                    completion(true)
                 } else if let errors = graphQLResult.errors {
                     print("GraphQL errors: \(errors.map { $0.message })")
+                    completion(false)
                 }
             case .failure(let error):
                 print("Network error: \(error.localizedDescription)")
+                completion(false)
             }
         }
     }
+
+
     
-    func removeRecipeFromGroceries(recipeId: String, email: String) {
-        let mutation = RecetteSchema.RemoveRecipeFromGroceriesMutation(email: email, recipeId: recipeId)
+    func removeRecipeFromGroceries(recipeId: String) {
+        let mutation = RecetteSchema.RemoveRecipeFromGroceriesMutation(recipeId: recipeId)
         
         Network.shared.apollo.perform(mutation: mutation) { [weak self] result in
             switch result {
@@ -122,6 +123,7 @@ class GroceriesModel: ObservableObject {
             }
         }
     }
+
 
     
     func toggleGroceryCheck(id: String, checked: Bool) {

@@ -13,9 +13,8 @@ struct GroceryListRecipeGroup: View {
                 HStack {
                     if isEditing {
                         Button(action: {
-                            if let email = session.userEmail {
-                                groceriesModel.removeRecipeFromGroceries(recipeId: group.id, email: email)
-                            }
+                            groceriesModel.removeRecipeFromGroceries(recipeId: group.id)
+                            
                         }) {
                             Image(systemName: "minus.circle.fill")
                                 .foregroundColor(.red.opacity(0.9))
