@@ -3,8 +3,8 @@ extend type Query {
 }
 
 extend type Mutation {
-  addGroceries(groceries: [GroceryInput!]!, email: String!, recipeId: String!): [Grocery]
-  removeRecipeFromGroceries(email: String!, recipeId: String!): Boolean!
+  addGroceries(groceries: [GroceryInput!]!, recipeId: String!): [Grocery]
+  removeRecipeFromGroceries(recipeId: String!): Boolean!
   toggleGroceryCheck(id: ID!, checked: Boolean!): Grocery!
 }
 

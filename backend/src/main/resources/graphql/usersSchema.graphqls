@@ -6,7 +6,7 @@ extend type Query {
 extend type Mutation {
   signUp(input: SignUpInput!): User! # User signup
   login(input: LoginInput!): String! # User login returns a token
-  logout(email: String!): Boolean!
+  logout: Boolean!
   updateAccountDetails(email: String!, input: AccountDetailsInput!): User!
 }
 
