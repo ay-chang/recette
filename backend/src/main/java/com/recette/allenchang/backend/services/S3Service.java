@@ -39,9 +39,9 @@ public class S3Service {
         byte[] optimizedWebP = optimizeImage(file);
         String key = UUID.randomUUID() + ".jpg";
 
-        System.out.println("🔵 Upload request received");
-        System.out.println("🔵 Content length: " + file.getSize());
-        System.out.println("🔵 File name: " + file.getOriginalFilename());
+        System.out.println("Upload request received");
+        System.out.println("Content length: " + file.getSize());
+        System.out.println("File name: " + file.getOriginalFilename());
 
         return uploadImage(optimizedWebP, key, "image/jpg");
     }
