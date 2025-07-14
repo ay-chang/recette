@@ -68,12 +68,15 @@ struct CreateRecipeDetailsStep: View {
                 PhotosPicker(selection: $photosPickerItem, matching: .not(.videos)) {
                     ZStack {
                         if let image = recipe.selectedImage {
-                            Image(uiImage: image)
-                                .resizable()
-                                .scaledToFill()
-                                .frame(height: 380)
-                                .clipped()
-                                .cornerRadius(12)
+                            GeometryReader { geometry in
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: geometry.size.width, height: 380)
+                                    .clipped()
+                                    .cornerRadius(12)
+                            }
+                            .frame(height: 380)
                         } else {
                             VStack(spacing: 8) {
                                 Image(systemName: "photo.on.rectangle")
@@ -97,10 +100,19 @@ struct CreateRecipeDetailsStep: View {
                 }
                 .onChange(of: photosPickerItem) { _, _ in
                     Task {
-                        if let item = photosPickerItem,
-                           let data = try? await item.loadTransferable(type: Data.self),
-                           let uiImage = UIImage(data: data) {
-                            recipe.selectedImage = uiImage
+                        if let item = photosPickerItem {
+                            do {
+                                if let data = try await item.loadTransferable(type: Data.self),
+                                   let uiImage = UIImage(data: data) {
+                                    let fixedImage = uiImage.fixOrientation()
+                                    recipe.selectedImage = fixedImage
+                                    print("Valid image")
+                                } else {
+                                    print("Invalid image or could not decode")
+                                }
+                            } catch {
+                                print("Error loading image: \(error)")
+                            }
                         }
                         photosPickerItem = nil
                     }
@@ -123,4 +135,20 @@ struct CreateRecipeDetailsStep: View {
     }
     
 }
+
+extension UIImage {
+    func fixOrientation() -> UIImage {
+        if imageOrientation == .up {
+            return self
+        }
+        
+        UIGraphicsBeginImageContextWithOptions(size, false, scale)
+        draw(in: CGRect(origin: .zero, size: size))
+        let normalizedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return normalizedImage ?? self
+    }
+}
+
 

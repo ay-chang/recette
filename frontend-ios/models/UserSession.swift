@@ -88,19 +88,24 @@ class UserSession: ObservableObject {
 
     
     /** Sign up function*/
-    func signUp(email: String, password: String){
+    func signUp(email: String, password: String) {
         let signUpMutation = RecetteSchema.SignUpMutation(email: email, password: password)
         
         Network.shared.apollo.perform(mutation: signUpMutation) { result in
             switch result {
             case .success(let graphQLResult):
-                if let user = graphQLResult.data?.signUp {
+                if let token = graphQLResult.data?.signUp {
+                    // Store the token
+                    UserDefaults.standard.set(token, forKey: "jwtToken")
+                    
+                    // You can optionally store the email and a default username
                     DispatchQueue.main.async {
-                        self.userEmail = user.email
-                        self.userUsername = user.username
+                        self.userEmail = email
+                        self.userUsername = email.split(separator: "@").first.map(String.init) ?? ""
                         self.isLoggedIn = true
-                        UserDefaults.standard.set(user.email, forKey: "loggedInEmail")
-                        UserDefaults.standard.set(user.username, forKey: "loggedInUsername")
+                        
+                        UserDefaults.standard.set(email, forKey: "loggedInEmail")
+                        UserDefaults.standard.set(self.userUsername, forKey: "loggedInUsername")
                         UserDefaults.standard.set(true, forKey: "isLoggedIn")
                     }
                 } else if let errors = graphQLResult.errors {
@@ -114,8 +119,9 @@ class UserSession: ObservableObject {
                 }
             }
         }
-    
     }
+
+
     
     /** Update the users first and last name */
     func updateAccountDetails(firstName: String, lastName: String, onComplete: @escaping () -> Void = {}) {

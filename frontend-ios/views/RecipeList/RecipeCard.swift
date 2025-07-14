@@ -10,7 +10,14 @@ struct RecipeCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            RecipeImage(imageUrlString: imageurl, frameHeight: 350, frameWidth: CGFloat?.none)
+            GeometryReader { geometry in
+                RecipeImage(
+                    imageUrlString: imageurl,
+                    frameHeight: 350,
+                    frameWidth: geometry.size.width
+                )
+            }
+            .frame(height: 350)
 
             Text(title)
                 .foregroundColor(Color.black)

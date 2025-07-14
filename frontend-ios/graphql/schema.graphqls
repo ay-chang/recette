@@ -12,7 +12,7 @@ type Query {
 type Mutation {
   addRecipe(input: RecipeInput!): Recipe!
   deleteRecipe(id: ID!): Boolean!
-  signUp(input: SignUpInput!): User! # User signup
+  signUp(input: SignUpInput!): String! # User signup
   login(input: LoginInput!): String! # User login returns a token
   logout: Boolean!
   addTag(name: String!): Tag!
