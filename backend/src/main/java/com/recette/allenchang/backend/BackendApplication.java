@@ -16,12 +16,8 @@ public class BackendApplication {
 				.ignoreIfMissing()
 				.load();
 
-		// Inject into system properties so Spring Boot can read them
+		/** Inject into system properties so Spring Boot can read them */
 		dotenv.entries().forEach(entry -> System.setProperty(entry.getKey(), entry.getValue()));
-
-		// Optional: Debug print to confirm it's working
-		System.out.println("DB URL: " + System.getProperty("SPRING_DATASOURCE_URL"));
-
 		SpringApplication.run(BackendApplication.class, args);
 	}
 }

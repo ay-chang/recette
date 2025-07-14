@@ -74,7 +74,6 @@ public class JwtUtil {
 
     public static String getLoggedInUserEmail() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("DEBUG: Authentication object: " + auth);
         if (auth == null || auth.getPrincipal() == null) {
             throw new RuntimeException("Unauthorized");
         }

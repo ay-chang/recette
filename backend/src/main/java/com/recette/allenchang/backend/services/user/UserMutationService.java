@@ -38,7 +38,8 @@ public class UserMutationService {
         user.setPassword(passwordEncoder.encode(password));
         user.setUsername(email.split("@")[0]); // TODO: Support custom usernames later
 
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        return savedUser;
     }
 
     /**
