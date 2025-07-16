@@ -1,6 +1,6 @@
 # Privacy Policy for Recette
 
-**Effective Date:** [July 16, 2025]
+**Effective Date:** July 16, 2025
 
 Recette does not collect personal data beyond what is necessary for core app functionality.
 
