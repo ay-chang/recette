@@ -27,7 +27,7 @@ struct CreateRecipeDescriptionStep: View {
         .padding()
         
         // Intro Box
-        Text("Give your recipe a description and set some optional other options")
+        Text("Add a short description and details to personalize your recipe")
             .font(.subheadline)
             .foregroundColor(.gray)
             .padding()
@@ -61,7 +61,7 @@ struct CreateRecipeDescriptionStep: View {
             
             /** Other Option Selectors */
             VStack(alignment: .leading, spacing: 12) {
-                Text("Set some other descriptors")
+                Text("Extra details (optional)")
                     .font(.headline)
                 
                 /** Difficulty Selector*/

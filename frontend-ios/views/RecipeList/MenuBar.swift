@@ -54,6 +54,6 @@ struct MenuBar: View {
                 .foregroundColor(Color.gray.opacity(0.1)),
             alignment: .bottom
         )
-        .background(Color.white)
+        .background(Color.gray.opacity(0.03))
     }
 }
