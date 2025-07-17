@@ -31,51 +31,51 @@ struct CreateRecipeTagsStep: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(Color.gray.opacity(0.1))
         
-        /** Description box, tags, and nav buttons */
-        VStack(alignment: .leading, spacing: 24) {
-            
-            
-            /** Tags */
-            VStack(alignment: .leading, spacing: 12) {
-                Text("Organize your recipe with tags")
-                    .font(.headline)
-                
-                TagContainerView(
-                    selectedTags: $recipe.selectedTags,
-                    availableTags: $session.availableTags,
-                    addTagAction: {
-                        showAddTag = true
-                    }
-                )
+        ScrollView {
+            /** Description box, tags, and nav buttons */
+            VStack(alignment: .leading, spacing: 24) {
+                /** Tags */
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("Organize your recipe with tags")
+                        .font(.headline)
+                    
+                    TagContainerView(
+                        selectedTags: $recipe.selectedTags,
+                        availableTags: $session.availableTags,
+                        addTagAction: {
+                            showAddTag = true
+                        }
+                    )
+                }
+            }
+            .padding()
+            .fullScreenCover(isPresented: $showAddTag) {
+                AddTagView(showAddTag: $showAddTag)
+            }
+        }
+        
+        Spacer()
+        
+        /** Navigation Buttons */
+        HStack {
+            Button(action: onBack) {
+                Text("Back")
+                    .padding()
+                    .foregroundColor(.black)
+                    .underline()
             }
             
             Spacer()
-            
-            /** Navigation Buttons */
-            HStack {
-                Button(action: onBack) {
-                    Text("Back")
-                        .padding()
-                        .foregroundColor(.black)
-                        .underline()
-                }
-                
-                Spacer()
 
-                Button(action: onFinish) {
-                    Text("Finish")
-                        .padding(.vertical, 12)
-                        .padding(.horizontal, 24)
-                        .background(.black)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
-                }
+            Button(action: onFinish) {
+                Text("Finish")
+                    .padding(.vertical, 12)
+                    .padding(.horizontal, 24)
+                    .background(.black)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
             }
-            .padding(.top, 4)
         }
         .padding()
-        .fullScreenCover(isPresented: $showAddTag) {
-            AddTagView(showAddTag: $showAddTag)
-        }
     }
 }

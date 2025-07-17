@@ -91,12 +91,19 @@ struct TagContainerView: View {
         let size = (text as NSString).size(withAttributes: attributes)
         
         let baseWidth = size.width + 30 // original chip padding
-        
-        /** Add extra space if in edit mode to account for the "x" */
-        let xIconWidth: CGFloat = isInEditMode ? 20 : 12 // adjust if changing tag padding
-        
+
+        let screenWidth = UIScreen.main.bounds.width
+
+        let xIconWidth: CGFloat
+        if isInEditMode {
+            xIconWidth = screenWidth >= 430 ? 28 : 25
+        } else {
+            xIconWidth = 12
+        }
+
         return baseWidth + xIconWidth
     }
+
 }
 
 struct RowWrapper: Identifiable {

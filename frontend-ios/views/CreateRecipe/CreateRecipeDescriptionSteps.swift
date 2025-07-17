@@ -34,145 +34,145 @@ struct CreateRecipeDescriptionStep: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(Color.gray.opacity(0.1))
         
-        VStack(alignment: .leading, spacing: 24) {
-            
-            /** Description */
-            VStack(alignment: .leading, spacing: 8) {
-                Text("Give your recipe a description")
-                    .font(.headline)
-                TextEditor(text: Binding(
-                    get: { String(recipe.description.prefix(250)) },
-                    set: { newValue in
-                        recipe.description = String(newValue.prefix(250))
-                    }
-                ))
-                    .frame(height: 150)
-                    .padding(8)
-                    .background(Color.white)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.gray.opacity(0.4), lineWidth: 1)
-                    )
-                    
-                
-                CharacterCountView(currentCount: recipe.description.count, maxCount: 250)
-            }
-            .keyboardToolbarWithDone()
-            
-            /** Other Option Selectors */
-            VStack(alignment: .leading, spacing: 12) {
-                Text("Extra details (optional)")
-                    .font(.headline)
-                
-                /** Difficulty Selector*/
-                Button(action: {
-                    showDifficulty = true
-                }) {
-                    HStack (spacing: 2) {
-                        Text("Difficulty: ")
-                        Text("\(recipe.difficulty ?? "None")")
-                            .fontWeight(.medium)
-                        Spacer()
-                        Image(systemName: "chevron.right")
-                            .foregroundColor(.gray)
-                    }
-                    .padding()
-                    .background(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.gray.opacity(0.5), lineWidth: 1)
-                    )
-                    .foregroundColor(.black)
-                }
-                .sheet(isPresented: $showDifficulty) {
-                    DifficultySelectorView(selectedDifficulty: $recipe.difficulty, showDifficulty: $showDifficulty)
-                }
-
-                /** Serving Size  Selector*/
-                Button(action: {
-                    showServingSize = true
-                }) {
-                    HStack (spacing: 2) {
-                        Text("Serving Size: ")
-                        Text("\(recipe.servingSize == 0 ? "None" : (recipe.servingSize >= 10 ? "\(recipe.servingSize)+" : "\(recipe.servingSize)"))")
-                            .fontWeight(.medium)
-                        Spacer()
-                        Image(systemName: "chevron.right")
-                            .foregroundColor(.gray)
-                    }
-                    .padding()
-                    .background(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.gray.opacity(0.5), lineWidth: 1)
-                    )
-                    .foregroundColor(.black)
-                }
-                .sheet(isPresented: $showServingSize) {
-                    ServingSizeSelectorView(servingSize: $recipe.servingSize, showSheet: $showServingSize)
-                }
-
-                
-                /** Cook Time Selector*/
-                Button(action: {
-                    showCookTime = true
-                }) {
-                    HStack (spacing: 2) {
-                        if recipe.cookTimeInMinutes == 0 {
-                            HStack (spacing: 2) {
-                                Text("Cook Time: ")
-                                Text("None")
-                                    .fontWeight(.medium)
-                            }
-                        } else {
-                            let hours = recipe.cookTimeInMinutes / 60
-                            let minutes = recipe.cookTimeInMinutes % 60
-                            HStack (spacing: 2) {
-                                Text("Cook Time: ")
-                                Text("\(hours > 0 ? "\(hours) hours " : "")\(minutes) mins")
-                                    .fontWeight(.medium)
-                            }
+        ScrollView {
+            VStack(alignment: .leading, spacing: 24) {
+                /** Description */
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Give your recipe a description")
+                        .font(.headline)
+                    TextEditor(text: Binding(
+                        get: { String(recipe.description.prefix(250)) },
+                        set: { newValue in
+                            recipe.description = String(newValue.prefix(250))
                         }
-                        Spacer()
-                        Image(systemName: "chevron.right")
-                            .foregroundColor(.gray)
-                    }
-                    .padding()
-                    .background(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.gray.opacity(0.5), lineWidth: 1)
-                    )
-                    .foregroundColor(.black)
+                    ))
+                        .frame(height: 150)
+                        .padding(8)
+                        .background(Color.white)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.gray.opacity(0.4), lineWidth: 1)
+                        )
+                        
+                    
+                    CharacterCountView(currentCount: recipe.description.count, maxCount: 250)
                 }
-                .sheet(isPresented: $showCookTime) {
-                    CookTimeSelectorView(cookTimeInMinutes: $recipe.cookTimeInMinutes, showSheet: $showCookTime)
+                .keyboardToolbarWithDone()
+                
+                /** Other Option Selectors */
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("Extra details (optional)")
+                        .font(.headline)
+                    
+                    /** Difficulty Selector*/
+                    Button(action: {
+                        showDifficulty = true
+                    }) {
+                        HStack (spacing: 2) {
+                            Text("Difficulty: ")
+                            Text("\(recipe.difficulty ?? "None")")
+                                .fontWeight(.medium)
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .foregroundColor(.gray)
+                        }
+                        .padding()
+                        .background(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.gray.opacity(0.5), lineWidth: 1)
+                        )
+                        .foregroundColor(.black)
+                    }
+                    .sheet(isPresented: $showDifficulty) {
+                        DifficultySelectorView(selectedDifficulty: $recipe.difficulty, showDifficulty: $showDifficulty)
+                    }
+
+                    /** Serving Size  Selector*/
+                    Button(action: {
+                        showServingSize = true
+                    }) {
+                        HStack (spacing: 2) {
+                            Text("Serving Size: ")
+                            Text("\(recipe.servingSize == 0 ? "None" : (recipe.servingSize >= 10 ? "\(recipe.servingSize)+" : "\(recipe.servingSize)"))")
+                                .fontWeight(.medium)
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .foregroundColor(.gray)
+                        }
+                        .padding()
+                        .background(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.gray.opacity(0.5), lineWidth: 1)
+                        )
+                        .foregroundColor(.black)
+                    }
+                    .sheet(isPresented: $showServingSize) {
+                        ServingSizeSelectorView(servingSize: $recipe.servingSize, showSheet: $showServingSize)
+                    }
+
+                    
+                    /** Cook Time Selector*/
+                    Button(action: {
+                        showCookTime = true
+                    }) {
+                        HStack (spacing: 2) {
+                            if recipe.cookTimeInMinutes == 0 {
+                                HStack (spacing: 2) {
+                                    Text("Cook Time: ")
+                                    Text("None")
+                                        .fontWeight(.medium)
+                                }
+                            } else {
+                                let hours = recipe.cookTimeInMinutes / 60
+                                let minutes = recipe.cookTimeInMinutes % 60
+                                HStack (spacing: 2) {
+                                    Text("Cook Time: ")
+                                    Text("\(hours > 0 ? "\(hours) hours " : "")\(minutes) mins")
+                                        .fontWeight(.medium)
+                                }
+                            }
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .foregroundColor(.gray)
+                        }
+                        .padding()
+                        .background(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.gray.opacity(0.5), lineWidth: 1)
+                        )
+                        .foregroundColor(.black)
+                    }
+                    .sheet(isPresented: $showCookTime) {
+                        CookTimeSelectorView(cookTimeInMinutes: $recipe.cookTimeInMinutes, showSheet: $showCookTime)
+                    }
+                    
                 }
                 
             }
-            
+            .padding()
 
+        }
+        
+        Spacer()
+        
+        HStack {
+            Button(action: onBack) {
+                Text("Back")
+                    .padding()
+                    .foregroundColor(.black)
+                    .underline()
+            }
             
             Spacer()
             
-            // Navigation Buttons
-            HStack {
-                Button(action: onBack) {
-                    Text("Back")
-                        .padding()
-                        .foregroundColor(.black)
-                        .underline()
-                }
-                
-                Spacer()
-                
-                Button(action: onNext) {
-                    Text("Next")
-                        .padding(.vertical, 12)
-                        .padding(.horizontal, 24)
-                        .background(.black)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
-                }
+            Button(action: onNext) {
+                Text("Next")
+                    .padding(.vertical, 12)
+                    .padding(.horizontal, 24)
+                    .background(.black)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
             }
-            .padding(.top, 4)
         }
         .padding()
 
