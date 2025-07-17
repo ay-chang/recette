@@ -1,10 +1,10 @@
-# 🥘 Recette
+# Recette
 
 Recette is a mobile recipe management app that lets users create, edit, and organize their personal recipes. Built with a modern tech stack, the app supports image uploads, grocery list generation, and custom tagging, making it easier to keep track of your cooking habits and goals.
 
 ---
 
-## ✨ Features
+## Features
 
 ### Create & Edit Recipes  
 Add recipes with titles, descriptions, steps, ingredients, tags, and images. Edit them seamlessly from within the app.
@@ -30,10 +30,10 @@ Filter recipes by tags or search by title for fast access to your saved meals.
 
 ---
 
-## 🧰 Technologies Used
+## Technologies Used
 
 ### Frontend  
-#### 📱 iOS App (SwiftUI)
+#### iOS App (SwiftUI)
 - Native iOS UI with dynamic state updates via `ObservableObject`
 - Apollo iOS client for GraphQL API integration
 - Photo upload using `PhotosPicker`
@@ -60,7 +60,7 @@ Schema includes:
 
 ---
 
-## 🔮 Future Features
+## Future Features
 
 - **Recipe Sharing** – Let users share recipes publicly or with friends  
 - **Meal Planning Calendar** – Schedule recipes over a weekly/monthly calendar  
