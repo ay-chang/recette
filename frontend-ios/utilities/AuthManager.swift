@@ -9,6 +9,7 @@ class AuthManager {
     /** Save token persistently in UserDefaults */
     func saveToken(_ token: String) {
         UserDefaults.standard.set(token, forKey: tokenKey)
+        Network.refresh()  // Ensure Apollo uses the new token
     }
 
     /** Retrieve token */
@@ -16,8 +17,9 @@ class AuthManager {
         return UserDefaults.standard.string(forKey: tokenKey)
     }
 
-    /** Optional: clear token on logout */
+    /** Clear token on logout or delete */
     func clearToken() {
         UserDefaults.standard.removeObject(forKey: tokenKey)
+        Network.refresh()  // Ensure Apollo no longer sends old token
     }
 }
