@@ -36,7 +36,7 @@ public class UserMutationService {
         User user = new User();
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(password));
-        user.setUsername(email.split("@")[0]); // TODO: Support custom usernames later
+        user.setUsername(email.split("@")[0]);
 
         User savedUser = userRepository.save(user);
         return savedUser;
@@ -64,6 +64,12 @@ public class UserMutationService {
         user.setLastName(input.getLastName());
 
         return userRepository.save(user);
+    }
+
+    public void deleteUserByEmail(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
+        userRepository.delete(user);
     }
 
     /** -------------------- Private helper functions -------------------- */

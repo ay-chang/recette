@@ -37,10 +37,22 @@ public class UserMutationResolver {
         return jwtUtil.generateToken(user.getEmail());
     }
 
-    /** Logout */
+    /** Logout is a client side function so just ignore */
     @MutationMapping
     public boolean logout() {
-        /** Logout is a client side function so just ignore */
+        return true;
+    }
+
+    /** Delete a user account */
+    @MutationMapping
+    public boolean deleteAccount() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || auth.getPrincipal() == null) {
+            throw new RuntimeException("Unauthorized");
+        }
+
+        String currentUserEmail = (String) auth.getPrincipal();
+        userMutationService.deleteUserByEmail(currentUserEmail);
         return true;
     }
 
