@@ -31,6 +31,9 @@
 frontend-ios/Generated/
 apollo-ios-cli
 **/frontend-ios/Assets.xcassets/*/*.png
+frontend-ios/utilities/Network.swift
+frontend-ios/utilities/AuthManager.swift
+frontend-ios/utilities/Config.swift
 
 # === VS Code ===
 **/.vscode/
