@@ -85,6 +85,36 @@ class UserSession: ObservableObject {
             self.clearSession()
         }
     }
+    
+    /** Delete User account */
+    func deleteAccount(onComplete: @escaping () -> Void = {}) {
+        let mutation = RecetteSchema.DeleteAccountMutation()
+
+        Network.shared.apollo.perform(mutation: mutation) { result in
+            switch result {
+            case .success(let graphQLResult):
+                if graphQLResult.data?.deleteAccount == true {
+                    print("Account successfully deleted")
+
+                    /** Clean up local session */
+                    AuthManager.shared.clearToken()
+                    self.clearSession()
+
+                    DispatchQueue.main.async {
+                        onComplete()
+                    }
+                } else if let errors = graphQLResult.errors {
+                    print("GraphQL Errors: \(errors.compactMap { $0.message }.joined(separator: "\n"))")
+                } else {
+                    print("Account deletion failed with unknown error")
+                }
+
+            case .failure(let error):
+                print("Network error while deleting account: \(error.localizedDescription)")
+            }
+        }
+    }
+
 
     
     /** Sign up function*/
@@ -252,14 +282,21 @@ class UserSession: ObservableObject {
             self.isLoggedIn = false
             self.userEmail = nil
             self.userUsername = nil
+            self.userFirstName = nil
+            self.userLastName = nil
             self.loginError = nil
-            
-            // Clear persisted session
+            self.availableTags = []
+            self.shouldRefreshRecipes = false
+            self.shouldRefreshTags = false
+
             UserDefaults.standard.removeObject(forKey: "loggedInEmail")
             UserDefaults.standard.removeObject(forKey: "loggedInUsername")
+            UserDefaults.standard.removeObject(forKey: "loggedInFirstName")
+            UserDefaults.standard.removeObject(forKey: "loggedInLastName")
             UserDefaults.standard.set(false, forKey: "isLoggedIn")
         }
     }
+
     
     /** Loading in user sessions */
     func loadSavedSession() {

@@ -3,26 +3,36 @@ import SwiftUI
 struct ProfileAccountSettingsView: View {
     @EnvironmentObject var session: UserSession
     @Environment(\.dismiss) var dismiss
-    
+    @State private var showingDeleteConfirmation = false
     @State private var firstName: String = ""
     @State private var lastName: String = ""
 
     var body: some View {
         // Header Bar "X"
-        HStack {
-            Button(action: { dismiss() }) {
-                Image(systemName: "xmark")
-                    .foregroundColor(.gray)
+        ZStack {
+            Text("Account settings")
+                .font(.headline)
+            
+            HStack {
+                Button(action: { dismiss() }) {
+                    Image(systemName: "xmark")
+                        .foregroundColor(.gray)
+                }
+                Spacer()
+                Button("Save") {
+                    session.updateAccountDetails(firstName: firstName, lastName: lastName) {
+                        dismiss()
+                    }
+                    session.refreshUserDetails()
+                }
+                .foregroundColor(.black)
+                .fontWeight(.light)
             }
-            Spacer()
         }
         .padding()
-        
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Account Settings")
-                .font(.title)
-                .fontWeight(.semibold)
+            
                 
+        VStack(alignment: .leading, spacing: 12) {
             /** First Name Field */
             VStack(alignment: .leading, spacing: 8) {
                 Text("First Name")
@@ -51,17 +61,19 @@ struct ProfileAccountSettingsView: View {
 
             HStack {
                 Spacer()
-                Button("Save") {
-                    session.updateAccountDetails(firstName: firstName, lastName: lastName) {
-                        dismiss()
-                    }
-                    session.refreshUserDetails()
+                
+                Button("Delete Account") {
+                    showingDeleteConfirmation = true
                 }
-                .padding(.vertical, 12)
-                .padding(.horizontal, 24)
-                .background(.black)
-                .foregroundColor(.white)
-                .cornerRadius(8)
+                .foregroundColor(.red)
+                .alert("Are you sure?", isPresented: $showingDeleteConfirmation) {
+                    Button("Delete", role: .destructive) {
+                        session.deleteAccount()
+                    }
+                    Button("Cancel", role: .cancel) { }
+                }
+                
+                Spacer()
             }
         }
         .padding()

@@ -23,6 +23,7 @@ type Mutation {
   toggleGroceryCheck(id: ID!, checked: Boolean!): Grocery!
   deleteTag(name: String!): Boolean!
   updateAccountDetails(email: String!, input: AccountDetailsInput!): User!
+  deleteAccount: Boolean!
 }
 
 type User {
