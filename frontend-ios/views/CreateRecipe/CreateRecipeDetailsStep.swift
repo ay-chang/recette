@@ -84,7 +84,7 @@ struct CreateRecipeDetailsStep: View {
                                     Image(systemName: "photo.on.rectangle")
                                         .font(.system(size: 28))
                                         .foregroundColor(.gray)
-                                    Text("Upload a final photo of your dish")
+                                    Text("Upload a final photo of your dish (optional)")
                                         .font(.footnote)
                                         .foregroundColor(.gray)
                                 }
@@ -124,10 +124,6 @@ struct CreateRecipeDetailsStep: View {
 
             }
             .padding()
-            
-
-
-            
         }
         
         Spacer()
