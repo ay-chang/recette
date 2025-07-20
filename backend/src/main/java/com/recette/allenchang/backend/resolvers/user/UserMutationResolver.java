@@ -30,10 +30,17 @@ public class UserMutationResolver {
         return jwtUtil.generateToken(input.getEmail().toLowerCase());
     }
 
-    /** User sign up */
+    /** Send verification code during sign-up */
     @MutationMapping
-    public String signUp(@Argument UserInput input) {
-        User user = userMutationService.registerUser(input.getEmail().toLowerCase(), input.getPassword());
+    public boolean sendVerificationCode(@Argument String email, @Argument String password) {
+        userMutationService.sendVerificationCode(email, password);
+        return true;
+    }
+
+    /** Complete sign-up after verifying email code */
+    @MutationMapping
+    public String completeSignUpWithCode(@Argument String email, @Argument String code) {
+        User user = userMutationService.completeSignUpWithCode(email, code);
         return jwtUtil.generateToken(user.getEmail());
     }
 

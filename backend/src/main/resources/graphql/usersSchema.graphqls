@@ -4,8 +4,9 @@ extend type Query {
 }
 
 extend type Mutation {
-  signUp(input: SignUpInput!): String! # User signup
-  login(input: LoginInput!): String! # User login returns a token
+  sendVerificationCode(email: String!, password: String!): Boolean!
+  completeSignUpWithCode(email: String!, code: String!): String!
+  login(input: LoginInput!): String!
   logout: Boolean!
   updateAccountDetails(email: String!, input: AccountDetailsInput!): User!
   deleteAccount: Boolean!
@@ -22,11 +23,6 @@ type User {
 
 input UserInput {
   email: String!
-}
-
-input SignUpInput {
-  email: String!
-  password: String!
 }
 
 input LoginInput {
