@@ -17,8 +17,5 @@ struct AppView: View {
                 LoginView()
             }
         }
-        .onAppear {
-            session.loadSavedSession() // called when the real session is attached
-        }
     }
 }

@@ -76,8 +76,11 @@ class UserSession: ObservableObject {
             switch result {
             case .success(let graphQLResult):
                 if let token = graphQLResult.data?.completeSignUpWithCode {
+                    /** Save token and refresh network client */
                     AuthManager.shared.saveToken(token)
-
+                    Network.refresh()
+                    
+                    /** Store login info */
                     DispatchQueue.main.async {
                         self.userEmail = email
                         self.userUsername = email.split(separator: "@").first.map(String.init) ?? ""
@@ -86,7 +89,35 @@ class UserSession: ObservableObject {
                         UserDefaults.standard.set(email, forKey: "loggedInEmail")
                         UserDefaults.standard.set(self.userUsername, forKey: "loggedInUsername")
                         UserDefaults.standard.set(true, forKey: "isLoggedIn")
+                        
+                        print("Sign-up login state saved")
                     }
+                    
+                    /** Immediately fetch user details after signup */
+                    let userDetailsQuery = RecetteSchema.GetUserDetailsQuery(email: email)
+                    Network.shared.apollo.fetch(query: userDetailsQuery) { result in
+                        switch result {
+                        case .success(let graphQLResult):
+                            if let user = graphQLResult.data?.userDetails {
+                                DispatchQueue.main.async {
+                                    self.userUsername = user.username
+                                    self.userFirstName = user.firstName
+                                    self.userLastName = user.lastName
+                                    
+                                    UserDefaults.standard.set(user.username, forKey: "loggedInUsername")
+                                    UserDefaults.standard.set(user.firstName, forKey: "loggedInFirstName")
+                                    UserDefaults.standard.set(user.lastName, forKey: "loggedInLastName")
+                                    
+                                    print("✅ User details fetched after sign-up")
+                                }
+                            } else if let errors = graphQLResult.errors {
+                                print("🔴 GraphQL errors fetching user details: \(errors.map(\.message))")
+                            }
+                        case .failure(let error):
+                            print("🔴 Failed to fetch user details after sign-up: \(error)")
+                        }
+                    }
+
                 } else if let errors = graphQLResult.errors {
                     DispatchQueue.main.async {
                         self.loginError = errors.compactMap { $0.message }.joined(separator: "\n")
@@ -99,6 +130,7 @@ class UserSession: ObservableObject {
             }
         }
     }
+
 
 
     /** Logout function, also clears out session variables through clearSession()*/
@@ -320,7 +352,6 @@ class UserSession: ObservableObject {
 
     
     /** Loading in user sessions */
-    /** Loading in user sessions */
     func loadSavedSession() {
         let isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
         let email = UserDefaults.standard.string(forKey: "loggedInEmail")
@@ -335,33 +366,39 @@ class UserSession: ObservableObject {
         if isLoggedIn, let email = email {
             self.userEmail = email
             self.isLoggedIn = true
-            
-            Network.refresh()
-            
-            /** Fetch full user details on startup */
-            let userDetailsQuery = RecetteSchema.GetUserDetailsQuery(email: email)
-            Network.shared.apollo.fetch(query: userDetailsQuery) { result in
-                switch result {
-                case .success(let graphQLResult):
-                    if let user = graphQLResult.data?.userDetails {
-                        DispatchQueue.main.async {
-                            self.userUsername = user.username
-                            self.userFirstName = user.firstName
-                            self.userLastName = user.lastName
 
-                            UserDefaults.standard.set(user.username, forKey: "loggedInUsername")
-                            UserDefaults.standard.set(user.firstName, forKey: "loggedInFirstName")
-                            UserDefaults.standard.set(user.lastName, forKey: "loggedInLastName")
+            // ✅ Refresh the Apollo client with the token *before* any query
+            Network.refresh()
+
+            // ✅ Delay slightly to ensure the new token is applied
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                let userDetailsQuery = RecetteSchema.GetUserDetailsQuery(email: email)
+                Network.shared.apollo.fetch(query: userDetailsQuery) { result in
+                    switch result {
+                    case .success(let graphQLResult):
+                        if let user = graphQLResult.data?.userDetails {
+                            DispatchQueue.main.async {
+                                self.userUsername = user.username
+                                self.userFirstName = user.firstName
+                                self.userLastName = user.lastName
+
+                                UserDefaults.standard.set(user.username, forKey: "loggedInUsername")
+                                UserDefaults.standard.set(user.firstName, forKey: "loggedInFirstName")
+                                UserDefaults.standard.set(user.lastName, forKey: "loggedInLastName")
+
+                                print("✅ Loaded user details from saved session")
+                            }
+                        } else if let errors = graphQLResult.errors {
+                            print("🔴 GraphQL errors while fetching user details:", errors.map(\.message))
                         }
-                    } else if let errors = graphQLResult.errors {
-                        print("🔴 GraphQL errors while fetching user details:", errors.map(\.message))
+                    case .failure(let error):
+                        print("🔴 Failed to load user details at startup: \(error)")
                     }
-                case .failure(let error):
-                    print("🔴 Failed to load user details at startup: \(error)")
                 }
             }
         }
     }
+
 
     
     /** Ensure that the error message from login doesnt persist into sign up or reversed*/
