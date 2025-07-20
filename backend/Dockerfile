@@ -24,4 +24,5 @@ ENV PORT=8080
 EXPOSE 8080
 
 # Run the app
-CMD ["java", "-jar", "app.jar"]
+CMD ["java", "-Xms256m", "-Xmx1024m", "-jar", "app.jar"]
+
