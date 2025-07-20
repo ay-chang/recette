@@ -67,6 +67,38 @@ class UserSession: ObservableObject {
             }
         }
     }
+    
+    /** Completing sign up after user inputs code */
+    func completeSignUpWithCode(email: String, code: String) {
+        let mutation = RecetteSchema.CompleteSignUpWithCodeMutation(email: email, code: code)
+        
+        Network.shared.apollo.perform(mutation: mutation) { result in
+            switch result {
+            case .success(let graphQLResult):
+                if let token = graphQLResult.data?.completeSignUpWithCode {
+                    AuthManager.shared.saveToken(token)
+
+                    DispatchQueue.main.async {
+                        self.userEmail = email
+                        self.userUsername = email.split(separator: "@").first.map(String.init) ?? ""
+                        self.isLoggedIn = true
+                        
+                        UserDefaults.standard.set(email, forKey: "loggedInEmail")
+                        UserDefaults.standard.set(self.userUsername, forKey: "loggedInUsername")
+                        UserDefaults.standard.set(true, forKey: "isLoggedIn")
+                    }
+                } else if let errors = graphQLResult.errors {
+                    DispatchQueue.main.async {
+                        self.loginError = errors.compactMap { $0.message }.joined(separator: "\n")
+                    }
+                }
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self.loginError = error.localizedDescription
+                }
+            }
+        }
+    }
 
 
     /** Logout function, also clears out session variables through clearSession()*/
@@ -117,41 +149,30 @@ class UserSession: ObservableObject {
 
 
     
-    /** Sign up function*/
-    func signUp(email: String, password: String) {
-        let signUpMutation = RecetteSchema.SignUpMutation(email: email, password: password)
+    /** Send verification code */
+    func sendVerificationCode(email: String, password: String, completion: @escaping (Bool) -> Void) {
+        let mutation = RecetteSchema.SendVerificationCodeMutation(email: email, password: password)
         
-        Network.shared.apollo.perform(mutation: signUpMutation) { result in
+        Network.shared.apollo.perform(mutation: mutation) { result in
             switch result {
             case .success(let graphQLResult):
-                if let token = graphQLResult.data?.signUp {
-                    // Store the token
-                    UserDefaults.standard.set(token, forKey: "jwtToken")
-                    
-                    // You can optionally store the email and a default username
-                    DispatchQueue.main.async {
-                        self.userEmail = email
-                        self.userUsername = email.split(separator: "@").first.map(String.init) ?? ""
-                        self.isLoggedIn = true
-                        
-                        UserDefaults.standard.set(email, forKey: "loggedInEmail")
-                        UserDefaults.standard.set(self.userUsername, forKey: "loggedInUsername")
-                        UserDefaults.standard.set(true, forKey: "isLoggedIn")
-                    }
+                if graphQLResult.data?.sendVerificationCode == true {
+                    completion(true)
                 } else if let errors = graphQLResult.errors {
                     DispatchQueue.main.async {
                         self.loginError = errors.compactMap { $0.message }.joined(separator: "\n")
+                        completion(false)
                     }
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
                     self.loginError = error.localizedDescription
+                    completion(false)
                 }
             }
         }
     }
-
-
+    
     
     /** Update the users first and last name */
     func updateAccountDetails(firstName: String, lastName: String, onComplete: @escaping () -> Void = {}) {
@@ -299,12 +320,23 @@ class UserSession: ObservableObject {
 
     
     /** Loading in user sessions */
+    /** Loading in user sessions */
     func loadSavedSession() {
-        if UserDefaults.standard.bool(forKey: "isLoggedIn"),
-           let email = UserDefaults.standard.string(forKey: "loggedInEmail") {
-            
+        let isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
+        let email = UserDefaults.standard.string(forKey: "loggedInEmail")
+        let token = AuthManager.shared.jwtToken
+
+        // 🔍 Debug print statements
+        print("🟡 loadSavedSession() called")
+        print("isLoggedIn flag:", isLoggedIn)
+        print("Stored email:", email ?? "nil")
+        print("JWT token from AuthManager:", token ?? "nil")
+
+        if isLoggedIn, let email = email {
             self.userEmail = email
             self.isLoggedIn = true
+            
+            Network.refresh()
             
             /** Fetch full user details on startup */
             let userDetailsQuery = RecetteSchema.GetUserDetailsQuery(email: email)
@@ -321,9 +353,11 @@ class UserSession: ObservableObject {
                             UserDefaults.standard.set(user.firstName, forKey: "loggedInFirstName")
                             UserDefaults.standard.set(user.lastName, forKey: "loggedInLastName")
                         }
+                    } else if let errors = graphQLResult.errors {
+                        print("🔴 GraphQL errors while fetching user details:", errors.map(\.message))
                     }
                 case .failure(let error):
-                    print("Failed to load user details at startup: \(error)")
+                    print("🔴 Failed to load user details at startup: \(error)")
                 }
             }
         }

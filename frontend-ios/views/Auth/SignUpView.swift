@@ -4,6 +4,7 @@ struct SignUpView: View {
     @EnvironmentObject var session: UserSession
     @State private var email = ""
     @State private var password = ""
+    @State private var showVerifyCode = false
     @Binding var showSheet: Bool
 
     var body: some View {
@@ -41,7 +42,11 @@ struct SignUpView: View {
                     .overlay(RoundedRectangle(cornerRadius: 10).stroke(.gray, lineWidth: 1))
 
                 Button(action: {
-                    session.signUp(email: email, password: password)
+                    session.sendVerificationCode(email: email, password: password) { success in
+                        if success {
+                            showVerifyCode = true
+                        }
+                    }
                 }) {
                     Text("Sign up")
                         .frame(maxWidth: .infinity)
@@ -74,6 +79,9 @@ struct SignUpView: View {
 //            }
 
             Spacer()
+        }
+        .sheet(isPresented: $showVerifyCode) {
+            VerifyCodeView(email: email, showVerifyCode: $showVerifyCode)
         }
         .padding()
         .background(Color.white.ignoresSafeArea())

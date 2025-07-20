@@ -12,7 +12,8 @@ type Query {
 type Mutation {
   addRecipe(input: RecipeInput!): Recipe!
   deleteRecipe(id: ID!): Boolean!
-  signUp(input: SignUpInput!): String! # User signup
+  sendVerificationCode(email: String!, password: String!): Boolean!
+  completeSignUpWithCode(email: String!, code: String!): String!
   login(input: LoginInput!): String! # User login returns a token
   logout: Boolean!
   addTag(name: String!): Tag!

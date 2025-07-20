@@ -23,7 +23,7 @@ struct LoginView: View {
                     .padding()
                     .background(Color(.white))
                     .cornerRadius(10)
-                    .overlay( // apply a rounded border
+                    .overlay(
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(.gray, lineWidth: 1)
                     )
@@ -32,7 +32,7 @@ struct LoginView: View {
                     .padding(16)
                     .background(Color(.white))
                     .cornerRadius(10)
-                    .overlay( // apply a rounded border
+                    .overlay(
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(.gray, lineWidth: 1)
                     )

@@ -1,0 +1,3 @@
+mutation CompleteSignUpWithCode($email: String!, $code: String!) {
+  completeSignUpWithCode(email: $email, code: $code)
+}
