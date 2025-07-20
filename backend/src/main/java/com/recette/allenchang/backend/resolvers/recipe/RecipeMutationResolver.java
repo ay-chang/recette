@@ -33,8 +33,15 @@ public class RecipeMutationResolver {
     /** POST: a recipe to database */
     @MutationMapping
     public Recipe addRecipe(@Argument RecipeInput input) {
-        String userEmail = JwtUtil.getLoggedInUserEmail();
-        return recipeMutationService.addRecipe(input, userEmail);
+        try {
+            String userEmail = JwtUtil.getLoggedInUserEmail();
+            System.out.println("Adding recipe for user: " + userEmail);
+            return recipeMutationService.addRecipe(input, userEmail);
+        } catch (Exception e) {
+            System.err.println("Error occurred in addRecipe mutation: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     /** UPDATE: a recipes image */

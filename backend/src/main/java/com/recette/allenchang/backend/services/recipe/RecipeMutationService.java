@@ -35,18 +35,21 @@ public class RecipeMutationService {
     /** Add a recipe to the database */
     public Recipe addRecipe(RecipeInput input, String userEmail) {
         Recipe recipe = new Recipe();
+        User user = findUserByEmail(userEmail);
+
+        recipe.setUser(user);
         recipe.setTitle(input.getTitle());
         recipe.setDescription(input.getDescription());
         recipe.setImageurl(input.getImageurl());
-        recipe.setSteps(new ArrayList<>(input.getSteps())); // wrap for safety
-        recipe.setUser(findUserByEmail(userEmail));
+        recipe.setSteps(new ArrayList<>(input.getSteps()));
         recipe.setIngredients(new ArrayList<>(mapIngredients(input.getIngredients(), recipe)));
-        recipe.setTags(new ArrayList<>(mapTags(input.getTags())));
+        recipe.setTags(new ArrayList<>(mapTags(input.getTags(), user))); // <-- fix here
         recipe.setDifficulty(input.getDifficulty());
         recipe.setServingSize(input.getServingSize());
         recipe.setCookTimeInMinutes(input.getCookTimeInMinutes());
 
         return recipeRepository.save(recipe);
+
     }
 
     /** Update recipe details */
@@ -57,13 +60,15 @@ public class RecipeMutationService {
             throw new RuntimeException("Unauthorized to update this recipe");
         }
 
+        User user = findUserByEmail(userEmail);
+
         recipe.setTitle(input.getTitle());
         recipe.setDescription(input.getDescription());
         recipe.setImageurl(input.getImageurl());
         recipe.setSteps(new ArrayList<>(input.getSteps()));
         recipe.getIngredients().clear();
         recipe.getIngredients().addAll(mapIngredients(input.getIngredients(), recipe));
-        recipe.setTags(new ArrayList<>(mapTags(input.getTags())));
+        recipe.setTags(new ArrayList<>(mapTags(input.getTags(), user))); // 🔧 Use user-scoped tags
         recipe.setDifficulty(input.getDifficulty());
         recipe.setServingSize(input.getServingSize());
         recipe.setCookTimeInMinutes(input.getCookTimeInMinutes());
@@ -110,13 +115,14 @@ public class RecipeMutationService {
     }
 
     /** Creating and mapping tags */
-    private List<Tag> mapTags(List<String> tagNames) {
+    private List<Tag> mapTags(List<String> tagNames, User user) {
         if (tagNames == null || tagNames.isEmpty()) {
             return List.of();
         }
+
         return tagNames.stream()
-                .map(name -> tagRepository.findByName(name)
-                        .orElseThrow(() -> new IllegalArgumentException("Tag not found: " + name)))
+                .map(name -> tagRepository.findByUserAndName(user, name)
+                        .orElseThrow(() -> new IllegalArgumentException("Tag not found for user: " + name)))
                 .toList();
     }
 
