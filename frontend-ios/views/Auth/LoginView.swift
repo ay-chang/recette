@@ -72,14 +72,14 @@ struct LoginView: View {
 //            }
 
             /* Sign up */
-            HStack {
+            HStack (alignment: .center) {
                 Text("Don't have an account?")
                 Button("Sign up") {
                     showSignUp = true
                 }
                 .bold()
             }
-            .font(.footnote)
+            .font(.subheadline)
             .padding(.top, 16)
             .sheet(isPresented: $showSignUp) {
                 SignUpView(showSheet: $showSignUp)

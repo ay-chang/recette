@@ -108,13 +108,13 @@ class UserSession: ObservableObject {
                                     UserDefaults.standard.set(user.firstName, forKey: "loggedInFirstName")
                                     UserDefaults.standard.set(user.lastName, forKey: "loggedInLastName")
                                     
-                                    print("✅ User details fetched after sign-up")
+                                    print("User details fetched after sign-up")
                                 }
                             } else if let errors = graphQLResult.errors {
-                                print("🔴 GraphQL errors fetching user details: \(errors.map(\.message))")
+                                print("GraphQL errors fetching user details: \(errors.map(\.message))")
                             }
                         case .failure(let error):
-                            print("🔴 Failed to fetch user details after sign-up: \(error)")
+                            print("Failed to fetch user details after sign-up: \(error)")
                         }
                     }
 
@@ -356,7 +356,7 @@ class UserSession: ObservableObject {
         let isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
         let email = UserDefaults.standard.string(forKey: "loggedInEmail")
         let token = AuthManager.shared.jwtToken
-
+        
         // 🔍 Debug print statements
         print("🟡 loadSavedSession() called")
         print("isLoggedIn flag:", isLoggedIn)
@@ -366,11 +366,9 @@ class UserSession: ObservableObject {
         if isLoggedIn, let email = email {
             self.userEmail = email
             self.isLoggedIn = true
-
-            // ✅ Refresh the Apollo client with the token *before* any query
             Network.refresh()
 
-            // ✅ Delay slightly to ensure the new token is applied
+            /** Delay slightly to ensure the new token is applied */
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 let userDetailsQuery = RecetteSchema.GetUserDetailsQuery(email: email)
                 Network.shared.apollo.fetch(query: userDetailsQuery) { result in
@@ -389,10 +387,10 @@ class UserSession: ObservableObject {
                                 print("✅ Loaded user details from saved session")
                             }
                         } else if let errors = graphQLResult.errors {
-                            print("🔴 GraphQL errors while fetching user details:", errors.map(\.message))
+                            print("GraphQL errors while fetching user details:", errors.map(\.message))
                         }
                     case .failure(let error):
-                        print("🔴 Failed to load user details at startup: \(error)")
+                        print("Failed to load user details at startup: \(error)")
                     }
                 }
             }

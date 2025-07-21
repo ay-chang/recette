@@ -22,22 +22,18 @@ struct RecipeIngredients: View {
                 
                 Button {
                     if let email = session.userEmail {
-                            print("Attempting to add recipe \(recipeId) for user \(email)")
-                            
-                            if groceryModel.hasRecipe(recipeId) {
-                                print("Recipe already exists in grocery list. Showing alert.")
-                                showAlreadyAddedAlert = true
-                            } else {
-                                print("Recipe not found in grocery list. Proceeding to add.")
-                                groceryModel.addGroceries(ingredients, recipeId: recipeId) { success in
-                                    if success {
-                                        groceryModel.loadGroceries(email: email)
-                                    } else {
-                                        print("Failed to add groceries")
-                                    }
+                        if groceryModel.hasRecipe(recipeId) {
+                            showAlreadyAddedAlert = true
+                        } else {
+                            groceryModel.addGroceries(ingredients, recipeId: recipeId) { success in
+                                if success {
+                                    groceryModel.loadGroceries(email: email)
+                                } else {
+                                    print("Failed to add groceries")
                                 }
                             }
                         }
+                    }
                 } label: {
                     HStack(alignment: .firstTextBaseline) {
                         Image(systemName: "cart.badge.plus")

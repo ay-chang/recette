@@ -34,11 +34,11 @@ struct AddTagView: View {
         
         VStack(alignment: .leading, spacing: 24) {
             VStack(alignment: .leading, spacing: 12) {
-                Text("Every great dish starts with the right ingredients.")
+                Text("Organize your recipes with the perfect tags.")
                     .font(.title2)
                     .fontWeight(.medium)
                 
-                Text("Add them here, one at a time, along with how much you’ll need.")
+                Text("Add a tag below to help categorize and find your recipes faster.")
                     .font(.subheadline)
                     .foregroundColor(.gray)
                     .fontWeight(.regular)

@@ -10,7 +10,6 @@ struct frontend_iosApp: App {
         UIView.appearance().overrideUserInterfaceStyle = .light // force lightmode
     }
 
-
     var body: some Scene {
         WindowGroup {
             AppView()

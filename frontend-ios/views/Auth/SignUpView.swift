@@ -81,7 +81,7 @@ struct SignUpView: View {
             Spacer()
         }
         .sheet(isPresented: $showVerifyCode) {
-            VerifyCodeView(email: email, showVerifyCode: $showVerifyCode)
+            VerifyCodeView(email: email, password: password, showVerifyCode: $showVerifyCode)
         }
         .padding()
         .background(Color.white.ignoresSafeArea())
