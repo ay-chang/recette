@@ -17,6 +17,10 @@ public class VerificationCodeStore {
         store.put(email, new CodeEntry(code, LocalDateTime.now().plusMinutes(10), rawPassword));
     }
 
+    public boolean contains(String email) {
+        return store.containsKey(email);
+    }
+
     public boolean isCodeValid(String email, String inputCode) {
         CodeEntry entry = store.get(email);
         if (entry == null || LocalDateTime.now().isAfter(entry.expiresAt()))

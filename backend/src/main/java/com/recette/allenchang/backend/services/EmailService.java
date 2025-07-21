@@ -19,7 +19,7 @@ public class EmailService {
     /** Send an email to user, can use for different reasons */
     public void sendEmail(String recipientEmail, String subject, String emailContent) {
         CreateEmailOptions params = CreateEmailOptions.builder()
-                .from("Acme <onboarding@resend.dev>")
+                .from("Recette <noreply@updates.recetteapp.com>")
                 .to(recipientEmail)
                 .subject(subject)
                 .html(emailContent)

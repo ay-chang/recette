@@ -19,14 +19,13 @@ public class UserQueryService {
                     return user.getUsername();
                 })
                 .orElseThrow(() -> {
-                    System.out.println("User not found with email: " + email);
                     return new RuntimeException("User not found");
                 });
     }
 
     /** Get user details: username and first and last name */
     public User getUserDetails(String email) {
-        return userRepository.findByEmail(email)
+        return userRepository.findByEmail(email.toLowerCase())
                 .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
     }
 

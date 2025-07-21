@@ -42,8 +42,13 @@ public class UserMutationService {
     public void sendVerificationCode(String email, String password) {
         email = email.toLowerCase().trim();
         validateEmailFormat(email);
-        validatePasswordFormat(password);
-        checkIfEmailExists(email);
+
+        boolean isResend = verificationCodeStore.contains(email);
+
+        if (!isResend) {
+            validatePasswordFormat(password);
+            checkIfEmailExists(email);
+        }
 
         /** Generate 6 digit code between 100000 - 999999 and send the email */
         String code = String.valueOf(new Random().nextInt(900000) + 100000);

@@ -35,7 +35,6 @@ public class RecipeMutationResolver {
     public Recipe addRecipe(@Argument RecipeInput input) {
         try {
             String userEmail = JwtUtil.getLoggedInUserEmail();
-            System.out.println("Adding recipe for user: " + userEmail);
             return recipeMutationService.addRecipe(input, userEmail);
         } catch (Exception e) {
             System.err.println("Error occurred in addRecipe mutation: " + e.getMessage());
