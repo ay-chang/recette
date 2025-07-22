@@ -1,8 +1,8 @@
 {
   "schemaNamespace": "RecetteSchema",
   "input": {
-    "schemaSearchPaths": ["graphql/schema.graphqls"],
-    "operationSearchPaths": ["graphql/**/*.graphql"]
+    "schemaSearchPaths": ["graphql/schemas/**/*.graphqls"],
+    "operationSearchPaths": ["graphql/operations/**/*.graphql"]
   },
   "output": {
     "testMocks": {
@@ -21,4 +21,3 @@
     }
   }
 }
-

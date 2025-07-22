@@ -151,11 +151,11 @@
 		97A3A1552DDDDF9F0009272B /* Exceptions for "graphql" folder in "frontend-ios" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				CompleteSignUpWithCode.graphql,
-				DeleteTag.graphql,
-				GetUserFilteredRecipes.graphql,
-				GetUserRecipesFullDetails.graphql,
-				ToggleGroceryCheck.graphql,
+				operations/groceries/ToggleGroceryCheck.graphql,
+				operations/recipes/GetUserFilteredRecipes.graphql,
+				operations/recipes/GetUserRecipesFullDetails.graphql,
+				operations/tags/DeleteTag.graphql,
+				operations/users/CompleteSignUpWithCode.graphql,
 			);
 			target = 971C4CE42DA6ADD100A8CBAD /* frontend-ios */;
 		};
@@ -179,11 +179,11 @@
 			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
 			buildPhase = 971C4CE12DA6ADD100A8CBAD /* Sources */;
 			membershipExceptions = (
-				CompleteSignUpWithCode.graphql,
-				DeleteTag.graphql,
-				GetUserFilteredRecipes.graphql,
-				GetUserRecipesFullDetails.graphql,
-				ToggleGroceryCheck.graphql,
+				operations/groceries/ToggleGroceryCheck.graphql,
+				operations/recipes/GetUserFilteredRecipes.graphql,
+				operations/recipes/GetUserRecipesFullDetails.graphql,
+				operations/tags/DeleteTag.graphql,
+				operations/users/CompleteSignUpWithCode.graphql,
 			);
 		};
 /* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */

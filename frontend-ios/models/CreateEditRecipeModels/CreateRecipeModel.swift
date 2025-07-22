@@ -30,8 +30,8 @@ class CreateRecipeModel: BaseRecipe {
                     user: RecetteSchema.UserInput(email: email),
                     tags: .some(Array(selectedTags)),
                     difficulty: difficulty != nil ? .some(difficulty!) : .null,
-                    servingSize: .some(servingSize),
-                    cookTimeInMinutes: .some(cookTimeInMinutes)
+                    cookTimeInMinutes: .some(cookTimeInMinutes),
+                    servingSize: .some(servingSize)
                 )
 
                 let mutation = RecetteSchema.AddRecipeMutation(input: input)

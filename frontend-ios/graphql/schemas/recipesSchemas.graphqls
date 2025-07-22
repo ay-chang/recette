@@ -1,0 +1,70 @@
+extend type Query {
+  recipes: [Recipe]
+  recipeById(id: ID!): Recipe
+  userRecipes(email: String!): [Recipe!]!
+  filterUserRecipes(email: String!, recipeFilterInput: RecipeFilterInput): [Recipe!]!
+}
+
+extend type Mutation {
+  addRecipe(input: RecipeInput!): Recipe!
+  deleteRecipe(id: ID!): Boolean!
+  updateRecipeImage(recipeId: String!, imageurl: String!): Recipe!
+  updateRecipe(input: UpdateRecipeInput!): Recipe!
+}
+
+type Recipe {
+  id: ID!
+  title: String!
+  description: String!
+  imageurl: String
+  ingredients: [Ingredient!]!
+  steps: [String!]!
+  user: User!
+  tags: [Tag!]!
+  difficulty: String
+  cookTimeInMinutes: Int
+  servingSize: Int
+}
+
+type Ingredient {
+  id: ID!
+  name: String!
+  measurement: String!
+}
+
+input RecipeInput {
+  title: String!
+  description: String!
+  imageurl: String
+  ingredients: [IngredientInput!]!
+  steps: [String!]!
+  user: UserInput!
+  tags: [String!]
+  difficulty: String
+  cookTimeInMinutes: Int
+  servingSize: Int
+}
+
+input UpdateRecipeInput {
+  id: ID!
+  title: String!
+  description: String!
+  imageurl: String
+  ingredients: [IngredientInput!]!
+  steps: [String!]!
+  tags: [String!]
+  difficulty: String
+  servingSize: Int
+  cookTimeInMinutes: Int
+}
+
+input IngredientInput {
+  name: String!
+  measurement: String!
+}
+
+input RecipeFilterInput {
+  tags: [String]
+  maxCookTimeInMinutes: Int
+  difficulties: [String]
+}
