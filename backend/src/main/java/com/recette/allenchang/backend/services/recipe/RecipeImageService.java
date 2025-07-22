@@ -23,7 +23,7 @@ public class RecipeImageService {
         Recipe recipe = recipeRepository.findById(recipeId)
                 .orElseThrow(() -> new IllegalArgumentException("Recipe not found with id: " + recipeId));
 
-        if (!recipe.getUser().getEmail().equalsIgnoreCase(userEmail)) {
+        if (!recipe.getUser().getEmail().equalsIgnoreCase(userEmail.toLowerCase())) {
             throw new RuntimeException("Unauthorized to update image for this recipe");
         }
 

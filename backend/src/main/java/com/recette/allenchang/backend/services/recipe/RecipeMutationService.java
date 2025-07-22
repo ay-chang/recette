@@ -94,7 +94,7 @@ public class RecipeMutationService {
 
     /** Setting the user in a mutation function */
     private User findUserByEmail(String email) {
-        return userRepository.findByEmail(email)
+        return userRepository.findByEmail(email.toLowerCase())
                 .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
     }
 

@@ -33,7 +33,7 @@ public class RecipeQueryService {
 
     /** Returns all recipes for user with matching email */
     public List<Recipe> getRecipesByUserEmail(String email) {
-        return userRepository.findByEmail(email)
+        return userRepository.findByEmail(email.toLowerCase())
                 .map(user -> recipeRepository.findByUserId(
                         user.getId(),
                         Sort.by(Sort.Direction.DESC, "createdAt")))
@@ -52,7 +52,7 @@ public class RecipeQueryService {
      * owned by the user
      */
     public List<Recipe> getUserFilteredRecipes(String email, RecipeFilterInput recipeFilterInput) {
-        return userRepository.findByEmail(email).map(user -> {
+        return userRepository.findByEmail(email.toLowerCase()).map(user -> {
             /**
              * CriteriaBuilder is used to construct conditions (predicates), ordering, etc.
              * CriteriaQuery<Recipe> means that the query will return Recipe objects.

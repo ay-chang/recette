@@ -19,7 +19,7 @@ public class GroceriesQueryService {
     }
 
     public List<Grocery> getUserGroceries(String email) {
-        return userRepository.findByEmail(email)
+        return userRepository.findByEmail(email.toLowerCase())
                 .map(user -> groceryRepository.findByUserId(user.getId()))
                 .orElse(List.of());
     }

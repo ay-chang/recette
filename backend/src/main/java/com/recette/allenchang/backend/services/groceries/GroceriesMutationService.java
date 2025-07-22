@@ -28,7 +28,7 @@ public class GroceriesMutationService {
     }
 
     public List<Grocery> addGroceries(List<Grocery> groceries, String email, UUID recipeId) {
-        User user = userRepository.findByEmail(email)
+        User user = userRepository.findByEmail(email.toLowerCase())
                 .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
 
         Recipe recipe;
@@ -56,7 +56,7 @@ public class GroceriesMutationService {
 
     @Transactional
     public boolean removeRecipeFromGroceries(String email, UUID recipeId) {
-        User user = userRepository.findByEmail(email)
+        User user = userRepository.findByEmail(email.toLowerCase())
                 .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
 
         Recipe recipe = recipeRepository.findById(recipeId)

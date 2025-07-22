@@ -20,7 +20,7 @@ public class TagsQueryService {
     }
 
     public List<Tag> getTagsByUser(String email) {
-        User user = userRepository.findByEmail(email)
+        User user = userRepository.findByEmail(email.toLowerCase())
                 .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
         return tagRepository.findByUser(user);
     }

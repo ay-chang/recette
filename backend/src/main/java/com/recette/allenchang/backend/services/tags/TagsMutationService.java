@@ -27,7 +27,7 @@ public class TagsMutationService {
     }
 
     public Tag addTag(String email, String tagName) {
-        User user = userRepository.findByEmail(email)
+        User user = userRepository.findByEmail(email.toLowerCase())
                 .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
         if (tagRepository.existsByUserAndName(user, tagName)) {
             throw new IllegalArgumentException("Tag already exists for this user: " + tagName);
@@ -39,7 +39,7 @@ public class TagsMutationService {
 
     @Transactional
     public boolean deleteTag(String email, String tagName) {
-        User user = userRepository.findByEmail(email)
+        User user = userRepository.findByEmail(email.toLowerCase())
                 .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
 
         Tag tag = tagRepository.findByUserAndName(user, tagName)

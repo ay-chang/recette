@@ -87,8 +87,9 @@ public class UserMutationService {
 
     /** Update a users first and last name, for now */
     public User updateAccountDetails(String email, AccountDetailsInput input) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
+        User user = userRepository.findByEmail(email.toLowerCase())
+                .orElseThrow(() -> new RuntimeException("User not found with email: " +
+                        email));
 
         user.setFirstName(input.getFirstName());
         user.setLastName(input.getLastName());
@@ -98,7 +99,7 @@ public class UserMutationService {
 
     /** Delete a user account */
     public void deleteUserByEmail(String email) {
-        User user = userRepository.findByEmail(email)
+        User user = userRepository.findByEmail(email.toLowerCase())
                 .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
         userRepository.delete(user);
     }
