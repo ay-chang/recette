@@ -8,6 +8,8 @@ struct VerifyCodeView: View {
     @State private var codeDigits: [String] = Array(repeating: "", count: 6)
     @State private var isResending = false
     @State private var resendMessage: String?
+    @State private var cooldownRemaining = 0
+    @State private var cooldownTimer: Timer? = nil
     @FocusState private var focusedField: Int?
 
     var fullCode: String {
@@ -55,7 +57,7 @@ struct VerifyCodeView: View {
                     if let resendMessage = resendMessage {
                         Text(resendMessage)
                             .font(.footnote)
-                            .foregroundColor(.green)
+                            .foregroundColor(.gray)
                             .multilineTextAlignment(.center)
                             .padding(.top, 4)
                     }
@@ -69,15 +71,24 @@ struct VerifyCodeView: View {
                             resendMessage = nil
                             session.sendVerificationCode(email: email, password: password) { success in
                                 isResending = false
-                                resendMessage = success ? "Verification code resent to your email." : (session.loginError ?? "Failed to resend code.")
+                                if success {
+                                    resendMessage = "Verification code resent to your email."
+                                    startCooldown(seconds: 120) // Start 30-second cooldown
+                                } else {
+                                    resendMessage = session.loginError ?? "Failed to resend code."
+                                }
                             }
                         }) {
-                            Text(isResending ? "Resending..." : "Resend")
-                                .fontWeight(.semibold)
-                                .underline()
-                                .foregroundColor(.black)
+                            if cooldownRemaining > 0 {
+                                Text("Resend Code in \(cooldownRemaining)s")
+                                    .foregroundColor(.gray)
+                            } else {
+                                Text("Resend")
+                                    .foregroundColor(.black)
+                                    .fontWeight(.semibold)
+                            }
                         }
-                        .disabled(isResending)
+                        .disabled(isResending || cooldownRemaining > 0)
                         .padding(.top, 8)
                     }
                     .font(.subheadline)
@@ -103,4 +114,19 @@ struct VerifyCodeView: View {
         }
         .padding()
     }
+    
+    
+    func startCooldown(seconds: Int) {
+        cooldownRemaining = seconds
+        cooldownTimer?.invalidate() // cancel existing timer if needed
+        
+        cooldownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+            cooldownRemaining -= 1
+            if cooldownRemaining <= 0 {
+                timer.invalidate()
+                cooldownTimer = nil
+            }
+        }
+    }
+
 }

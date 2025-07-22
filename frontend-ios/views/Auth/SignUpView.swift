@@ -5,6 +5,7 @@ struct SignUpView: View {
     @State private var email = ""
     @State private var password = ""
     @State private var showVerifyCode = false
+    @State private var isPasswordVisible = false
     @Binding var showSheet: Bool
 
     var body: some View {
@@ -27,7 +28,7 @@ struct SignUpView: View {
                 .padding(.bottom, 36)
 
             /* Sign up form */
-            VStack(spacing: 12) {
+            VStack(alignment: .leading, spacing: 12) {
                 TextField("Email", text: $email)
                     .keyboardType(.emailAddress)
                     .padding()
@@ -35,11 +36,36 @@ struct SignUpView: View {
                     .cornerRadius(10)
                     .overlay(RoundedRectangle(cornerRadius: 10).stroke(.gray, lineWidth: 1))
 
-                SecureField("Password", text: $password)
-                    .padding(16)
-                    .background(Color.white)
-                    .cornerRadius(10)
-                    .overlay(RoundedRectangle(cornerRadius: 10).stroke(.gray, lineWidth: 1))
+
+                HStack {
+                    if isPasswordVisible {
+                        TextField("Password", text: $password)
+                    } else {
+                        SecureField("Password", text: $password)
+                    }
+                    
+                    Button(action: {
+                        isPasswordVisible.toggle()
+                    }) {
+                        Image(systemName: isPasswordVisible ? "eye.slash" : "eye")
+                            .foregroundColor(.gray)
+                            .font(.system(size: 17))
+                    }
+                }
+                .padding(.horizontal)
+                .padding(.vertical, !isPasswordVisible ? 16 : 15.5)
+                .background(Color.white)
+                .cornerRadius(10)
+                .overlay(RoundedRectangle(cornerRadius: 10).stroke(.gray, lineWidth: 1))
+
+                
+                
+                Text("Must contain at least 8 characters and have a capital letter")
+                    .font(.caption)
+                    .foregroundColor(.gray)
+                    .padding(.bottom, 24)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal)
 
                 Button(action: {
                     session.sendVerificationCode(email: email, password: password) { success in

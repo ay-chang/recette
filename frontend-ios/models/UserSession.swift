@@ -189,6 +189,7 @@ class UserSession: ObservableObject {
             switch result {
             case .success(let graphQLResult):
                 if graphQLResult.data?.sendVerificationCode == true {
+                    self.loginError = nil
                     completion(true)
                 } else if let errors = graphQLResult.errors {
                     DispatchQueue.main.async {
@@ -356,12 +357,6 @@ class UserSession: ObservableObject {
         let isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
         let email = UserDefaults.standard.string(forKey: "loggedInEmail")
         let token = AuthManager.shared.jwtToken
-        
-        // 🔍 Debug print statements
-        print("🟡 loadSavedSession() called")
-        print("isLoggedIn flag:", isLoggedIn)
-        print("Stored email:", email ?? "nil")
-        print("JWT token from AuthManager:", token ?? "nil")
 
         if isLoggedIn, let email = email {
             self.userEmail = email
@@ -384,7 +379,7 @@ class UserSession: ObservableObject {
                                 UserDefaults.standard.set(user.firstName, forKey: "loggedInFirstName")
                                 UserDefaults.standard.set(user.lastName, forKey: "loggedInLastName")
 
-                                print("✅ Loaded user details from saved session")
+                                print("Loaded user details from saved session")
                             }
                         } else if let errors = graphQLResult.errors {
                             print("GraphQL errors while fetching user details:", errors.map(\.message))
