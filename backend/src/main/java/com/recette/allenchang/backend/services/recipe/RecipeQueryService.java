@@ -53,12 +53,6 @@ public class RecipeQueryService {
      */
     public List<Recipe> getUserFilteredRecipes(String email, RecipeFilterInput recipeFilterInput) {
         return userRepository.findByEmail(email.toLowerCase()).map(user -> {
-            /**
-             * CriteriaBuilder is used to construct conditions (predicates), ordering, etc.
-             * CriteriaQuery<Recipe> means that the query will return Recipe objects.
-             * Root<Recipe> is the base table (or entity) for your query, we can think of it
-             * as FROM Recipe.
-             */
             CriteriaBuilder cb = entityManager.getCriteriaBuilder();
             CriteriaQuery<Recipe> query = cb.createQuery(Recipe.class);
             Root<Recipe> root = query.from(Recipe.class);
@@ -79,15 +73,15 @@ public class RecipeQueryService {
             if (recipeFilterInput.getTags() != null && !recipeFilterInput.getTags().isEmpty()) {
                 Join<Object, Object> tagJoin = root.join("tags", JoinType.INNER); // INNER join for filtering
                 predicates.add(tagJoin.get("name").in(recipeFilterInput.getTags()));
-                query.groupBy(root.get("id"));
-                query.having(cb.equal(cb.countDistinct(tagJoin.get("name")), recipeFilterInput.getTags().size()));
+                // OR behavior: do not group or use having — this will include any recipe with
+                // any of the tags
             } else {
-                root.fetch("tags", JoinType.LEFT); // Only fetch when no tag filter — to avoid duplicate join issue
+                root.fetch("tags", JoinType.LEFT);
             }
 
-            query.select(root).where(predicates.toArray(new Predicate[0]));
+            query.select(root).where(cb.and(predicates.toArray(new Predicate[0]))).distinct(true);
             return entityManager.createQuery(query).getResultList();
-
         }).orElse(List.of());
     }
+
 }
