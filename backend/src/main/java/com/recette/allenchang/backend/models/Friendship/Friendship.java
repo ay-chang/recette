@@ -1,4 +1,4 @@
-package com.recette.allenchang.backend.models.Friendships;
+package com.recette.allenchang.backend.models.Friendship;
 
 import java.time.LocalDateTime;
 
@@ -31,5 +31,39 @@ public class Friendship {
     private FriendshipStatus status;
 
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    /** Getters and Setters */
+
+    public User getUser() {
+        return this.user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public User getFriend() {
+        return this.friend;
+    }
+
+    public void setFriend(User friend) {
+        this.friend = friend;
+    }
+
+    public FriendshipStatus getStatus() {
+        return this.status;
+    }
+
+    public void setStatus(FriendshipStatus status) {
+        this.status = status;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return this.createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 
 }

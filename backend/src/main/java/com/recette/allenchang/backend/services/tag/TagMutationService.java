@@ -1,4 +1,4 @@
-package com.recette.allenchang.backend.services.tags;
+package com.recette.allenchang.backend.services.tag;
 
 import java.util.List;
 
@@ -14,12 +14,12 @@ import com.recette.allenchang.backend.repositories.RecipeRepository;
 import jakarta.transaction.Transactional;
 
 @Service
-public class TagsMutationService {
+public class TagMutationService {
     private final TagRepository tagRepository;
     private final UserRepository userRepository;
     private final RecipeRepository recipeRepository;
 
-    public TagsMutationService(TagRepository tagRepository, UserRepository userRepository,
+    public TagMutationService(TagRepository tagRepository, UserRepository userRepository,
             RecipeRepository recipeRepository) {
         this.tagRepository = tagRepository;
         this.userRepository = userRepository;

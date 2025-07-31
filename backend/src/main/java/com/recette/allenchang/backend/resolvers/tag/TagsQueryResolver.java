@@ -1,4 +1,4 @@
-package com.recette.allenchang.backend.resolvers.tags;
+package com.recette.allenchang.backend.resolvers.tag;
 
 import java.util.List;
 
@@ -7,13 +7,13 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
 import com.recette.allenchang.backend.models.Tag;
-import com.recette.allenchang.backend.services.tags.TagsQueryService;
+import com.recette.allenchang.backend.services.tag.TagQueryService;
 
 @Controller
 public class TagsQueryResolver {
-    private final TagsQueryService tagsQueryService;
+    private final TagQueryService tagsQueryService;
 
-    public TagsQueryResolver(TagsQueryService tagsQueryService) {
+    public TagsQueryResolver(TagQueryService tagsQueryService) {
         this.tagsQueryService = tagsQueryService;
     }
 

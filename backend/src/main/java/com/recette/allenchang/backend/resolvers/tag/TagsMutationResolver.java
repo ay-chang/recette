@@ -1,18 +1,18 @@
-package com.recette.allenchang.backend.resolvers.tags;
+package com.recette.allenchang.backend.resolvers.tag;
 
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.stereotype.Controller;
 
 import com.recette.allenchang.backend.models.Tag;
-import com.recette.allenchang.backend.services.tags.TagsMutationService;
 import com.recette.allenchang.backend.security.JwtUtil;
+import com.recette.allenchang.backend.services.tag.TagMutationService;
 
 @Controller
 public class TagsMutationResolver {
-    private final TagsMutationService tagsMutationService;
+    private final TagMutationService tagsMutationService;
 
-    public TagsMutationResolver(TagsMutationService tagsMutationService) {
+    public TagsMutationResolver(TagMutationService tagsMutationService) {
         this.tagsMutationService = tagsMutationService;
     }
 

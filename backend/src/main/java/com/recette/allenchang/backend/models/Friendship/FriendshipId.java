@@ -1,4 +1,4 @@
-package com.recette.allenchang.backend.models.Friendships;
+package com.recette.allenchang.backend.models.Friendship;
 
 import java.io.Serializable;
 import java.util.Objects;

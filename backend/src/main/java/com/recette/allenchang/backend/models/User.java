@@ -10,6 +10,8 @@ import jakarta.persistence.Table;
 import java.util.List;
 import java.util.UUID;
 
+import com.recette.allenchang.backend.models.Friendship.Friendship;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -31,6 +33,12 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Grocery> groceries;
+
+    @OneToMany(mappedBy = "user")
+    private List<Friendship> sentFriendRequests;
+
+    @OneToMany(mappedBy = "friend")
+    private List<Friendship> receivedFriendRequests;
 
     /** Getters and setters */
     public UUID getId() {

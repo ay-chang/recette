@@ -1,4 +1,4 @@
-package com.recette.allenchang.backend.services.tags;
+package com.recette.allenchang.backend.services.tag;
 
 import java.util.List;
 
@@ -10,11 +10,11 @@ import com.recette.allenchang.backend.repositories.TagRepository;
 import com.recette.allenchang.backend.repositories.UserRepository;
 
 @Service
-public class TagsQueryService {
+public class TagQueryService {
     private final TagRepository tagRepository;
     private final UserRepository userRepository;
 
-    public TagsQueryService(TagRepository tagRepository, UserRepository userRepository) {
+    public TagQueryService(TagRepository tagRepository, UserRepository userRepository) {
         this.tagRepository = tagRepository;
         this.userRepository = userRepository;
     }
