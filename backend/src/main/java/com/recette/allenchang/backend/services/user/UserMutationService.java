@@ -1,6 +1,9 @@
 package com.recette.allenchang.backend.services.user;
 
 import java.util.Random;
+
+import javax.print.ServiceUI;
+
 import com.recette.allenchang.backend.verification.VerificationCodeStore;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,6 +15,7 @@ import com.recette.allenchang.backend.exceptions.InvalidCredentialsException;
 import com.recette.allenchang.backend.exceptions.InvalidInputException;
 import com.recette.allenchang.backend.exceptions.EmailAlreadyInUseException;
 import com.recette.allenchang.backend.services.EmailService;
+import com.recette.allenchang.backend.services.ServiceUtil;
 
 @Service
 public class UserMutationService {
@@ -20,13 +24,15 @@ public class UserMutationService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
+    private final ServiceUtil serviceUtil;
 
     public UserMutationService(UserRepository userRepository, PasswordEncoder passwordEncoder,
-            VerificationCodeStore verificationCodeStore, EmailService emailService) {
+            VerificationCodeStore verificationCodeStore, EmailService emailService, ServiceUtil serviceUtil) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.verificationCodeStore = verificationCodeStore;
         this.emailService = emailService;
+        this.serviceUtil = serviceUtil;
     }
 
     /** Validate username and password during login */
@@ -41,13 +47,13 @@ public class UserMutationService {
     /** Send an email to the user with a verification code */
     public void sendVerificationCode(String email, String password) {
         email = email.toLowerCase().trim();
-        validateEmailFormat(email);
+        serviceUtil.validateEmailFormat(email);
 
         boolean isResend = verificationCodeStore.contains(email);
 
         if (!isResend) {
-            validatePasswordFormat(password);
-            checkIfEmailExists(email);
+            serviceUtil.validatePasswordFormat(password);
+            serviceUtil.checkIfEmailExists(email);
         }
 
         /** Generate 6 digit code between 100000 - 999999 and send the email */
@@ -67,7 +73,7 @@ public class UserMutationService {
             throw new InvalidInputException("Invalid or expired verification code");
         }
 
-        checkIfEmailExists(email); // re-check to avoid race conditions
+        serviceUtil.checkIfEmailExists(email); // re-check to avoid race conditions
 
         String rawPassword = verificationCodeStore.getStoredPassword(email);
         if (rawPassword == null) {
@@ -103,25 +109,4 @@ public class UserMutationService {
                 .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
         userRepository.delete(user);
     }
-
-    /** -------------------- Private helper functions -------------------- */
-
-    private void validateEmailFormat(String email) {
-        if (!email.matches("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
-            throw new InvalidInputException("Invalid email format");
-        }
-    }
-
-    private void checkIfEmailExists(String email) {
-        if (userRepository.findByEmail(email).isPresent()) {
-            throw new EmailAlreadyInUseException("Email already in use");
-        }
-    }
-
-    private void validatePasswordFormat(String password) {
-        if (password.length() < 8 || !password.matches(".*[A-Z].*")) {
-            throw new InvalidInputException("Password must be at least 8 characters and contain an uppercase letter.");
-        }
-    }
-
 }
