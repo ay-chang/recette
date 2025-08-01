@@ -38,14 +38,12 @@ public class ServiceUtil {
 
     /** Finding user by email */
     public User findUserByEmail(String email) {
-        System.out.println("Finding by email...");
         return userRepository.findByEmail(email.toLowerCase())
                 .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
     }
 
     /** Finding user by username */
     public User findUserByUsername(String username) {
-        System.out.println("Finding by username...");
         return userRepository.findByUsername(username.toLowerCase())
                 .orElseThrow(() -> new IllegalArgumentException("User not found with username: " + username));
     }
@@ -86,6 +84,13 @@ public class ServiceUtil {
         if (user.equals(friend)) {
             throw new IllegalArgumentException("You cannot send a friend request to yourself.");
         }
+    }
+
+    /** Find the already existing friendship object between two users */
+    public Friendship findExistingFriendship(User user, User friend) {
+        return friendshipRepository.findByUserAndFriend(user, friend)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "No friendship object found for " + user + " and " + friend));
     }
 
     /** ---------- RECIPE UTILS ---------- */

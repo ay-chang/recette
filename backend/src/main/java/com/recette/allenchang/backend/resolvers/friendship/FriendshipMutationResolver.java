@@ -5,15 +5,18 @@ import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 
 import com.recette.allenchang.backend.models.Friendship.Friendship;
+
 import com.recette.allenchang.backend.services.friendship.FriendshipMutationService;
 import com.recette.allenchang.backend.security.JwtUtil;
 
 @Controller
 public class FriendshipMutationResolver {
+
     private final FriendshipMutationService friendshipMutationService;
 
     public FriendshipMutationResolver(FriendshipMutationService friendshipMutationService) {
         this.friendshipMutationService = friendshipMutationService;
+
     }
 
     /** POST: a friend request */
@@ -21,6 +24,20 @@ public class FriendshipMutationResolver {
     public Friendship sendFriendRequest(@Argument String friendUsername) {
         String userEmail = JwtUtil.getLoggedInUserEmail();
         return friendshipMutationService.sendFriendRequest(userEmail, friendUsername);
+    }
+
+    /** POST: accept friend request */
+    @MutationMapping
+    public Friendship acceptFriendRequest(@Argument String friendUsername) {
+        String userEmail = JwtUtil.getLoggedInUserEmail();
+        return friendshipMutationService.acceptFriendRequest(userEmail, friendUsername);
+    }
+
+    /** DELETE: remove a friend */
+    @MutationMapping
+    public boolean removeFriend(@Argument String friendUsername) {
+        String userEmail = JwtUtil.getLoggedInUserEmail();
+        return friendshipMutationService.removeFriend(userEmail, friendUsername);
     }
 
 }

@@ -1,5 +1,7 @@
 extend type Mutation {
   sendFriendRequest(friendUsername: String!): Friendship!
+  acceptFriendRequest(friendUsername: String!): Friendship!
+  removeFriend(friendUsername: String!): Boolean!
 }
 
 type Friendship {
@@ -12,6 +14,5 @@ type Friendship {
 enum FriendshipStatus {
   PENDING
   ACCEPTED
-  DECLINED
   BLOCKED
 }
