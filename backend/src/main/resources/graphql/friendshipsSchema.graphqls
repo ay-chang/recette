@@ -1,3 +1,17 @@
-extend type Query {}
+extend type Mutation {
+  sendFriendRequest(friendUsername: String!): Friendship!
+}
 
-extend type Mutation {}
+type Friendship {
+  user: User!
+  friend: User!
+  status: FriendshipStatus!
+  createdAt: String!
+}
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  BLOCKED
+}

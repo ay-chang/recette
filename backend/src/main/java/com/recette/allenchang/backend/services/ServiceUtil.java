@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.stereotype.Component;
+
 import com.recette.allenchang.backend.exceptions.EmailAlreadyInUseException;
 import com.recette.allenchang.backend.exceptions.InvalidInputException;
 import com.recette.allenchang.backend.inputs.IngredientInput;
@@ -17,6 +19,7 @@ import com.recette.allenchang.backend.repositories.RecipeRepository;
 import com.recette.allenchang.backend.repositories.UserRepository;
 import com.recette.allenchang.backend.repositories.TagRepository;
 
+@Component
 public class ServiceUtil {
     private final FriendshipRepository friendshipRepository;
     private final UserRepository userRepository;
@@ -35,12 +38,14 @@ public class ServiceUtil {
 
     /** Finding user by email */
     public User findUserByEmail(String email) {
+        System.out.println("Finding by email...");
         return userRepository.findByEmail(email.toLowerCase())
                 .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
     }
 
     /** Finding user by username */
     public User findUserByUsername(String username) {
+        System.out.println("Finding by username...");
         return userRepository.findByUsername(username.toLowerCase())
                 .orElseThrow(() -> new IllegalArgumentException("User not found with username: " + username));
     }

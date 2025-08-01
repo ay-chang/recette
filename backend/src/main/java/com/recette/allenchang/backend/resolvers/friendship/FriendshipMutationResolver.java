@@ -1,6 +1,5 @@
 package com.recette.allenchang.backend.resolvers.friendship;
 
-
 import org.springframework.stereotype.Controller;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;

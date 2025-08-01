@@ -2,8 +2,6 @@ package com.recette.allenchang.backend.services.user;
 
 import java.util.Random;
 
-import javax.print.ServiceUI;
-
 import com.recette.allenchang.backend.verification.VerificationCodeStore;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,7 +11,6 @@ import com.recette.allenchang.backend.repositories.UserRepository;
 import com.recette.allenchang.backend.inputs.AccountDetailsInput;
 import com.recette.allenchang.backend.exceptions.InvalidCredentialsException;
 import com.recette.allenchang.backend.exceptions.InvalidInputException;
-import com.recette.allenchang.backend.exceptions.EmailAlreadyInUseException;
 import com.recette.allenchang.backend.services.EmailService;
 import com.recette.allenchang.backend.services.ServiceUtil;
 
