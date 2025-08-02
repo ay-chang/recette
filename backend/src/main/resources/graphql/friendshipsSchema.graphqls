@@ -1,3 +1,7 @@
+extend type Query {
+  friends: [User]!
+}
+
 extend type Mutation {
   sendFriendRequest(friendUsername: String!): Friendship!
   acceptFriendRequest(friendUsername: String!): Friendship!

@@ -23,12 +23,15 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Friendsh
     /** Find friendships received by a user */
     List<Friendship> findByFriend(User friend);
 
-    /** Find all accepted friendships (user is either sender or receiver) */
-    List<Friendship> findByUserOrFriendAndStatus(User user, User friend, FriendshipStatus status);
-
     /** Find pending requests sent by the user */
     List<Friendship> findByUserAndStatus(User user, FriendshipStatus status);
 
-    /** Optional: find pending requests received by the user */
+    /** Find pending requests received by the user */
     List<Friendship> findByFriendAndStatus(User friend, FriendshipStatus status);
+
+    /** Used to find by status */
+    List<Friendship> findByStatusAndUserOrStatusAndFriend(
+            FriendshipStatus status1, User user1,
+            FriendshipStatus status2, User user2);
+
 }
