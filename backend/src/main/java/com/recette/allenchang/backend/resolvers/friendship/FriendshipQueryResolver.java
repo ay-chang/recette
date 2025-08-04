@@ -18,9 +18,16 @@ public class FriendshipQueryResolver {
         this.friendshipQueryService = friendshipQueryService;
     }
 
+    /** GET: friends for current user */
     @QueryMapping
     public List<User> friends() {
         String userEmail = JwtUtil.getLoggedInUserEmail();
         return friendshipQueryService.getFriends(userEmail);
     }
+
+    /** GET: incoming friend requests */
+    // @QueryMapping
+    // public List<User> incomingFriendRequests() {
+    // return friendshipQueryService.getIncomingFriendRequests(userEmail);
+    // }
 }

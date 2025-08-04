@@ -14,6 +14,7 @@ import com.recette.allenchang.backend.models.Recipe;
 import com.recette.allenchang.backend.models.Tag;
 import com.recette.allenchang.backend.models.User;
 import com.recette.allenchang.backend.models.Friendship.Friendship;
+import com.recette.allenchang.backend.models.Friendship.FriendshipStatus;
 import com.recette.allenchang.backend.repositories.FriendshipRepository;
 import com.recette.allenchang.backend.repositories.RecipeRepository;
 import com.recette.allenchang.backend.repositories.UserRepository;
@@ -91,6 +92,26 @@ public class ServiceUtil {
         return friendshipRepository.findByUserAndFriend(user, friend)
                 .orElseThrow(() -> new IllegalArgumentException(
                         "No friendship object found for " + user + " and " + friend));
+    }
+
+    /** Find incoming friendrequest from the friend */
+    public Friendship findIncomingFriendRequestFromFriend(User user, User friend) {
+        Friendship request = friendshipRepository
+                .findByUserAndFriendAndStatus(friend, user, FriendshipStatus.PENDING)
+                .orElseThrow(() -> new IllegalArgumentException("No pending request from " + friend));
+
+        System.out.println(request);
+
+        return request;
+    }
+
+    /** Find incoming friend requests for a user */
+    public List<Friendship> findIncomingFriendRequests(User friend) {
+        List<Friendship> incoming = friendshipRepository.findByFriendAndStatus(friend, FriendshipStatus.PENDING);
+        if (incoming.isEmpty()) {
+            throw new IllegalArgumentException("No incoming friend requests");
+        }
+        return incoming;
     }
 
     /** ---------- RECIPE UTILS ---------- */

@@ -37,7 +37,7 @@ public class FriendshipMutationService {
     public Friendship acceptFriendRequest(String userEmail, String friendUsername) {
         User user = serviceUtil.findUserByEmail(userEmail);
         User friend = serviceUtil.findUserByUsername(friendUsername);
-        Friendship friendship = serviceUtil.findExistingFriendship(user, friend);
+        Friendship friendship = serviceUtil.findIncomingFriendRequestFromFriend(user, friend);
 
         friendship.setStatus(FriendshipStatus.ACCEPTED);
         return friendshipRepository.save(friendship);

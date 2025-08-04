@@ -17,6 +17,9 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Friendsh
     /** Check if a friendship already exists (in either direction) */
     Optional<Friendship> findByUserAndFriend(User user, User friend);
 
+    /** Find a user and friend and by status, used for acceping friend requests */
+    Optional<Friendship> findByUserAndFriendAndStatus(User user, User friend, FriendshipStatus status);
+
     /** Find friendships initiated by a user */
     List<Friendship> findByUser(User user);
 

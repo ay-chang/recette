@@ -28,10 +28,14 @@ public class FriendshipQueryService {
                 FriendshipStatus.ACCEPTED, user,
                 FriendshipStatus.ACCEPTED, user);
 
-        // Map to the other side of the friendship
         return friendships.stream()
                 .map(f -> f.getUser().equals(user) ? f.getFriend() : f.getUser())
                 .toList();
     }
+
+    // public List<User> getIncomingFriendRequests(String userEmail) {
+    // User user = serviceUtil.findUserByEmail(userEmail);
+
+    // }
 
 }
