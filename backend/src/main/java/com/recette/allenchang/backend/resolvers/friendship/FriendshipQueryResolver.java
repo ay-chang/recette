@@ -6,7 +6,6 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
 import com.recette.allenchang.backend.models.User;
-import com.recette.allenchang.backend.models.Friendship.Friendship;
 import com.recette.allenchang.backend.security.JwtUtil;
 import com.recette.allenchang.backend.services.friendship.FriendshipQueryService;
 
@@ -26,8 +25,10 @@ public class FriendshipQueryResolver {
     }
 
     /** GET: incoming friend requests */
-    // @QueryMapping
-    // public List<User> incomingFriendRequests() {
-    // return friendshipQueryService.getIncomingFriendRequests(userEmail);
-    // }
+    @QueryMapping
+    public List<User> incomingFriendRequests() {
+        // String userEmail = JwtUtil.getLoggedInUserEmail();
+        String userEmail = "recetteapp.ios@gmail.com";
+        return friendshipQueryService.getIncomingFriendRequests(userEmail);
+    }
 }
