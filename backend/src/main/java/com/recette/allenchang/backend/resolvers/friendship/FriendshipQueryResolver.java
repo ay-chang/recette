@@ -27,8 +27,7 @@ public class FriendshipQueryResolver {
     /** GET: incoming friend requests */
     @QueryMapping
     public List<User> incomingFriendRequests() {
-        // String userEmail = JwtUtil.getLoggedInUserEmail();
-        String userEmail = "recetteapp.ios@gmail.com";
+        String userEmail = JwtUtil.getLoggedInUserEmail();
         return friendshipQueryService.getIncomingFriendRequests(userEmail);
     }
 }

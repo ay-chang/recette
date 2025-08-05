@@ -33,6 +33,12 @@ public class FriendshipMutationResolver {
         return friendshipMutationService.acceptFriendRequest(userEmail, friendUsername);
     }
 
+    @MutationMapping
+    public boolean declineFriendRequest(@Argument String friendUsername) {
+        String userEmail = JwtUtil.getLoggedInUserEmail();
+        return friendshipMutationService.declineFriendRequest(userEmail, friendUsername);
+    }
+
     /** DELETE: remove a friend */
     @MutationMapping
     public boolean removeFriend(@Argument String friendUsername) {

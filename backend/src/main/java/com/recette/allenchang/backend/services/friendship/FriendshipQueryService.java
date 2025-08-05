@@ -23,11 +23,9 @@ public class FriendshipQueryService {
     /** Search for a list of users that are friends with the user */
     public List<User> getFriends(String userEmail) {
         User user = serviceUtil.findUserByEmail(userEmail);
-
         List<Friendship> friendships = friendshipRepository.findByStatusAndUserOrStatusAndFriend(
                 FriendshipStatus.ACCEPTED, user,
                 FriendshipStatus.ACCEPTED, user);
-
         return friendships.stream()
                 .map(f -> f.getUser().equals(user) ? f.getFriend() : f.getUser())
                 .toList();
@@ -37,7 +35,6 @@ public class FriendshipQueryService {
     public List<User> getIncomingFriendRequests(String userEmail) {
         User user = serviceUtil.findUserByEmail(userEmail);
         List<Friendship> friendships = friendshipRepository.findByFriendAndStatus(user, FriendshipStatus.PENDING);
-
         return friendships.stream()
                 .map(Friendship::getUser) // get the sender of each request
                 .toList();

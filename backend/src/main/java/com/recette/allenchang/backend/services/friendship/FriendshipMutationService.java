@@ -43,6 +43,20 @@ public class FriendshipMutationService {
         return friendshipRepository.save(friendship);
     }
 
+    /**
+     * Remove friendship object for user and friend when declined, similar to
+     * removeFriend logic.
+     */
+    @Transactional
+    public boolean declineFriendRequest(String userEmail, String friendUsername) {
+        User user = serviceUtil.findUserByEmail(userEmail);
+        User friend = serviceUtil.findUserByUsername(friendUsername);
+        Friendship friendship = serviceUtil.findExistingFriendship(user, friend);
+
+        friendshipRepository.delete(friendship);
+        return true;
+    }
+
     /** Remove friendship object for user and friend */
     @Transactional
     public boolean removeFriend(String userEmail, String friendUsername) {
