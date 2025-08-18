@@ -6,6 +6,7 @@ extend type Query {
 extend type Mutation {
   sendFriendRequest(friendUsername: String!): Friendship!
   acceptFriendRequest(friendUsername: String!): Friendship!
+  declineFriendRequest(friendUsername: String!): Friendship!
   removeFriend(friendUsername: String!): Boolean!
 }
 
