@@ -13,7 +13,9 @@ struct MainTabView: View {
                 switch selectedTab {
                 case 0: HomeView(selectedTab: $selectedTab)
                 case 1: GroceriesView()
-                case 2: ProfileView()
+                case 2: SocialView()
+                case 3: ProfileView()
+                    
                 default: HomeView(selectedTab: $selectedTab)
                 }
             }
@@ -28,7 +30,9 @@ struct MainTabView: View {
                 Spacer()
                 tabItem(label: "Grocery", image: "cart", index: 1)
                 Spacer()
-                tabItem(label: "Profile", image: "person", index: 2)
+                tabItem(label: "Social", image: "link", index: 2)
+                Spacer()
+                tabItem(label: "Profile", image: "person", index: 3)
             }
             .padding(.bottom, 36)
             .padding(.top, 10)
@@ -46,6 +50,7 @@ struct MainTabView: View {
         }
     }
 
+    /** Seperate View Builder for the create button as it takes up the entire screen when navigating to*/
     @ViewBuilder
     private func tabItem(label: String, image: String, index: Int) -> some View {
         Button(action: {

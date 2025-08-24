@@ -121,6 +121,7 @@
 				Main/HomeView.swift,
 				Main/MainTabView.swift,
 				Main/ProfileView.swift,
+				Main/SocialView.swift,
 				Profile/ProfileAccountDetailsView.swift,
 				Profile/ProfileEditUserTags.swift,
 				Profile/ProfileOptionsButton.swift,
@@ -145,6 +146,9 @@
 				RecipeList/RecipeListCard.swift,
 				RecipeList/RecipeListView.swift,
 				RecipeList/RecipesView.swift,
+				Social/FriendsList/FriendsListView.swift,
+				Social/FriendsPostsView.swift,
+				Social/SocialTopBar.swift,
 			);
 			target = 971C4CE42DA6ADD100A8CBAD /* frontend-ios */;
 		};

@@ -19,10 +19,10 @@ struct GroceryList: View {
                         .padding(.horizontal, 14)
                         .foregroundColor(Color.black)
                         .overlay(
-                                RoundedRectangle(cornerRadius: 15)
-                                    .stroke(Color.gray.opacity(0.6), lineWidth: 1)
-                            )
-                            .cornerRadius(15)
+                            RoundedRectangle(cornerRadius: 15)
+                                .stroke(Color.gray.opacity(0.6), lineWidth: 1)
+                        )
+                        .cornerRadius(15)
                 }
             }
             .padding()
