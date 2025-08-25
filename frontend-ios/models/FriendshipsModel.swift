@@ -10,7 +10,7 @@ struct FriendshipItem: Identifiable {
     var id: String { friendId }  // Identifiable
 }
 
-class FriendshipListModel: ObservableObject {
+class FriendshipsModel: ObservableObject {
     @Published var friendships: [FriendshipItem] = []
     @Published var isLoading = false
     @Published var errorMessage: String?

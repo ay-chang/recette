@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct FriendsListView: View {
+    @EnvironmentObject var friendshipsModel: FriendshipsModel
     @Binding var showFriendsListView: Bool
     
     var body: some View {
@@ -9,6 +10,9 @@ struct FriendsListView: View {
         
         /** Main friends list content*/
         FriendsList()
+            .onAppear {
+                (friendshipsModel.loadFriends())
+            }
         
         Spacer()
     }
