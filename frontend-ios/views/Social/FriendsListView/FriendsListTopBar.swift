@@ -1,20 +1,19 @@
 import SwiftUI
 
-struct SocialTopBar: View {
-    @State private var showFriendsListView: Bool = false
+struct FriendsListTopBar: View {
+    @Binding var showFriendsListView: Bool
     
     var body: some View {
         HStack {
-            Spacer()
-            
             Button(action: {
-                showFriendsListView = true
+                showFriendsListView = false
             }) {
-                Image(systemName: "person.2")
+                Image(systemName: "xmark")
                     .font(.title2)
                     .foregroundColor(Color.gray)
                     .padding(.vertical, 8)
             }
+            Spacer()
         }
         .padding()
         .overlay(
@@ -24,8 +23,6 @@ struct SocialTopBar: View {
             alignment: .bottom
         )
         .background(Color.gray.opacity(0.03))
-        .fullScreenCover(isPresented: $showFriendsListView) {
-            FriendsListView(showFriendsListView: $showFriendsListView)
-        }
     }
 }
+

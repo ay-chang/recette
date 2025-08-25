@@ -1,0 +1,24 @@
+extend type Query {
+  friends: [User]!
+  incomingFriendRequests: [User]!
+}
+
+extend type Mutation {
+  sendFriendRequest(friendUsername: String!): Friendship!
+  acceptFriendRequest(friendUsername: String!): Friendship!
+  declineFriendRequest(friendUsername: String!): Friendship!
+  removeFriend(friendUsername: String!): Boolean!
+}
+
+type Friendship {
+  user: User!
+  friend: User!
+  status: FriendshipStatus!
+  createdAt: String!
+}
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
+  BLOCKED
+}

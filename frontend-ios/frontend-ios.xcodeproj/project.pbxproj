@@ -65,6 +65,7 @@
 				CreateEditRecipeModels/CreateRecipeModel.swift,
 				CreateEditRecipeModels/EditRecipeModel.swift,
 				FilterRecipesModel.swift,
+				FriendshipsModel.swift,
 				GroceriesModel.swift,
 				IngredientModel.swift,
 				ProfileModel.swift,
@@ -146,7 +147,10 @@
 				RecipeList/RecipeListCard.swift,
 				RecipeList/RecipeListView.swift,
 				RecipeList/RecipesView.swift,
-				Social/FriendsList/FriendsListView.swift,
+				Social/FriendsListView/FriendsList.swift,
+				Social/FriendsListView/FriendsListItem.swift,
+				Social/FriendsListView/FriendsListTopBar.swift,
+				Social/FriendsListView/FriendsListView.swift,
 				Social/FriendsPostsView.swift,
 				Social/SocialTopBar.swift,
 			);
@@ -160,6 +164,7 @@
 				operations/recipes/GetUserRecipesFullDetails.graphql,
 				operations/tags/DeleteTag.graphql,
 				operations/users/CompleteSignUpWithCode.graphql,
+				schemas/friendshipsSchemas.graphqls,
 			);
 			target = 971C4CE42DA6ADD100A8CBAD /* frontend-ios */;
 		};
@@ -188,6 +193,7 @@
 				operations/recipes/GetUserRecipesFullDetails.graphql,
 				operations/tags/DeleteTag.graphql,
 				operations/users/CompleteSignUpWithCode.graphql,
+				schemas/friendshipsSchemas.graphqls,
 			);
 		};
 /* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
