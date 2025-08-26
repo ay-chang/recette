@@ -90,8 +90,10 @@ public class ServiceUtil {
     /** Find the already existing friendship object between two users */
     public Friendship findExistingFriendship(User user, User friend) {
         return friendshipRepository.findByUserAndFriend(user, friend)
+                .or(() -> friendshipRepository.findByUserAndFriend(friend, user))
                 .orElseThrow(() -> new IllegalArgumentException(
-                        "No friendship object found for " + user + " and " + friend));
+                        "No friendship object found for %s and %s".formatted(user.getUsername(),
+                                friend.getUsername())));
     }
 
     /** Find incoming friendrequest from the friend */
