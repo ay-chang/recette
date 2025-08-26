@@ -2,6 +2,7 @@ import SwiftUI
 
 struct FriendsListItem: View {
     let friend: FriendshipItem
+    let onRemove: (String) -> Void 
 
     var body: some View {
         HStack() {
@@ -14,12 +15,12 @@ struct FriendsListItem: View {
             
             VStack (alignment: .leading){
                 Text("\(friend.friendUsername)")
-                    .font(.headline)
+                    .font(.callout)
                 if let first = friend.friendFirstName,
                    let last = friend.friendLastName,
                    !(first.isEmpty && last.isEmpty) {
                     Text("\(first) \(last)")
-                        .font(.headline)
+                        .font(.callout)
                         .fontWeight(.regular)
                         .foregroundColor(.gray)
                 }
@@ -27,9 +28,19 @@ struct FriendsListItem: View {
             
             Spacer()
             
-            Text("Unadd")
-                .font(.callout)
-            
+            Button(action: {
+                onRemove(friend.friendUsername)
+            }) {
+                Text("Unadd")
+                    .font(.footnote)
+                    .padding(.vertical, 8)
+                    .padding(.horizontal, 12)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 15)
+                            .stroke(Color.gray.opacity(0.6), lineWidth: 1)
+                    )
+                    .cornerRadius(15)
+            }
         }
         .listRowInsets(EdgeInsets()) // removes default padding
         .listRowSeparator(.hidden)   // hides separator lines

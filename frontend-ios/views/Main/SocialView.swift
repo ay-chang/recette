@@ -4,7 +4,7 @@ struct SocialView: View {
     @StateObject private var friendshipsModel = FriendshipsModel()
     
     var body: some View {
-        VStack {
+        VStack (spacing: 0) {
             /** Header */
             SocialTopBar()
             

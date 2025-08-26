@@ -65,4 +65,31 @@ class FriendshipsModel: ObservableObject {
             }
         }
     }
+    
+    
+    func removeFriend(friendUsername: String) {
+        let mutation = RecetteSchema.RemoveFriendMutation(friendUsername: friendUsername)
+        print("Friend Username: " + friendUsername)
+
+        Network.shared.apollo.perform(mutation: mutation) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let graphQLResult):
+                if graphQLResult.data?.removeFriend == true {
+                    DispatchQueue.main.async {
+                        self.friendships.removeAll { $0.friendUsername == friendUsername }
+                    }
+                } else if let errors = graphQLResult.errors {
+                    DispatchQueue.main.async {
+                        self.errorMessage = errors.compactMap { $0.message }.joined(separator: "\n")
+                    }
+                }
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self.errorMessage = error.localizedDescription
+                }
+            }
+        }
+    }
+    
 }

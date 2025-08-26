@@ -5,15 +5,20 @@ struct FriendsListView: View {
     @Binding var showFriendsListView: Bool
     
     var body: some View {
-        /** Header */
-        FriendsListTopBar(showFriendsListView: $showFriendsListView)
-        
-        /** Main friends list content*/
-        FriendsList()
-            .onAppear {
-                (friendshipsModel.loadFriends())
-            }
-        
-        Spacer()
+        VStack(spacing: 0)  {
+            /** Header */
+            FriendsListTopBar(showFriendsListView: $showFriendsListView)
+            
+            /** Main friends list content*/
+            FriendsList()
+                .onAppear {
+                    (friendshipsModel.loadFriends())
+                }
+            
+            
+            Spacer()
+        }
+            
     }
+
 }

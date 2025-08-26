@@ -14,6 +14,12 @@ struct FriendsListTopBar: View {
                     .padding(.vertical, 8)
             }
             Spacer()
+            Button(action: {}) {
+                Image(systemName: "person.2.badge.plus")
+                    .font(.title2)
+                    .foregroundColor(Color.gray)
+                    .padding(.vertical, 8)
+            }
         }
         .padding()
         .overlay(
@@ -22,7 +28,7 @@ struct FriendsListTopBar: View {
                 .foregroundColor(Color.gray.opacity(0.1)),
             alignment: .bottom
         )
-        .background(Color.gray.opacity(0.03))
+         .background(Color.gray.opacity(0.03))
     }
 }
 
