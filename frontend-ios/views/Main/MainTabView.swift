@@ -26,9 +26,9 @@ struct MainTabView: View {
             HStack {
                 tabItem(label: "Recipes", image: "list.bullet.rectangle", index: 0)
                 Spacer()
-                createButton()
-                Spacer()
                 tabItem(label: "Grocery", image: "cart", index: 1)
+                Spacer()
+                createButton()
                 Spacer()
                 tabItem(label: "Social", image: "link", index: 2)
                 Spacer()
