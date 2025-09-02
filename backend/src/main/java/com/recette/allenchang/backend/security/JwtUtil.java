@@ -3,7 +3,6 @@ package com.recette.allenchang.backend.security;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -20,51 +19,76 @@ import java.util.Date;
 public class JwtUtil {
 
     @Value("${jwt.secret}")
-    private String secret;
+    private String accessSecret; // keep current secret for access tokens
 
-    private SecretKey secretKey;
+    @Value("${jwt.refresh-secret}")
+    private String refreshSecret; // use a different secret for refresh
+
+    private SecretKey accessKey;
+    private SecretKey refreshKey;
 
     @PostConstruct
     public void init() {
-        this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+        this.accessKey = Keys.hmacShaKeyFor(accessSecret.getBytes(StandardCharsets.UTF_8));
+        this.refreshKey = Keys.hmacShaKeyFor(refreshSecret.getBytes(StandardCharsets.UTF_8));
     }
 
-    /** Create token with the users email with an expiration of 24 hours */
-    public String generateToken(String email) {
-        long expirationMillis = 1000L * 60 * 60 * 24 * 30;
-        Date expiration = new Date(System.currentTimeMillis() + expirationMillis);
-
+    /** Generate token with the users email that expires in 15 minutes */
+    public String generateAccessToken(String email) {
+        long expMs = 1000L * 60 * 15; // 15 minutes
+        Date now = new Date();
         return Jwts.builder()
                 .setSubject(email)
-                .setIssuedAt(new Date())
-                .setExpiration(expiration) // 30 days
-                .signWith(secretKey, SignatureAlgorithm.HS256)
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + expMs))
+                .signWith(accessKey, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    /**
-     * Reads the "sub" (subject) claim from the JWT payload which we use as the
-     * user's identity.
-     */
-    public String extractEmail(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(secretKey)
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+    /** Generate a refresh token that refreshes every 30 days */
+    public String generateRefreshToken(String email, String jti) {
+        long expMs = 1000L * 60 * 60 * 24 * 30; // 30 days
+        Date now = new Date();
+        return Jwts.builder()
+                .setSubject(email)
+                .setId(jti) // for rotation/revocation
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + expMs))
+                .signWith(refreshKey, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    public String extractEmailFromAccess(String token) {
+        return Jwts.parserBuilder().setSigningKey(accessKey).build()
+                .parseClaimsJws(token).getBody().getSubject();
+    }
+
+    public String extractEmailFromRefresh(String token) {
+        return Jwts.parserBuilder().setSigningKey(refreshKey).build()
+                .parseClaimsJws(token).getBody().getSubject();
+    }
+
+    public String extractJtiFromRefresh(String token) {
+        return Jwts.parserBuilder().setSigningKey(refreshKey).build()
+                .parseClaimsJws(token).getBody().getId();
+    }
+
+    public boolean validateAccess(String token) {
+        try {
+            Jwts.parserBuilder().setSigningKey(accessKey).build().parseClaimsJws(token);
+            return true;
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
     }
 
     /**
      * Verifies that the token is signed with the secret key, Not expired, and not
      * tampered with.
      */
-    public boolean validateToken(String token) {
+    public boolean validateRefresh(String token) {
         try {
-            Jwts.parserBuilder()
-                    .setSigningKey(secretKey)
-                    .build()
-                    .parseClaimsJws(token);
+            Jwts.parserBuilder().setSigningKey(refreshKey).build().parseClaimsJws(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
             return false;
@@ -72,10 +96,9 @@ public class JwtUtil {
     }
 
     public static String getLoggedInUserEmail() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || auth.getPrincipal() == null) {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || auth.getPrincipal() == null)
             throw new RuntimeException("Unauthorized");
-        }
         return (String) auth.getPrincipal();
     }
 }
