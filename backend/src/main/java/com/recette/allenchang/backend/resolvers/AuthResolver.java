@@ -16,6 +16,9 @@ public class AuthResolver {
     private JwtUtil jwtUtil;
     private final AuthService authService;
 
+    public record AuthPayload(String accessToken, String refreshToken) {
+    }
+
     public AuthResolver(AuthService authService) {
         this.authService = authService;
     }
