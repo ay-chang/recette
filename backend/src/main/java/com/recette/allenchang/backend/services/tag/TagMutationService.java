@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.recette.allenchang.backend.exceptions.DuplicateTagException;
 import com.recette.allenchang.backend.models.Recipe;
 import com.recette.allenchang.backend.models.Tag;
 import com.recette.allenchang.backend.models.User;
@@ -27,12 +28,12 @@ public class TagMutationService {
     }
 
     public Tag addTag(String email, String tagName) {
+        System.out.println("Ran");
         User user = userRepository.findByEmail(email.toLowerCase())
                 .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
         if (tagRepository.existsByUserAndName(user, tagName)) {
-            throw new IllegalArgumentException("Tag already exists for this user: " + tagName);
+            throw new DuplicateTagException("Tag already exists for this user: " + tagName);
         }
-
         Tag tag = new Tag(tagName, user);
         return tagRepository.save(tag);
     }
