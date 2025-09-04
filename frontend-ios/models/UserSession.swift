@@ -280,33 +280,40 @@ class UserSession: ObservableObject {
     }
     
     /** Add a tag to the users saved tags */
-    func addTagToUser(tagName: String) {
+    func addTagToUser(tagName: String, completion: @escaping (String?) -> Void) {
         let addTagMutation = RecetteSchema.AddTagMutation(name: tagName)
-        
+
         Network.shared.apollo.perform(mutation: addTagMutation) { result in
             switch result {
             case .success(let graphQLResult):
-                if let data = graphQLResult.data {
-                    let newTag = data.addTag.name
+                // If server returned GraphQL errors, surface the first message
+                if let firstError = graphQLResult.errors?.first {
+                    completion(firstError.message)
+                    return
+                }
+
+                // Success path
+                if let tag = graphQLResult.data?.addTag {
                     DispatchQueue.main.async {
-                        if !self.availableTags.contains(newTag) {
-                            self.availableTags.append(newTag)
+                        if !self.availableTags.contains(where: { $0.caseInsensitiveCompare(tag.name) == .orderedSame }) {
+                            self.availableTags.append(tag.name)
                         }
                         self.shouldRefreshTags = true
                     }
-                } else if let errors = graphQLResult.errors {
-                    print("GraphQL errors: \(errors)")
+                    completion(nil)
+                } else {
+                    completion("Unexpected server response.")
                 }
+
             case .failure(let error):
-                print("Failed to add tag: \(error)")
+                completion(error.localizedDescription)
             }
         }
     }
+
     
     /** Deletes a tag from the user's list of tags */
     func deleteTagFromUser(tagName: String) {
-        print("JWT Token:", AuthManager.shared.jwtToken ?? "nil")
-        
         let mutation = RecetteSchema.DeleteTagMutation(name: tagName)
         
         Network.shared.apollo.perform(mutation: mutation) { result in
