@@ -13,6 +13,7 @@
 **/pom.xml.versionsBackup
 **/pom.xml.next
 **/release.properties
+/backend/src/main/java/com/recette/allenchang/backend/security/
 
 # === FRONTEND - Xcode / Swift (frontend-ios) ===
 **/DerivedData/
