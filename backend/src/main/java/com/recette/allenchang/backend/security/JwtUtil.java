@@ -31,13 +31,10 @@ public class JwtUtil {
 
     /** Create token with the users email with an expiration of 24 hours */
     public String generateToken(String email) {
-        long expirationMillis = 1000L * 60 * 60 * 24 * 30;
-        Date expiration = new Date(System.currentTimeMillis() + expirationMillis);
-
         return Jwts.builder()
                 .setSubject(email)
                 .setIssuedAt(new Date())
-                .setExpiration(expiration) // 30 days
+                // no expiration at the moment, fix later
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
     }
