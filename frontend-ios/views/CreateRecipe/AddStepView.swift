@@ -57,9 +57,9 @@ struct AddStepView: View {
             // Add Step Section
             VStack(alignment: .leading, spacing: 12) {
                 TextEditor(text: Binding(
-                    get: { String(newStepText.prefix(150)) },
+                    get: { String(newStepText.prefix(250)) },
                     set: { newValue in
-                        newStepText = String(newValue.prefix(150))
+                        newStepText = String(newValue.prefix(250))
                     }
                 ))
                 .frame(height: 200)
@@ -73,7 +73,7 @@ struct AddStepView: View {
                 /** Character count */
                 HStack {
                     Spacer()
-                    Text("\(newStepText.count) / 150")
+                    Text("\(newStepText.count) / 250")
                         .font(.callout)
                         .foregroundColor(.gray)
                 }

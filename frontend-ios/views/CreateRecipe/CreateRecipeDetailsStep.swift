@@ -64,7 +64,7 @@ struct CreateRecipeDetailsStep: View {
                 
                 /** Image Upload Section (same as before) */
                 VStack (alignment: .leading, spacing: 8) {
-                    Text("Add a recipe photo")
+                    Text("Add a recipe photo (optional)")
                         .font(.headline)
                     
                     PhotosPicker(selection: $photosPickerItem, matching: .not(.videos)) {
@@ -84,7 +84,7 @@ struct CreateRecipeDetailsStep: View {
                                     Image(systemName: "photo.on.rectangle")
                                         .font(.system(size: 28))
                                         .foregroundColor(.gray)
-                                    Text("Upload a final photo of your dish (optional)")
+                                    Text("Upload a final photo of your dish")
                                         .font(.footnote)
                                         .foregroundColor(.gray)
                                 }

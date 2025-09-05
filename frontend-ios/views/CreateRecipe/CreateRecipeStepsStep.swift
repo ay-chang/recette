@@ -10,6 +10,7 @@ struct CreateRecipeStepsStep: View {
     @State private var isEditing = false
     @State private var editingIndex: Int? = nil
     @State private var swipedIndex: Int? = nil
+    
 
     var body: some View {
         // Header
@@ -36,15 +37,13 @@ struct CreateRecipeStepsStep: View {
         
         /** Step List */
         VStack(alignment: .leading, spacing: 24) {
+            /** Step list title and edit button */
             HStack() {
                 Text("Step List:")
                     .font(.headline)
                 Spacer()
                 Button(action: {
                     isEditing.toggle()
-                    if !isEditing {
-                        editingIndex = nil
-                    }
                 }) {
                     Image(systemName: "pencil")
                         .foregroundColor(isEditing ? (Color(hex: "#e9c46a")): .gray)
@@ -52,10 +51,10 @@ struct CreateRecipeStepsStep: View {
                 
             }
             
+            /** Main steps content */
             CreateRecipeStepsContent(
                 recipe: recipe,
                 isEditing: $isEditing,
-                editingIndex: $editingIndex,
                 showAddStep: $showAddStep
             )
 
@@ -93,8 +92,17 @@ struct CreateRecipeStepsStep: View {
 struct CreateRecipeStepsContent: View {
     @ObservedObject var recipe: CreateRecipeModel
     @Binding var isEditing: Bool
-    @Binding var editingIndex: Int?
     @Binding var showAddStep: Bool
+    
+    private func stepBinding(_ index: Int) -> Binding<String> {
+        Binding(
+            get: { index < recipe.steps.count ? recipe.steps[index] : "" },
+            set: { newValue in
+                guard index < recipe.steps.count else { return }
+                recipe.steps[index] = String(newValue.prefix(250))
+            }
+        )
+    }
 
     var body: some View {
         List {
@@ -113,29 +121,20 @@ struct CreateRecipeStepsContent: View {
                             }) {
                                 Image(systemName: "minus.circle.fill")
                                     .foregroundColor(.red.opacity(0.9))
-                                    .font(.system(size: 16))
+                                    .font(.system(size: 15))
                             }
                             .buttonStyle(BorderlessButtonStyle())
                         }
 
                         /** Step content */
-                        if editingIndex == index {
-                            TextField("Edit step", text: Binding(
-                                get: { recipe.steps[index] },
-                                set: { recipe.steps[index] = $0 }
-                            ), onCommit: {
-                                editingIndex = nil
-                            })
-                            .textFieldStyle(.roundedBorder)
+                        if isEditing {
+                            TextEditor(text: stepBinding(index))
+                                .font(.callout)
+                                .padding(.vertical, -8)
                         } else {
                             Text(recipe.steps[index])
                                 .font(.callout)
                                 .fixedSize(horizontal: false, vertical: true)
-                                .onTapGesture {
-                                    if isEditing {
-                                        editingIndex = index
-                                    }
-                                }
                         }
 
                         Spacer()
@@ -182,5 +181,6 @@ struct CreateRecipeStepsContent: View {
             .background(Color.clear)
         }
         .listStyle(.plain)
+        .keyboardToolbarWithDone()
     }
 }

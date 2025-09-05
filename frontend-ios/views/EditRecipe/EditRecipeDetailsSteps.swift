@@ -36,7 +36,7 @@ struct EditRecipeDetailsSteps: View {
                         
                         HStack {
                             if editingStepIndex == index {
-                                EditRecipeDetailsContent(text: step)
+                                EditRecipeDetailsStepsContent(text: step)
                             } else {
                                 Text(step.wrappedValue)
                                     .onTapGesture {
@@ -78,7 +78,7 @@ struct EditRecipeDetailsSteps: View {
     }
 }
 
-struct EditRecipeDetailsContent: View {
+struct EditRecipeDetailsStepsContent: View {
     @Binding var text: String
 
     var body: some View {
