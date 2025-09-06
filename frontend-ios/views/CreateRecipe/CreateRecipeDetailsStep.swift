@@ -74,11 +74,11 @@ struct CreateRecipeDetailsStep: View {
                                     Image(uiImage: image)
                                         .resizable()
                                         .aspectRatio(contentMode: .fill)
-                                        .frame(width: geometry.size.width, height: 380)
+                                        .frame(width: geometry.size.width, height: 350)
                                         .clipped()
                                         .cornerRadius(12)
                                 }
-                                .frame(height: 380)
+                                .frame(height: 350)
                             } else {
                                 VStack(spacing: 8) {
                                     Image(systemName: "photo.on.rectangle")
@@ -88,7 +88,7 @@ struct CreateRecipeDetailsStep: View {
                                         .font(.footnote)
                                         .foregroundColor(.gray)
                                 }
-                                .frame(maxWidth: .infinity, minHeight: 380)
+                                .frame(maxWidth: .infinity, minHeight: 350)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 12)
                                         .stroke(style: StrokeStyle(lineWidth: 1, dash: [4]))
@@ -98,7 +98,7 @@ struct CreateRecipeDetailsStep: View {
                                 .cornerRadius(12)
                             }
                         }
-                        .frame(height: 380)
+                        .frame(height: 350)
                     }
                     .onChange(of: photosPickerItem) { _, _ in
                         Task {

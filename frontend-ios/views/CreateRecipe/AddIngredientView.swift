@@ -50,13 +50,17 @@ struct AddIngredientView: View {
             // Ingredient input
             VStack(alignment: .leading, spacing: 12) {
                 HStack(spacing: 12) {
-                    TextField("Ingredient", text: $newIngredientName)
-                        .padding(8)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color.gray.opacity(0.5), lineWidth: 1)
-                        )
-
+                    TextField("Ingredient", text: Binding(
+                        get: { newIngredientName },
+                        set: { newValue in
+                            newIngredientName = String(newValue.prefix(50))
+                        }
+                    ))
+                    .padding(8)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.gray.opacity(0.5), lineWidth: 1)
+                    )
                     
                     TextField("Amount", text: $newIngredientMeasurement)
                         .padding(8)

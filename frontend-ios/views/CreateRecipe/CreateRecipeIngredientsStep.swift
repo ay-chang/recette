@@ -25,7 +25,7 @@ struct CreateRecipeIngredientsStep: View {
         }
         .padding()
 
-        // Intro Box
+        /** Intro Box */
         Text("A recipe would be nothing without ingredients! What goes in your dish?")
             .font(.subheadline)
             .foregroundColor(.gray)
@@ -56,9 +56,7 @@ struct CreateRecipeIngredientsStep: View {
                     ForEach(recipe.ingredients.indices, id: \.self) { index in
                         IngredientRow(
                             ingredient: $recipe.ingredients[index],
-                            index: index,
                             isEditing: isEditing,
-                            editingIndex: $editingIndex,
                             onDelete: {
                                 recipe.ingredients.remove(at: index)
                                 if editingIndex == index {
@@ -75,6 +73,7 @@ struct CreateRecipeIngredientsStep: View {
                 // Add an ingredient button
                 Button(action: {
                     showAddIngredient = true
+                    isEditing = false
                 }) {
                     HStack {
                         Text("+ Add an ingredient")
@@ -130,47 +129,33 @@ struct CreateRecipeIngredientsStep: View {
 
 struct IngredientRow: View {
     @Binding var ingredient: Ingredient
-    let index: Int
     let isEditing: Bool
-    @Binding var editingIndex: Int?
     let onDelete: () -> Void
 
     var body: some View {
         HStack {
-            if isEditing && editingIndex == index {
-                VStack(alignment: .leading, spacing: 4) {
-                    TextField("Ingredient", text: $ingredient.name)
-                        .textFieldStyle(.roundedBorder)
-                        .onSubmit { editingIndex = nil }
-
-                    TextField("Amount", text: $ingredient.measurement)
-                        .textFieldStyle(.roundedBorder)
-                        .onSubmit { editingIndex = nil }
-                }
-            } else {
-                if isEditing {
+            if isEditing {
+                HStack (spacing: 4) {
                     Button(action: onDelete) {
                         Image(systemName: "minus.circle.fill")
                             .foregroundColor(.red.opacity(0.9))
                             .font(.system(size: 16))
                     }
                     .buttonStyle(BorderlessButtonStyle())
+                    .padding(.trailing, 4)
+                    
+                    TextField("Ingredient", text: $ingredient.name)
+                    
+                    Spacer()
+                    
+                    TextField("Amount", text: $ingredient.measurement)
                 }
-                
+            } else {
                 Text(ingredient.name)
-                    .onTapGesture {
-                        if isEditing {
-                            editingIndex = index
-                        }
-                    }
                 Spacer()
                 Text(ingredient.measurement)
                     .foregroundColor(.gray)
-                    .onTapGesture {
-                        if isEditing {
-                            editingIndex = index
-                        }
-                    }
+
             }
         }
         .padding(.vertical, 20)
