@@ -6,39 +6,43 @@ struct OthersBarView: View {
     let cookTimeInMinutes: Int?
     let iconSize: CGFloat
     let fontSize: CGFloat
+    let itemSpacing: CGFloat
     
     var body: some View {
         /** Row of other options*/
         HStack (alignment: .center){
             /** Difficulty */
             if difficulty != nil {
-                HStack (alignment: .center){
-                    Image(systemName: "puzzlepiece.extension.fill")
+                HStack (alignment: .center, spacing: 4) {
+                    Image(systemName: "puzzlepiece.extension")
                         .font(.system(size: iconSize))
                         .foregroundColor(Color(hex: "#e9c46a"))
+                        .fontWeight(.bold)
+                    
                     Text("\(difficulty!)")
                         .foregroundColor(Color.black)
                         .font(.system(size: fontSize))
-                        .fontWeight(.medium)
+                        .fontWeight(.regular)
                 }
-                .padding(.trailing, 8)
+                .padding(.trailing, itemSpacing)
             }
             
             /** Serving size */
             if let servingSize = servingSize, servingSize > 0 {
                 let servingText = servingSize >= 10 ? "10+" : "\(servingSize)"
                 
-                HStack(alignment: .center) {
-                    Image(systemName: "fork.knife")
+                HStack(alignment: .center, spacing: 4) {
+                    Image(systemName: "person.2")
                         .font(.system(size: iconSize))
                         .foregroundColor(Color(hex: "#e9c46a"))
+                        .fontWeight(.bold)
                     
                     Text("Serves \(servingText)")
-                        .foregroundColor(.black)
+                        .foregroundColor(Color.black)
                         .font(.system(size: fontSize))
-                        .fontWeight(.medium)
+                        .fontWeight(.regular)
                 }
-                .padding(.trailing, 8)
+                .padding(.trailing, itemSpacing)
             }
 
             /** Cook time */
@@ -46,30 +50,31 @@ struct OthersBarView: View {
                 let hours = cookTimeInMinutes / 60
                 let minutes = cookTimeInMinutes % 60
 
-                HStack (alignment: .center){
-                    Image(systemName: "clock.fill")
+                HStack (alignment: .center, spacing: 4) {
+                    Image(systemName: "clock")
                         .font(.system(size: iconSize))
                         .foregroundColor(Color(hex: "#e9c46a"))
+                        .fontWeight(.bold)
                     
                     if hours > 0 {
                         Text("\(hours) hour\(hours == 1 ? "" : "s")")
                             .foregroundColor(Color.black)
                             .font(.system(size: fontSize))
-                            .fontWeight(.medium)
+                            .fontWeight(.regular)
                         if minutes > 0 {
                             Text("\(minutes) min\(minutes == 1 ? "" : "s")")
                                 .foregroundColor(Color.black)
                                 .font(.system(size: fontSize))
-                                .fontWeight(.medium)
+                                .fontWeight(.regular)
                         }
                     } else {
                         Text("\(minutes) min\(minutes == 1 ? "" : "s")")
                             .foregroundColor(Color.black)
                             .font(.system(size: fontSize))
-                            .fontWeight(.medium)
+                            .fontWeight(.regular)
                     }
                 }
-                .padding(.trailing, 8)
+                .padding(.trailing, itemSpacing)
             }
             Spacer()
         }

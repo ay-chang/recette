@@ -37,7 +37,8 @@ struct RecipeCard: View {
                     servingSize: servingSize,
                     cookTimeInMinutes: cookTimeInMinutes,
                     iconSize: 18,
-                    fontSize: 12
+                    fontSize: 12,
+                    itemSpacing: 8
                 )
                 .padding(.top)
                 .padding(.horizontal)

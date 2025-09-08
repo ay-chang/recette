@@ -14,12 +14,15 @@ struct RecipeListView: View {
                 RecipeListCard(
                     imageurl: recipe.imageurl,
                     title: recipe.title,
-                    description: recipe.description
+                    description: recipe.description,
+                    difficulty: recipe.difficulty,
+                    servingSize: recipe.servingSize,
+                    cookTimeInMinutes: recipe.cookTimeInMinutes
                 )
-                .frame(maxWidth: .infinity, alignment: .leading)
             }
             .buttonStyle(PlainButtonStyle())
             .listRowSeparator(.hidden)
+            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
         }
         .listStyle(PlainListStyle())
         .fullScreenCover(item: $selectedRecipe) { selected in

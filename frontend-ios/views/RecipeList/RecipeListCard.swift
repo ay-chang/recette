@@ -4,46 +4,59 @@ struct RecipeListCard: View {
     let imageurl: String?
     let title: String
     let description: String
+    let difficulty: String?
+    let servingSize: Int?
+    let cookTimeInMinutes: Int?
+    private let imageWidth: CGFloat = 100
 
     var body: some View {
-        VStack(spacing: 0) {
-            HStack() {
+        VStack (alignment: .leading) {
+            HStack(alignment: .top, spacing: 8) { // spacing between image and text
                 if let imageurl = imageurl {
-                    GeometryReader { geometry in
-                        RecipeImage(
-                            imageUrlString: imageurl,
-                            frameHeight: 75,
-                            frameWidth: 75
-                        )
-                    }
-                   .frame(height: 75)
+                    RecipeImage(
+                        imageUrlString: imageurl,
+                        frameHeight: imageWidth,
+                        frameWidth: imageWidth
+                    )
+                    .cornerRadius(12)
+                    .frame(maxWidth: imageWidth, maxHeight: imageWidth)
                 }
-                
-                Spacer ()
-                
-                VStack(alignment: .leading, spacing: 12) {
+
+                VStack(alignment: .leading, spacing: 8) {
                     Text(title)
                         .font(.headline)
+                    
+                    /** Check if any of the properties even exist and then display others bar*/
+                    if difficulty != nil ||
+                       (cookTimeInMinutes ?? 0) > 0 ||
+                        (servingSize ?? 0) > 0 {
+                        OthersBarView(
+                            difficulty: difficulty,
+                            servingSize: servingSize,
+                            cookTimeInMinutes: cookTimeInMinutes,
+                            iconSize: 12,
+                            fontSize: 12,
+                            itemSpacing: 4
+                        )
+                    }
 
                     Text(description)
                         .font(.system(size: 14))
-                        .foregroundColor(Color.gray)
+                        .foregroundColor(.gray)
                         .lineLimit(2)
                         .truncationMode(.tail)
                     
+                    Spacer()
+
                     Rectangle()
                         .frame(height: 1)
                         .foregroundColor(Color.gray.opacity(0.3))
-                        
+                        .padding(.top, 4)
                 }
-                .padding(.bottom, 16)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                
             }
-            .frame(maxWidth: .infinity)
+            .padding(.horizontal)
+            .padding(.vertical, 8)
+            .frame(maxWidth: .infinity, alignment: .leading) // span full width
         }
-        .background(Color(.white))
     }
 }
-
-

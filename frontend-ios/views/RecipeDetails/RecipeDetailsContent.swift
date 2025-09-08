@@ -19,7 +19,8 @@ struct RecipeDetailsContent: View {
                     servingSize: recipe.servingSize,
                     cookTimeInMinutes: recipe.cookTimeInMinutes,
                     iconSize: 20,
-                    fontSize: 14
+                    fontSize: 14,
+                    itemSpacing: 8
                 )
             }
 
