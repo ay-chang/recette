@@ -30,19 +30,19 @@ struct MenuBar: View {
             // Toggle list/grid view
             HStack {
                 Button(action: {
-                    isListView = false
-                }) {
-                    Image(systemName: "square.grid.2x2")
-                        .font(.title2)
-                        .foregroundColor(isListView ? Color.gray.opacity(0.5) : Color.gray)
-                }
-                
-                Button(action: {
                     isListView = true
                 }) {
                     Image(systemName: "list.bullet")
                         .font(.title2)
                         .foregroundColor(isListView ? Color.gray : Color.gray.opacity(0.5))
+                }
+                
+                Button(action: {
+                    isListView = false
+                }) {
+                    Image(systemName: "square.grid.2x2")
+                        .font(.title2)
+                        .foregroundColor(isListView ? Color.gray.opacity(0.5) : Color.gray)
                 }
             }
 

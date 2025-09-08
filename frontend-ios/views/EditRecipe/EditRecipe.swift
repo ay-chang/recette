@@ -81,7 +81,6 @@ struct EditRecipe: View {
                 /** Steps */
                 EditRecipeDetailsSteps(
                     steps: $model.steps,
-                    editingStepIndex: $editingStepIndex
                 )
                 
                 /** Other options */

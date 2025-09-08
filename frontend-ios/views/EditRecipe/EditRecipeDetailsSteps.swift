@@ -2,69 +2,53 @@ import SwiftUI
 
 struct EditRecipeDetailsSteps: View {
     @Binding var steps: [String]
-    @Binding var editingStepIndex: Int?
-    
-    
+    @FocusState private var focusedIndex: Int?
+
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            /** Header */
             HStack {
-                Text("Steps")
-                    .font(.headline)
+                Text("Steps").font(.headline)
                 Spacer()
             }
-                
-            /** List of steps */
-            VStack (alignment: .leading) {
+
+            VStack(alignment: .leading, spacing: 0) {
+                /** List of steps to be edited */
                 ForEach(steps.indices, id: \.self) { index in
-                    let step = $steps[index]
-                    
-                    HStack ( alignment: .center, spacing: 12) {
-                        Button(action: {
+                    /** Red button and text */
+                    HStack(alignment: .top) {
+                        /** Red button*/
+                        Button {
                             steps.remove(at: index)
-                            if editingStepIndex == index {
-                                editingStepIndex = nil
-                            } else if let current = editingStepIndex, current > index {
-                                editingStepIndex = current - 1
+                            if let f = focusedIndex {
+                                if f == index { focusedIndex = nil }
+                                else if f > index { focusedIndex = f - 1 }
                             }
-                        }) {
+                        } label: {
                             Image(systemName: "minus.circle.fill")
                                 .foregroundColor(.red.opacity(0.9))
                                 .font(.system(size: 16))
                         }
 
-                        
-                        HStack {
-                            if editingStepIndex == index {
-                                EditRecipeDetailsStepsContent(text: step)
-                            } else {
-                                Text(step.wrappedValue)
-                                    .onTapGesture {
-                                        editingStepIndex = index
-                                    }
-                            }
-                        }
-                        
+                        /** Actual step text */
+                        EditRecipeDetailsStepsContent(text: $steps[index])
+                            .focused($focusedIndex, equals: index)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical, 20)
-                    .background(Color.white)
+                    .padding(.vertical, 24) // might need fixing
                     .overlay(
                         Rectangle()
                             .frame(height: 1)
                             .foregroundColor(Color.gray.opacity(0.3)),
                         alignment: .bottom
                     )
-                    .contentShape(Rectangle())
                 }
-                
             }
-            
-            /** Add step button */
-            Button(action: {
+
+            /** Add step button*/
+            Button {
                 steps.append("")
-                editingStepIndex = steps.count - 1
-            }) {
+                focusedIndex = steps.count - 1 // focus the new step
+            } label: {
                 HStack {
                     Text("+ Add a step")
                         .font(.callout)
@@ -73,8 +57,9 @@ struct EditRecipeDetailsSteps: View {
                 }
                 .padding(.horizontal)
             }
-            .buttonStyle(PlainButtonStyle())
+            .buttonStyle(.plain)
         }
+        .onAppear { focusedIndex = nil } // so there is no cursor on any step
     }
 }
 
@@ -84,21 +69,12 @@ struct EditRecipeDetailsStepsContent: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             TextEditor(text: $text)
-                .frame(height: 100)
-                .padding(8)
-                .background(Color.white)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.gray.opacity(0.5), lineWidth: 1)
-                )
+                .padding(.vertical, -8)
                 .onChange(of: text) {
-                    if text.count > 150 {
-                        text = String(text.prefix(150))
+                    if text.count > 250 {
+                        text = String(text.prefix(250))
                     }
                 }
-
-            CharacterCountView(currentCount: text.count, maxCount: 150)
         }
     }
 }
-

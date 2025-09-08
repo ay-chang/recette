@@ -10,7 +10,7 @@ struct RecipesView: View {
     @EnvironmentObject var session: UserSession
     @StateObject private var model = RecipeListModel()
     @StateObject private var filterRecipesModel = FilterRecipesModel()
-    @State private var isListView = false
+    @State private var isListView = true
     @State private var hasLoaded = false
     @State private var showFilterSheet = false
     
