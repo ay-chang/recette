@@ -12,6 +12,7 @@ struct RecipeListView: View {
                 selectedRecipe = SelectedRecipe(id: recipe.id)
             } label: {
                 RecipeListCard(
+                    imageurl: recipe.imageurl,
                     title: recipe.title,
                     description: recipe.description
                 )
