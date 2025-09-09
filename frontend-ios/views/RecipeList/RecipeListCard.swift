@@ -46,17 +46,24 @@ struct RecipeListCard: View {
                         .lineLimit(2)
                         .truncationMode(.tail)
                     
-                    Spacer()
+//                    Spacer()
 
-                    Rectangle()
-                        .frame(height: 1)
-                        .foregroundColor(Color.gray.opacity(0.3))
-                        .padding(.top, 4)
+//                    Rectangle()
+//                        .frame(height: 1)
+//                        .foregroundColor(Color.gray.opacity(0.3))
                 }
             }
+            .frame(height: imageWidth + 8)
             .padding(.horizontal)
             .padding(.vertical, 8)
-            .frame(maxWidth: .infinity, alignment: .leading) // span full width
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .overlay(alignment: .bottom) {
+                Rectangle()
+                    .fill(Color.gray.opacity(0.3))
+                    .frame(height: 1)
+                    .padding(.leading, 16 + imageWidth + 8) // 16 (horizontal padding) + image + spacing
+                    .padding(.trailing, 16)
+            }
         }
     }
 }
