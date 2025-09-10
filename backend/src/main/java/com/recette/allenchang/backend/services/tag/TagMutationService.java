@@ -28,7 +28,6 @@ public class TagMutationService {
     }
 
     public Tag addTag(String email, String tagName) {
-        System.out.println("Ran");
         User user = userRepository.findByEmail(email.toLowerCase())
                 .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
         if (tagRepository.existsByUserAndName(user, tagName)) {
