@@ -20,13 +20,18 @@ class CreateRecipeModel: BaseRecipe {
                 let gqlIngredients = ingredients.map {
                     RecetteSchema.IngredientInput(name: $0.name, measurement: $0.measurement)
                 }
+                
+                /** Clean steps */
+                let cleanedSteps = steps
+                    .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+                    .filter { !$0.isEmpty }
 
                 let input = RecetteSchema.RecipeInput(
                     title: title,
                     description: description,
                     imageurl: imageUrlString != nil ? .some(imageUrlString!) : .null,
                     ingredients: gqlIngredients,
-                    steps: steps,
+                    steps: cleanedSteps.isEmpty ? .null : .some(cleanedSteps),
                     user: RecetteSchema.UserInput(email: email),
                     tags: .some(Array(selectedTags)),
                     difficulty: difficulty != nil ? .some(difficulty!) : .null,

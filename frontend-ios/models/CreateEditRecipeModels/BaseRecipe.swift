@@ -33,9 +33,9 @@ class BaseRecipe: ObservableObject, TagManageable {
                 }
             }
         
-        if steps.isEmpty {
-            return ValidationError("At least one step is required.")
-        }
+//        if steps.isEmpty {
+//            return ValidationError("At least one step is required.")
+//        }
         
         for step in steps {
             if step.trimmingCharacters(in: .whitespaces).isEmpty {
