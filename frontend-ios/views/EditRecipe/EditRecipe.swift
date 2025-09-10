@@ -75,7 +75,6 @@ struct EditRecipe: View {
                 /** Ingredients*/
                 EditRecipeDetailsIngredients(
                     ingredients: $model.ingredients,
-                    editingIngredientIndex: $editingIngredientIndex
                 )
                 
                 /** Steps */

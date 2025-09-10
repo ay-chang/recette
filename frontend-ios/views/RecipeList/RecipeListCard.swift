@@ -11,7 +11,7 @@ struct RecipeListCard: View {
 
     var body: some View {
         VStack (alignment: .leading) {
-            HStack(alignment: .top, spacing: 8) { // spacing between image and text
+            HStack(alignment: .top, spacing: 12) { // spacing between image and text
                 if let imageurl = imageurl {
                     RecipeImage(
                         imageUrlString: imageurl,
@@ -45,12 +45,6 @@ struct RecipeListCard: View {
                         .foregroundColor(.gray)
                         .lineLimit(2)
                         .truncationMode(.tail)
-                    
-//                    Spacer()
-
-//                    Rectangle()
-//                        .frame(height: 1)
-//                        .foregroundColor(Color.gray.opacity(0.3))
                 }
             }
             .frame(height: imageWidth + 8)
@@ -61,7 +55,7 @@ struct RecipeListCard: View {
                 Rectangle()
                     .fill(Color.gray.opacity(0.3))
                     .frame(height: 1)
-                    .padding(.leading, 16 + imageWidth + 8) // 16 (horizontal padding) + image + spacing
+                    .padding(.leading, 20 + imageWidth + 8) // 20 (horizontal padding) + image + spacing
                     .padding(.trailing, 16)
             }
         }

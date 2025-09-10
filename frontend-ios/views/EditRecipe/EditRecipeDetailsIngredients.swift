@@ -2,89 +2,72 @@ import SwiftUI
 
 struct EditRecipeDetailsIngredients: View {
     @Binding var ingredients: [Ingredient]
-    @Binding var editingIngredientIndex: Int?
-    
+
+    // Focus both which field (name/measurement) and which row (index)
+    @FocusState private var focus: Field?
+    private enum Field: Hashable {
+        case name(Int), measurement(Int)
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             /** Header */
             HStack {
-                Text("Ingredients")
-                    .font(.headline)
+                Text("Ingredients").font(.headline)
                 Spacer()
             }
-            
+
             /** List of ingredients */
-            VStack (alignment: .leading) {
-                ForEach($ingredients.indices, id: \.self) { index in
-                    let ingredient = $ingredients[index]
-                    
-                    HStack (spacing: 12) {
-                        Button(action: {
+            VStack(alignment: .leading) {
+                ForEach(ingredients.indices, id: \.self) { index in
+                    /** Row for each minus, ingredient, and measurement*/
+                    HStack(spacing: 12) {
+                        /** Minus button */
+                        Button {
                             ingredients.remove(at: index)
-                            if editingIngredientIndex == index {
-                                editingIngredientIndex = nil
-                            } else if let current = editingIngredientIndex, current > index {
-                                editingIngredientIndex = current - 1
+
+                            if let f = focus {
+                                switch f {
+                                case .name(let i) where i == index,
+                                     .measurement(let i) where i == index:
+                                    focus = nil
+                                case .name(let i) where i > index:
+                                    focus = .name(i - 1)
+                                case .measurement(let i) where i > index:
+                                    focus = .measurement(i - 1)
+                                default:
+                                    break
+                                }
                             }
-                        }) {
+                        } label: {
                             Image(systemName: "minus.circle.fill")
                                 .foregroundColor(.red.opacity(0.9))
                                 .font(.system(size: 16))
                         }
-                        
-                        
-                        if editingIngredientIndex == index {
-                            TextField("Name", text: ingredient.name)
-                                .foregroundColor(.black)
-                                .padding(8)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 8)
-                                        .stroke(Color.gray.opacity(0.5), lineWidth: 1)
-                                )
+                        TextField("Name", text: $ingredients[index].name)
+                            .focused($focus, equals: .name(index))
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .onSubmit { focus = .measurement(index) }
 
-                            TextField("Measurement", text: ingredient.measurement)
-                                .foregroundColor(.black)
-                                .padding(8)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 8)
-                                        .stroke(Color.gray.opacity(0.5), lineWidth: 1)
-                                )
-
-                        } else {
-                            Button (action: {
-                                editingIngredientIndex = index
-                            }){
-                                HStack {
-                                    Text(ingredient.wrappedValue.name)
-                                        .foregroundColor(Color.black)
-                                    Spacer()
-                                    Text(ingredient.wrappedValue.measurement)
-                                        .foregroundColor(Color.black)
-                                        .fontWeight(.medium)
-                                }
- 
-                            }
-                            .contentShape(Rectangle())
-                        }
+                        TextField("Measurement", text: $ingredients[index].measurement)
+                            .focused($focus, equals: .measurement(index))
+                            .multilineTextAlignment(.trailing)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                     }
                     .padding(.vertical, 20)
                     .overlay(
-                        Rectangle()
-                            .frame(height: 1)
+                        Rectangle().frame(height: 1)
                             .foregroundColor(Color.gray.opacity(0.3)),
                         alignment: .bottom
                     )
-                    .contentShape(Rectangle())
                 }
             }
-            
+
             /** Add Ingredient button */
-            Button(action: {
+            Button {
                 ingredients.append(Ingredient(name: "", measurement: ""))
-                editingIngredientIndex = ingredients.count - 1
-            }) {
+                focus = .name(ingredients.count - 1) // auto-focus new row’s name
+            } label: {
                 HStack {
                     Text("+ Add an ingredient")
                         .font(.callout)
@@ -93,7 +76,8 @@ struct EditRecipeDetailsIngredients: View {
                 }
                 .padding(.horizontal)
             }
-            .buttonStyle(PlainButtonStyle())
+            .buttonStyle(.plain)
         }
+        .onAppear { focus = nil } // start with no cursor if you like
     }
 }
