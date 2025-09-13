@@ -20,6 +20,12 @@ struct RecipeListCard: View {
                     )
                     .cornerRadius(12)
                     .frame(maxWidth: imageWidth, maxHeight: imageWidth)
+                } else {
+                    Image("pasta-placeholder")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: imageWidth, height: imageWidth)
+                            .cornerRadius(12)
                 }
 
                 VStack(alignment: .leading, spacing: 8) {
