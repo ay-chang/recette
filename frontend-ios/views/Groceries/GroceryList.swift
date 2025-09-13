@@ -7,7 +7,7 @@ struct GroceryList: View {
     @State private var showInfo = false
     
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 0) {
             /** Header */
             HStack {
                 Spacer()
@@ -25,7 +25,8 @@ struct GroceryList: View {
                         .cornerRadius(15)
                 }
             }
-            .padding()
+            .padding(.bottom)
+            .padding(.horizontal)
             .overlay(
                 Rectangle()
                     .frame(height: 1)
@@ -35,7 +36,8 @@ struct GroceryList: View {
             .background(Color.gray.opacity(0.03))
             
             /** Main content */
-            VStack(alignment: .leading, spacing: 12) {
+            VStack(alignment: .leading, spacing: 0) {
+                /** Title*/
                 HStack {
                     Text("Grocery List")
                         .font(.title)
@@ -48,6 +50,7 @@ struct GroceryList: View {
                             .foregroundColor(isEditing ? Color(hex: "#e9c46a") : .gray)
                     }
                 }
+                .padding(.vertical, 12)
    
                 VStack(alignment: .leading) {
                     if groceriesModel.items.isEmpty {

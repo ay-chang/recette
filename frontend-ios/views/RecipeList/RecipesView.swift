@@ -17,6 +17,16 @@ struct RecipesView: View {
     var body: some View {
         VStack (spacing: 0) {
             MenuBar(isListView: $isListView, showFilterSheet: $showFilterSheet)
+            
+            HStack {
+                Text("Your Recipes")
+                    .font(.title)
+                    .fontWeight(.bold)
+                Spacer()
+            }
+            .padding(.vertical, 12)
+            .padding(.horizontal)
+
 
             /** Main content */
             if !model.recipes.isEmpty && isListView {

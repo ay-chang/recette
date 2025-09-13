@@ -47,7 +47,8 @@ struct MenuBar: View {
             }
 
         }
-        .padding()
+        .padding(.bottom)
+        .padding(.horizontal)
         .overlay(
             Rectangle()
                 .frame(height: 1)
