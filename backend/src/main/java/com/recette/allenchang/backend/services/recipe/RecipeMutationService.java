@@ -1,6 +1,7 @@
 package com.recette.allenchang.backend.services.recipe;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -33,15 +34,20 @@ public class RecipeMutationService {
         recipe.setTitle(input.getTitle());
         recipe.setDescription(input.getDescription());
         recipe.setImageurl(input.getImageurl());
-        recipe.setSteps(new ArrayList<>(input.getSteps()));
+
+        /** If no steps are provided then return an emtpy list */
+        List<String> steps = (input.getSteps() == null) ? new ArrayList<>() : new ArrayList<>(input.getSteps());
+        recipe.setSteps(steps);
+
+        /** Steps are required for now */
         recipe.setIngredients(new ArrayList<>(serviceUtil.mapIngredients(input.getIngredients(), recipe)));
+
         recipe.setTags(new ArrayList<>(serviceUtil.mapTags(input.getTags(), user)));
         recipe.setDifficulty(input.getDifficulty());
         recipe.setServingSize(input.getServingSize());
         recipe.setCookTimeInMinutes(input.getCookTimeInMinutes());
 
         return recipeRepository.save(recipe);
-
     }
 
     /** Update recipe details */

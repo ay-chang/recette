@@ -18,7 +18,7 @@ type Recipe {
   description: String!
   imageurl: String
   ingredients: [Ingredient!]!
-  steps: [String!]!
+  steps: [String!]! # even though steps can be empty, require it and just return empty list []
   user: User!
   tags: [Tag!]!
   difficulty: String
@@ -37,7 +37,7 @@ input RecipeInput {
   description: String!
   imageurl: String
   ingredients: [IngredientInput!]!
-  steps: [String!]!
+  steps: [String!] # made optional
   user: UserInput!
   tags: [String!]
   difficulty: String
