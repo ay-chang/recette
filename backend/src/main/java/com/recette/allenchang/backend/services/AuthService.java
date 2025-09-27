@@ -1,7 +1,17 @@
 package com.recette.allenchang.backend.services;
 
+import java.util.Arrays;
+import java.util.Locale;
+import java.util.Optional;
 import java.util.Random;
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.gson.GsonFactory;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +23,9 @@ import com.recette.allenchang.backend.verification.VerificationCodeStore;
 
 @Service
 public class AuthService {
+
+    @Value("${google.client-ids}") // comma-separated if multiple (iOS, web, etc.)
+    private String googleClientIds;
 
     private final VerificationCodeStore verificationCodeStore;
     private final UserRepository userRepository;
@@ -83,6 +96,69 @@ public class AuthService {
         verificationCodeStore.clear(email);
 
         return savedUser;
+    }
+
+    public User authenticateWithGoogle(String idTokenString) {
+        try {
+            GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(
+                    new NetHttpTransport(),
+                    GsonFactory.getDefaultInstance())
+                    // The audience must match the client ID(s) that issued the ID token
+                    .setAudience(Arrays.stream(googleClientIds.split(","))
+                            .map(String::trim)
+                            .toList())
+                    // (Optional) Explicitly check the issuer
+                    .setIssuer("https://accounts.google.com")
+                    .build();
+
+            GoogleIdToken idToken = verifier.verify(idTokenString);
+            if (idToken == null) {
+                throw new InvalidCredentialsException("Invalid Google ID token");
+            }
+
+            Payload payload = idToken.getPayload();
+
+            // Extra safety: verify the email is verified by Google
+            if (!Boolean.TRUE.equals(payload.getEmailVerified())) {
+                throw new InvalidCredentialsException("Google email is not verified");
+            }
+
+            String email = ((String) payload.getEmail()).toLowerCase(Locale.ROOT);
+            String givenName = (String) payload.get("given_name");
+            String familyName = (String) payload.get("family_name");
+
+            Optional<User> existing = userRepository.findByEmail(email);
+            if (existing.isPresent()) {
+                return existing.get();
+            }
+
+            // Create a new account (password stays null)
+            User user = new User();
+            user.setEmail(email);
+            user.setFirstName(givenName);
+            user.setLastName(familyName);
+            user.setUsername(defaultUsernameFromEmail(email)); // simple + deterministic
+            user.setPassword(null);
+
+            return userRepository.save(user);
+
+        } catch (InvalidCredentialsException e) {
+            throw e;
+        } catch (Exception e) {
+            // Verification or persistence error
+            throw new InvalidCredentialsException("Failed Google login");
+        }
+    }
+
+    private String defaultUsernameFromEmail(String email) {
+        // Simple default: local part of email
+        String base = email.split("@")[0];
+        String candidate = base;
+        int suffix = 1;
+        while (userRepository.existsByUsername(candidate)) {
+            candidate = base + suffix++;
+        }
+        return candidate;
     }
 
 }

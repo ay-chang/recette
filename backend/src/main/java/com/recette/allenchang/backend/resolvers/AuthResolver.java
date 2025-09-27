@@ -20,11 +20,18 @@ public class AuthResolver {
         this.authService = authService;
     }
 
-    /** User login */
+    /** User login with email */
     @MutationMapping
     public String login(@Argument UserInput input) {
         authService.authenticate(input.getEmail().toLowerCase(), input.getPassword());
         return jwtUtil.generateToken(input.getEmail().toLowerCase());
+    }
+
+    /** User login with Google */
+    @MutationMapping
+    public String loginWithGoogle(@Argument String idToken) {
+        User user = authService.authenticateWithGoogle(idToken);
+        return jwtUtil.generateToken(user.getEmail().toLowerCase());
     }
 
     /** Send verification code during sign-up */

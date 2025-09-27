@@ -7,6 +7,7 @@ extend type Mutation {
   sendVerificationCode(email: String!, password: String!): Boolean!
   completeSignUpWithCode(email: String!, code: String!): String!
   login(input: LoginInput!): String!
+  loginWithGoogle(idToken: String!): String!a
   logout: Boolean!
   updateAccountDetails(email: String!, input: AccountDetailsInput!): User!
   deleteAccount: Boolean!
