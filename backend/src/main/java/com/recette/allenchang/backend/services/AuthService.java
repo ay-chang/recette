@@ -98,6 +98,7 @@ public class AuthService {
         return savedUser;
     }
 
+    /** Authenticate or create a new user with Google ID token */
     public User authenticateWithGoogle(String idTokenString) {
         try {
             GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(
@@ -124,8 +125,8 @@ public class AuthService {
             }
 
             String email = ((String) payload.getEmail()).toLowerCase(Locale.ROOT);
-            String givenName = (String) payload.get("given_name");
-            String familyName = (String) payload.get("family_name");
+            String firstName = (String) payload.get("given_name");
+            String lasstName = (String) payload.get("family_name");
 
             Optional<User> existing = userRepository.findByEmail(email);
             if (existing.isPresent()) {
@@ -135,8 +136,8 @@ public class AuthService {
             // Create a new account (password stays null)
             User user = new User();
             user.setEmail(email);
-            user.setFirstName(givenName);
-            user.setLastName(familyName);
+            user.setFirstName(firstName);
+            user.setLastName(lasstName);
             user.setUsername(defaultUsernameFromEmail(email)); // simple + deterministic
             user.setPassword(null);
 
