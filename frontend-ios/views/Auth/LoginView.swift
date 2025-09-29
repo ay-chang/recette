@@ -1,4 +1,5 @@
 import SwiftUI
+import GoogleSignIn
 
 struct LoginView: View {
     @State private var email = ""
@@ -56,20 +57,21 @@ struct LoginView: View {
                         .padding(.top, 4)
                 }
             }
-
-            /* Or Divider*/
-//            HStack {
-//                Rectangle().frame(height: 1).foregroundColor(.gray)
-//                Text("or").foregroundColor(.gray).font(.footnote)
-//                Rectangle().frame(height: 1).foregroundColor(.gray)
-//            }
-//            .padding()
             
-            /* Social Login buttons */
-//            VStack(spacing: 12) {
-//                SocialLoginButton(label: "Continue with Apple", icon: "apple.logo")
-//                SocialLoginButton(label: "Continue with Google", icon: "globe") // Replace with proper Google icon later
-//            }
+            // OR separator
+            HStack {
+                Rectangle().frame(height: 1).foregroundColor(.gray.opacity(0.2))
+                Text("or").foregroundColor(.secondary)
+                Rectangle().frame(height: 1).foregroundColor(.gray.opacity(0.2))
+            }
+            .padding(.vertical, 4)
+            
+            
+            // Google button
+            GoogleLoginButton {
+                // Send the Google ID token to your backend
+                session.logInWithGoogle(idToken: $0)
+            }
 
             /* Sign up */
             HStack (alignment: .center) {
@@ -95,27 +97,53 @@ struct LoginView: View {
     }
 }
 
-struct SocialLoginButton: View {
-    let label: String
-    let icon: String
+/** Reusable Google button */
+struct GoogleLoginButton: View {
+    let onToken: (String) -> Void
 
     var body: some View {
-        Button(action: {
-            // TODO: Handle social login
-        }) {
-            HStack {
-                Image(systemName: icon)
-                Text(label)
+        Button {
+            guard let vc = UIApplication.shared.topViewController else { return }
+            GIDSignIn.sharedInstance.signIn(withPresenting: vc) { result, error in
+                if let error = error {
+                    print("Google sign-in failed:", error.localizedDescription)
+                    return
+                }
+                guard let token = result?.user.idToken?.tokenString else {
+                    print("No ID token from Google")
+                    return
+                }
+                print("ID token length: \(token.count)")
+                onToken(token) // your LoginView passes this to session.logInWithGoogle
+            }
+
+        } label: {
+            HStack(spacing: 8) {
+                Image(systemName: "g.circle.fill")
+                Text("Continue with Google").fontWeight(.semibold)
             }
             .frame(maxWidth: .infinity)
             .padding()
             .foregroundColor(.black)
             .background(Color.white)
             .cornerRadius(10)
-            .overlay( // apply a rounded border
-                RoundedRectangle(cornerRadius: 10)
-                    .stroke(.gray, lineWidth: 1)
-            )
+            .overlay(RoundedRectangle(cornerRadius: 10).stroke(.gray, lineWidth: 1))
         }
+    }
+}
+
+// Small helper to present Google’s sheet from SwiftUI
+import UIKit
+extension UIApplication {
+    var topViewController: UIViewController? {
+        connectedScenes.compactMap { $0 as? UIWindowScene }
+            .flatMap { $0.windows }
+            .first { $0.isKeyWindow }?
+            .rootViewController?.presentedViewController
+        ??
+        connectedScenes.compactMap { $0 as? UIWindowScene }
+            .flatMap { $0.windows }
+            .first { $0.isKeyWindow }?
+            .rootViewController
     }
 }

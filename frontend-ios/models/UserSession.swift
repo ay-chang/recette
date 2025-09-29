@@ -68,6 +68,37 @@ class UserSession: ObservableObject {
         }
     }
     
+    /** Login with google */
+    func logInWithGoogle(idToken: String) {
+        loginError = nil
+        let m = RecetteSchema.LoginWithGoogleMutation(idToken: idToken)
+
+        Network.shared.apollo.perform(mutation: m) { result in
+            switch result {
+            case .success(let graphQLResult):
+                if let token = graphQLResult.data?.loginWithGoogle {
+                    AuthManager.shared.saveToken(token)
+                    Network.refresh()
+                    DispatchQueue.main.async {
+                        self.isLoggedIn = true
+                        // You can also fetch user details here if you want parity
+                        if let savedEmail = UserDefaults.standard.string(forKey: "loggedInEmail") {
+                            self.userEmail = savedEmail
+                        }
+                    }
+                } else if let errors = graphQLResult.errors {
+                    DispatchQueue.main.async {
+                        self.loginError = errors.compactMap { $0.message }.joined(separator: "\n")
+                    }
+                }
+            case .failure(let error):
+                DispatchQueue.main.async { self.loginError = error.localizedDescription }
+            }
+        }
+    }
+
+
+    
     /** Completing sign up after user inputs code */
     func completeSignUpWithCode(email: String, code: String) {
         let mutation = RecetteSchema.CompleteSignUpWithCodeMutation(email: email, code: code)
