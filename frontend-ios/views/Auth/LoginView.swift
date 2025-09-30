@@ -1,6 +1,7 @@
 import SwiftUI
 import GoogleSignIn
 
+
 struct LoginView: View {
     @State private var email = ""
     @State private var password = ""
@@ -118,8 +119,13 @@ struct GoogleLoginButton: View {
 
         } label: {
             HStack(spacing: 8) {
-                Image(systemName: "g.circle.fill")
+                Image("google-g")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 22, height: 22)
+                Spacer()
                 Text("Continue with Google").fontWeight(.semibold)
+                Spacer()
             }
             .frame(maxWidth: .infinity)
             .padding()
