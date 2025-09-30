@@ -113,8 +113,7 @@ struct GoogleLoginButton: View {
                     print("No ID token from Google")
                     return
                 }
-                print("ID token length: \(token.count)")
-                onToken(token) // your LoginView passes this to session.logInWithGoogle
+                onToken(token) // LoginView passes this to session.logInWithGoogle
             }
 
         } label: {
