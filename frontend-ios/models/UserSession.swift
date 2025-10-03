@@ -431,7 +431,7 @@ class UserSession: ObservableObject {
     
     /** Loading in user sessions */
     func loadSavedSession() {
-        let persistedToken = AuthManager.shared.jwtToken
+//        let persistedToken = AuthManager.shared.jwtToken
 
         // Ensure we have a token first (see fix #1 above)
         guard let token = AuthManager.shared.jwtToken, !token.isEmpty else {
