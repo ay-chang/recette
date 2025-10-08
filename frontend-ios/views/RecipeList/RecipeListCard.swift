@@ -54,9 +54,9 @@ struct RecipeListCard: View {
                 }
             }
             .frame(height: imageWidth + 8)
+            .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal)
             .padding(.vertical, 8)
-            .frame(maxWidth: .infinity, alignment: .leading)
             .overlay(alignment: .bottom) {
                 Rectangle()
                     .fill(Color.gray.opacity(0.3))
