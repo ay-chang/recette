@@ -13,11 +13,11 @@ struct RecipesView: View {
     @State private var isListView = true
     @State private var hasLoaded = false
     @State private var showFilterSheet = false
-    
+
     var body: some View {
         VStack (spacing: 0) {
             MenuBar(isListView: $isListView, showFilterSheet: $showFilterSheet)
-            
+
             HStack {
                 Text("Your Recipes")
                     .font(.title)
@@ -26,14 +26,26 @@ struct RecipesView: View {
             }
             .padding(.vertical, 12)
             .padding(.horizontal)
+            
 
+            // Loading skeletons
+            if model.isLoading && !hasLoaded {
+                List(0..<10, id: \.self) { _ in
+                    RecipeListCardLoadingSkeleton()
+                        .listRowSeparator(.hidden)
+                        .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                }
+                .listStyle(.plain)
 
-            /** Main content */
-            if !model.recipes.isEmpty && isListView {
+            // Loaded with data
+            } else if !model.recipes.isEmpty && isListView {
                 RecipeListView(recipes: model.recipes)
+
             } else if !model.recipes.isEmpty && !isListView {
                 RecipeCardListView(recipes: model.recipes)
-            } else {
+
+            // 3) Loaded but empty
+            } else if hasLoaded {
                 Spacer()
                 Text("You have no recipes.")
                     .font(.headline)
@@ -42,34 +54,33 @@ struct RecipesView: View {
             }
         }
         .onAppear {
-            if let email = session.userEmail {
-                if filterRecipesModel.isFilterActive {
-                    model.loadFilteredRecipes(email: email, filter: filterRecipesModel)
-                } else {
-                    model.loadAllUserRecipes(email: email)
-                }
-            }
+            guard let email = session.userEmail else { return }
+            fetch(email: email)
         }
         .onChange(of: session.shouldRefreshRecipes) {
-            if session.shouldRefreshRecipes {
-                if let email = session.userEmail {
-                    if filterRecipesModel.isFilterActive {
-                        model.loadFilteredRecipes(email: email, filter: filterRecipesModel)
-                    } else {
-                        model.loadAllUserRecipes(email: email)
-                    }
-                }
+            if session.shouldRefreshRecipes, let email = session.userEmail {
+                fetch(email: email)
                 session.shouldRefreshRecipes = false
             }
+        }
+        // Flip hasLoaded when first load completes
+        .onChange(of: model.isLoading) { new in
+            if hasLoaded == false && new == false { hasLoaded = true }
         }
         .sheet(isPresented: $showFilterSheet) {
             FilterSheetView(
                 filterRecipesModel: filterRecipesModel,
                 recipeListModel: model
-            ) {
-                showFilterSheet = false
-            }
+            ) { showFilterSheet = false }
         }
+    }
 
+    private func fetch(email: String) {
+        if filterRecipesModel.isFilterActive {
+            model.loadFilteredRecipes(email: email, filter: filterRecipesModel)
+        } else {
+            model.loadAllUserRecipes(email: email)
+        }
     }
 }
+

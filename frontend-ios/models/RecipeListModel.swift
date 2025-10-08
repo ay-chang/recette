@@ -13,6 +13,7 @@ struct RecipeListItems: Identifiable {
 class RecipeListModel: ObservableObject {
     @Published var recipes: [RecipeListItems] = []
     @Published var errorMessage: String?
+    @Published var isLoading = false
 
     /**
      * Loads the full recipe details. By default, Apollo Client uses cache-first fetching,
@@ -22,6 +23,7 @@ class RecipeListModel: ObservableObject {
      */
     func loadAllUserRecipes(email: String) {
         errorMessage = nil
+        isLoading = true
 
         let query = RecetteSchema.GetUserRecipesFullDetailsQuery(email: email)
         
@@ -33,7 +35,7 @@ class RecipeListModel: ObservableObject {
          */
         Network.shared.apollo.fetch(query: query, cachePolicy: .fetchIgnoringCacheCompletely) { result in
             DispatchQueue.main.async {
-
+                defer { self.isLoading = false }
                 switch result {
                 case .success(let graphQLResult):
                     if let gqlRecipes = graphQLResult.data?.userRecipes {
@@ -50,16 +52,21 @@ class RecipeListModel: ObservableObject {
                         }
                     } else {
                         self.errorMessage = "Failed to load recipes."
+                        self.recipes = []
                     }
                 case .failure(let error):
                     self.errorMessage = error.localizedDescription
+                    self.recipes = []
                 }
             }
         }
     }
     
+    
+    /** After user sets a filter, retrieve the filtered recipes */
     func loadFilteredRecipes(email: String, filter: FilterRecipesModel) {
         errorMessage = nil
+        isLoading = true
 
         let gqlFilterInput = RecetteSchema.RecipeFilterInput(
             tags: filter.selectedTags.isEmpty ? nil : .some(Array(filter.selectedTags)),
@@ -74,6 +81,7 @@ class RecipeListModel: ObservableObject {
 
         Network.shared.apollo.fetch(query: query, cachePolicy: .fetchIgnoringCacheCompletely) { result in
             DispatchQueue.main.async {
+                defer { self.isLoading = false }
                 switch result {
                 case .success(let graphQLResult):
                     if let gqlRecipes = graphQLResult.data?.filterUserRecipes {
@@ -90,11 +98,14 @@ class RecipeListModel: ObservableObject {
                         }
                     } else if let errors = graphQLResult.errors {
                         self.errorMessage = errors.map { $0.localizedDescription }.joined(separator: "\n")
+                        self.recipes = []
                     } else {
                         self.errorMessage = "No recipes found."
+                        self.recipes = []
                     }
                 case .failure(let error):
                     self.errorMessage = error.localizedDescription
+                    self.recipes = []
                 }
             }
         }
