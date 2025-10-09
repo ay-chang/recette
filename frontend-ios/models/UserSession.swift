@@ -136,8 +136,6 @@ class UserSession: ObservableObject {
     }
 
 
-
-    
     /** Completing sign up after user inputs code */
     func completeSignUpWithCode(email: String, code: String) {
         let mutation = RecetteSchema.CompleteSignUpWithCodeMutation(email: email, code: code)
@@ -431,9 +429,6 @@ class UserSession: ObservableObject {
     
     /** Loading in user sessions */
     func loadSavedSession() {
-//        let persistedToken = AuthManager.shared.jwtToken
-
-        // Ensure we have a token first (see fix #1 above)
         guard let token = AuthManager.shared.jwtToken, !token.isEmpty else {
             self.isLoggedIn = false
             return

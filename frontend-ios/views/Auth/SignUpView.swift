@@ -13,6 +13,7 @@ struct SignUpView: View {
             HStack {
                 Spacer()
                 Button(action: {
+                    session.clearLoginError()
                     showSheet = false
                 }) {
                     Image(systemName: "xmark")
@@ -88,22 +89,11 @@ struct SignUpView: View {
                     Text(error)
                         .foregroundColor(.red)
                         .font(.footnote)
+                        .multilineTextAlignment(.center)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding(.top, 4)
                 }
             }
-
-            /* Or divider */
-//            HStack {
-//                Rectangle().frame(height: 1).foregroundColor(.gray)
-//                Text("or").foregroundColor(.gray).font(.footnote)
-//                Rectangle().frame(height: 1).foregroundColor(.gray)
-//            }
-//            .padding()
-
-//            VStack(spacing: 12) {
-//                SocialLoginButton(label: "Continue with Apple", icon: "apple.logo")
-//                SocialLoginButton(label: "Continue with Google", icon: "globe")
-//            }
-
             Spacer()
         }
         .sheet(isPresented: $showVerifyCode) {
