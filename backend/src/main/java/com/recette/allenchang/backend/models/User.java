@@ -1,14 +1,18 @@
 package com.recette.allenchang.backend.models;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import com.recette.allenchang.backend.models.Friendship.Friendship;
 
@@ -39,6 +43,10 @@ public class User {
 
     @OneToMany(mappedBy = "friend")
     private List<Friendship> receivedFriendRequests;
+
+    @CreationTimestamp
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
 
     /** Getters and setters */
     public UUID getId() {
