@@ -90,6 +90,9 @@
 				S3Service.swift,
 				Shimmer.swift,
 				TagManageable.swift,
+				Versioning/UpdateChecker.swift,
+				Versioning/UpdateGate.swift,
+				Versioning/Versioning.swift,
 			);
 			target = 971C4CE42DA6ADD100A8CBAD /* frontend-ios */;
 		};
