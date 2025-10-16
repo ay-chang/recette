@@ -12,7 +12,7 @@ final class UpdateChecker: ObservableObject {
     @Published var alertMessage: String?
     @Published var showAlert = false
 
-    private let configURL = URL(string: "https://recetteapp.com/api/app-config")!
+    private let configURL = URL(string: "\(Config.backendBaseURL)/api/app-config")!
     private let current = AppVersion(currentShortVersion())
 
     func check() async {

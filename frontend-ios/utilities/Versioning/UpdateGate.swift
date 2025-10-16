@@ -4,7 +4,6 @@ struct UpdateGate<Content: View>: View {
     @StateObject private var updater = UpdateChecker()
     let content: () -> Content
 
-    // ⬇️ Replace with your real App Store ID
     private let appStoreURL = URL(string: "itms-apps://itunes.apple.com/app/id6748658964")!
 
     var body: some View {
