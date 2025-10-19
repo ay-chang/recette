@@ -4,6 +4,7 @@ struct ProfileOptionsList: View {
     @EnvironmentObject var session: UserSession
     @State private var showEditTags = false
     @State private var showAccountDetails = false
+    @State private var showFeedback = false
     
     var body: some View {
         VStack (alignment: .leading, spacing: 16) {
@@ -12,6 +13,12 @@ struct ProfileOptionsList: View {
                 buttonText: "Edit Tags",
                 buttonImage: "pencil",
                 buttonAction: { showEditTags = true }
+            )
+            
+            ProfileOptionsButton(
+                buttonText: "Feedback",
+                buttonImage:"exclamationmark.bubble",
+                buttonAction: {showFeedback = true }
             )
             
             /** Settings Button*/
@@ -48,6 +55,10 @@ struct ProfileOptionsList: View {
         }
         .fullScreenCover(isPresented: $showAccountDetails) {
             ProfileAccountSettingsView()
+                .environmentObject(session)
+        }
+        .fullScreenCover(isPresented: $showFeedback) {
+            ProfileFeedbackView()
                 .environmentObject(session)
         }
     }

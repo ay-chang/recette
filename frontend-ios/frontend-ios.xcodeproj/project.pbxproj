@@ -134,6 +134,7 @@
 				Main/SocialView.swift,
 				Profile/ProfileAccountDetailsView.swift,
 				Profile/ProfileEditUserTags.swift,
+				Profile/ProfileFeedbackView.swift,
 				Profile/ProfileOptionsButton.swift,
 				Profile/ProfileOptionsList.swift,
 				RecipeDetails/ActionSheetView.swift,
