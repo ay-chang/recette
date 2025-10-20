@@ -4,7 +4,7 @@ struct ProfileFeedbackView: View {
     @EnvironmentObject var session: UserSession
     @Environment(\.dismiss) var dismiss
     @State private var feedbackText = ""
-    @State private var submitted: Bool = false
+    @State private var showSubmittedSheet = false
     
     
     var body: some View {
@@ -47,38 +47,75 @@ struct ProfileFeedbackView: View {
                     RoundedRectangle(cornerRadius: 8)
                         .stroke(Color.gray.opacity(0.5), lineWidth: 1)
                 )
-
+                
                 /** Character count */
                 CharacterCountView(currentCount: feedbackText.count, maxCount: 250)
             }
             
             Spacer()
             
-            if !submitted {
-                Button(action: {
-                    sendFeedback(message: feedbackText)
-                    feedbackText = ""
-                    submitted = true
-                }) {
-                    Text("Submit")
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.black)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
-                }
-            } else {
-                Text("Submitted!")
+            Button(action: {
+                sendFeedback(message: feedbackText)
+                showSubmittedSheet = true
+                feedbackText = ""
+            }) {
+                Text("Submit")
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.black)
+                    .background(Color(hex: "#e9c46a"))
                     .foregroundColor(.white)
                     .cornerRadius(8)
             }
         }
+        .sheet(isPresented: $showSubmittedSheet) {
+            SubmittedSheet()
+                .presentationDragIndicator(.hidden)
+        }
         .padding()
     }
 }
+
+struct SubmittedSheet: View {
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        Capsule()
+            .frame(width: 40, height: 6)
+            .foregroundColor(.gray.opacity(0.8))
+            .padding(.top, 10)
+            .padding(.bottom, 10)
+        
+        Spacer()
+
+        VStack(spacing: 16) {
+            ZStack {
+                Circle()
+                    .stroke(Color(hex: "#e9c46a"), lineWidth: 3)
+                    .frame(width: 72, height: 72)
+                Image(systemName: "checkmark")
+                    .font(.system(size: 32, weight: .bold))
+                    .foregroundColor(Color(hex: "#e9c46a"))
+            }
+            .padding(.top, 12)
+
+            Text("Thanks for sharing!")
+                .font(.title3)
+                .fontWeight(.semibold)
+
+            Text("Hearing from you helps us create the best experience in Recette.")
+                .font(.subheadline)
+                .foregroundColor(.gray)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 24)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 24)
+
+        Spacer()
+        
+    }
+}
+
 
 func sendFeedback(message: String) {
     guard let url = URL(string: "\(Config.backendBaseURL)/api/feedback") else { return }
