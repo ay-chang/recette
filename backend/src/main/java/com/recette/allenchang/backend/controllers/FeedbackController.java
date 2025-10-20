@@ -15,7 +15,6 @@ public class FeedbackController {
 
     @PostMapping("/feedback")
     public ResponseEntity<String> sendFeedback(@RequestParam("message") String message) {
-        System.out.println("Sending feedback email...");
 
         if (message == null || message.trim().isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Message cannot be empty.");
