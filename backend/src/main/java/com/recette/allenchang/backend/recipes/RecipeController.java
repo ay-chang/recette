@@ -43,7 +43,7 @@ public class RecipeController {
         return RecipeMapper.toResponse(recipe);
     }
 
-    /** GET all recipes for a user */
+    /** GET all recipes for logged in user */
     @GetMapping("/mine")
     public List<RecipeResponse> mine() {
         String userEmail = JwtUtil.getLoggedInUserEmail();
@@ -53,6 +53,7 @@ public class RecipeController {
                 .toList();
     }
 
+    /** Filter recipes for logged in user */
     @GetMapping("/mine/filter")
     public List<RecipeResponse> filterMine(
             @RequestParam(name = "tag", required = false) List<String> tags,
@@ -82,7 +83,7 @@ public class RecipeController {
         }
     }
 
-    /** REST endpoint to handle delting photo from amazon S3 */
+    /** endpoint to handle delting photo from amazon S3 */
     @DeleteMapping("delete-image")
     public ResponseEntity<String> deleteFile(@RequestParam("url") String fileUrl) {
         try {
