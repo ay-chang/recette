@@ -53,36 +53,32 @@ class EditRecipeModel: BaseRecipe {
 
 
     private func performGraphQLUpdate(completion: (() -> Void)? = nil) {
-        let gqlIngredients = ingredients.map {
-            RecetteSchema.IngredientInput(name: $0.name, measurement: $0.measurement)
+        let requestIngredients = ingredients.map {
+            IngredientDTO(name: $0.name, measurement: $0.measurement)
         }
 
-        let input = RecetteSchema.UpdateRecipeInput(
-            id: id,
+        let request = UpdateRecipeRequest(
             title: title,
             description: description,
-            imageurl: imageurl != nil ? .some(imageurl!) : .null,
-            ingredients: gqlIngredients,
+            imageurl: imageurl,
+            ingredients: requestIngredients,
             steps: steps,
-            tags: .some(Array(selectedTags)),
-            difficulty: difficulty != nil ? .some(difficulty!) : .null,
-            servingSize: .some(servingSize),
-            cookTimeInMinutes: .some(cookTimeInMinutes)
+            tags: Array(selectedTags),
+            difficulty: difficulty,
+            servingSize: servingSize,
+            cookTimeInMinutes: cookTimeInMinutes
         )
 
-        let mutation = RecetteSchema.UpdateRecipeMutation(input: input)
-
-        Network.shared.apollo.perform(mutation: mutation) { result in
-            switch result {
-            case .success(let graphQLResult):
-                if graphQLResult.data?.updateRecipe != nil {
-                    print("Updated recipe")
+        Task {
+            do {
+                print("EditRecipeModel: Updating recipe via REST API...")
+                _ = try await RecipeService.shared.update(id: id, request: request)
+                print("EditRecipeModel: Recipe updated successfully")
+                await MainActor.run {
                     completion?()
-                } else if let errors = graphQLResult.errors {
-                    print("GraphQL Errors: \(errors)")
                 }
-            case .failure(let error):
-                print("Network error: \(error.localizedDescription)")
+            } catch {
+                print("EditRecipeModel ERROR: \(error)")
             }
         }
     }

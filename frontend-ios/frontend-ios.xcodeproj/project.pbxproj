@@ -49,7 +49,7 @@
 		971C4CF22DA6ADD300A8CBAD /* frontend-iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "frontend-iosTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		971C4CFC2DA6ADD300A8CBAD /* frontend-iosUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "frontend-iosUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		971C4D962DA8A4A600A8CBAD /* apollo-codegen-config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "apollo-codegen-config.json"; sourceTree = "<group>"; };
-		97A286032E88B2A8006A4D08 /* frontend-ios-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "frontend-ios-Info.plist"; sourceTree = "<group>"; };
+		97A286032E88B2A8006A4D08 /* frontend-ios-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "frontend-ios-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -100,7 +100,9 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Auth/CodeInputFields.swift,
+				Auth/GoogleLoginButton.swift,
 				Auth/LoginView.swift,
+				Auth/SignInWithAppleButtonView.swift,
 				Auth/SignUpView.swift,
 				Auth/VerifyCodeView.swift,
 				CreateRecipe/AddIngredientView.swift,
@@ -191,6 +193,30 @@
 			);
 			target = 971C4CE42DA6ADD100A8CBAD /* frontend-ios */;
 		};
+		97CEC6D02F05B7630040B1BB /* Exceptions for "Services" folder in "frontend-ios" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				AuthService.swift,
+				RecetteAPI.swift,
+				RecipeService.swift,
+			);
+			target = 971C4CE42DA6ADD100A8CBAD /* frontend-ios */;
+		};
+		97CEC6D32F05B7720040B1BB /* Exceptions for "dto" folder in "frontend-ios" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				AuthResponse.swift,
+				CompleteSignUpRequest.swift,
+				CreateRecipeRequest.swift,
+				GoogleLoginRequest.swift,
+				IngredientDTO.swift,
+				LoginRequest.swift,
+				RecipeResponse.swift,
+				SendVerificationCodeRequest.swift,
+				UpdateRecipeRequest.swift,
+			);
+			target = 971C4CE42DA6ADD100A8CBAD /* frontend-ios */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
@@ -273,6 +299,22 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		97CEC6C72F05B2AA0040B1BB /* dto */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				97CEC6D32F05B7720040B1BB /* Exceptions for "dto" folder in "frontend-ios" target */,
+			);
+			path = dto;
+			sourceTree = "<group>";
+		};
+		97CEC6CB2F05B51C0040B1BB /* Services */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				97CEC6D02F05B7630040B1BB /* Exceptions for "Services" folder in "frontend-ios" target */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -307,6 +349,8 @@
 			isa = PBXGroup;
 			children = (
 				97A286032E88B2A8006A4D08 /* frontend-ios-Info.plist */,
+				97CEC6C72F05B2AA0040B1BB /* dto */,
+				97CEC6CB2F05B51C0040B1BB /* Services */,
 				97C5D7DD2DEDFBB800665D56 /* Components */,
 				971C4E672DA9737D00A8CBAD /* Generated */,
 				971C4D522DA858E400A8CBAD /* app */,

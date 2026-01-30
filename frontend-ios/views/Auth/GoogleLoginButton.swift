@@ -1,18 +1,57 @@
-//
-//  GoogleLoginButton.swift
-//  frontend-ios
-//
-//  Created by Allen Chang on 10/21/25.
-//
-
 import SwiftUI
+import GoogleSignIn
 
 struct GoogleLoginButton: View {
+    let onToken: (String) -> Void
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Button {
+            guard let vc = UIApplication.shared.topViewController else { return }
+            GIDSignIn.sharedInstance.signIn(withPresenting: vc) { result, error in
+                if let error = error {
+                    print("Google sign-in failed:", error.localizedDescription)
+                    return
+                }
+                guard let token = result?.user.idToken?.tokenString else {
+                    print("No ID token from Google")
+                    return
+                }
+                onToken(token) // LoginView passes this to session.logInWithGoogle
+            }
+
+        } label: {
+            HStack(spacing: 8) {
+                Image("google-g")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 22, height: 22)
+                Spacer()
+                Text("Continue with Google").fontWeight(.semibold)
+                Spacer()
+            }
+            .frame(maxWidth: .infinity)
+            .padding()
+            .foregroundColor(.black)
+            .background(Color.white)
+            .cornerRadius(10)
+            .overlay(RoundedRectangle(cornerRadius: 10).stroke(.gray, lineWidth: 1))
+        }
     }
 }
 
-#Preview {
-    GoogleLoginButton()
+/** Small helper to present Google’s sheet from SwiftUI */
+import UIKit
+extension UIApplication {
+    var topViewController: UIViewController? {
+        connectedScenes.compactMap { $0 as? UIWindowScene }
+            .flatMap { $0.windows }
+            .first { $0.isKeyWindow }?
+            .rootViewController?.presentedViewController
+        ??
+        connectedScenes.compactMap { $0 as? UIWindowScene }
+            .flatMap { $0.windows }
+            .first { $0.isKeyWindow }?
+            .rootViewController
+    }
 }
+

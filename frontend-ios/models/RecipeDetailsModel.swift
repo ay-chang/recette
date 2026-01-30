@@ -13,6 +13,7 @@ struct RecipeDetails: Identifiable, Equatable {
     var servingSize: Int?
 }
 
+@MainActor
 class RecipeDetailsModel: ObservableObject {
     @Published var recipe: RecipeDetails?
     @Published var selectedImage: UIImage?
@@ -24,78 +25,66 @@ class RecipeDetailsModel: ObservableObject {
 
     
     func loadRecipe() {
-        let query = RecetteSchema.GetRecipeByIDQuery(id: RecetteSchema.ID(recipeId))
-        Network.shared.apollo.fetch(query: query, cachePolicy: .fetchIgnoringCacheCompletely) { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let graphQLResult):
-                    if let gql = graphQLResult.data?.recipeById {
-                        self.recipe = RecipeDetails(
-                            id: gql.id,
-                            title: gql.title,
-                            description: gql.description,
-                            imageurl: gql.imageurl,
-                            ingredients: gql.ingredients.map {
-                                Ingredient(name: $0.name, measurement: $0.measurement)
-                            },
-                            steps: gql.steps,
-                            tags: gql.tags.map { $0.name },
-                            difficulty: gql.difficulty,
-                            cookTimeInMinutes: gql.cookTimeInMinutes,
-                            servingSize: gql.servingSize
-                        )
-                    }
-                case .failure(let error):
-                    print("Failed to load recipe: \(error)")
-                }
+        Task {
+            do {
+                let dto = try await RecipeService.shared.getById(recipeId)
+
+                self.recipe = RecipeDetails(
+                    id: dto.id,
+                    title: dto.title,
+                    description: dto.description,
+                    imageurl: dto.imageurl,
+                    ingredients: (dto.ingredients ?? []).map { Ingredient(name: $0.name, measurement: $0.measurement) },
+                    steps: dto.steps ?? [],
+                    tags: dto.tags ?? [],
+                    difficulty: dto.difficulty,
+                    cookTimeInMinutes: dto.cookTimeInMinutes,
+                    servingSize: dto.servingSize
+                )
+            } catch {
+                print("Failed to load recipe: \(error)")
             }
         }
     }
 
     func deleteRecipe(completion: @escaping (Bool) -> Void) {
-            if let imageurl = recipe?.imageurl {
-                S3Manager.deleteImage(at: imageurl)
-            }
+        if let imageurl = recipe?.imageurl {
+            S3Manager.deleteImage(at: imageurl)
+        }
 
-            let mutation = RecetteSchema.DeleteRecipeMutation(id: RecetteSchema.ID(recipeId))
-            Network.shared.apollo.perform(mutation: mutation) { result in
-                DispatchQueue.main.async {
-                    switch result {
-                    case .success(let gqlResult):
-                        completion(gqlResult.data?.deleteRecipe == true)
-                    case .failure:
-                        completion(false)
-                    }
+        Task {
+            do {
+                print("RecipeDetailsModel: Deleting recipe via REST API...")
+                try await RecipeService.shared.delete(id: recipeId)
+                print("RecipeDetailsModel: Recipe deleted successfully")
+                await MainActor.run {
+                    completion(true)
+                }
+            } catch {
+                print("RecipeDetailsModel ERROR: \(error)")
+                await MainActor.run {
+                    completion(false)
                 }
             }
         }
+    }
 
     func updateRecipeImage(image: UIImage, email: String, completion: @escaping (Bool) -> Void) {
         Task {
             do {
                 let imageurl = try await S3Manager.uploadImage(image)
-                let mutation = RecetteSchema.UpdateRecipeImageMutation(
-                    recipeId: RecetteSchema.ID(recipeId),
-                    imageurl: imageurl
-                )
-
-                Network.shared.apollo.perform(mutation: mutation) { result in
-                    switch result {
-                    case .success(let gqlResult):
-                        if gqlResult.errors == nil {
-                            DispatchQueue.main.async {
-                                self.loadRecipe()
-                                completion(true)
-                            }
-                        } else {
-                            completion(false)
-                        }
-                    case .failure:
-                        completion(false)
-                    }
+                print("RecipeDetailsModel: Updating recipe image via REST API...")
+                _ = try await RecipeService.shared.updateImage(id: recipeId, imageUrl: imageurl)
+                print("RecipeDetailsModel: Recipe image updated successfully")
+                await MainActor.run {
+                    self.loadRecipe()
+                    completion(true)
                 }
             } catch {
-                completion(false)
+                print("RecipeDetailsModel ERROR: \(error)")
+                await MainActor.run {
+                    completion(false)
+                }
             }
         }
     }

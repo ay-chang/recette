@@ -17,44 +17,33 @@ class CreateRecipeModel: BaseRecipe {
                     imageUrlString = try await S3Manager.uploadImage(image)
                 }
 
-                let gqlIngredients = ingredients.map {
-                    RecetteSchema.IngredientInput(name: $0.name, measurement: $0.measurement)
+                let requestIngredients = ingredients.map {
+                    IngredientDTO(name: $0.name, measurement: $0.measurement)
                 }
-                
+
                 /** Clean steps */
                 let cleanedSteps = steps
                     .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
                     .filter { !$0.isEmpty }
 
-                let input = RecetteSchema.RecipeInput(
+                let request = CreateRecipeRequest(
                     title: title,
                     description: description,
-                    imageurl: imageUrlString != nil ? .some(imageUrlString!) : .null,
-                    ingredients: gqlIngredients,
-                    steps: cleanedSteps.isEmpty ? .null : .some(cleanedSteps),
-                    user: RecetteSchema.UserInput(email: email),
-                    tags: .some(Array(selectedTags)),
-                    difficulty: difficulty != nil ? .some(difficulty!) : .null,
-                    cookTimeInMinutes: .some(cookTimeInMinutes),
-                    servingSize: .some(servingSize)
+                    imageurl: imageUrlString,
+                    ingredients: requestIngredients,
+                    steps: cleanedSteps,
+                    tags: Array(selectedTags),
+                    difficulty: difficulty,
+                    servingSize: servingSize,
+                    cookTimeInMinutes: cookTimeInMinutes
                 )
 
-                let mutation = RecetteSchema.AddRecipeMutation(input: input)
-
-                Network.shared.apollo.perform(mutation: mutation) { result in
-                    switch result {
-                    case .success(let graphQLResult):
-                        if let errors = graphQLResult.errors {
-                            print("GraphQL Errors:", errors)
-                            completion(.failure(ValidationError("GraphQL error: \(errors.first?.message ?? "Unknown error")")))
-                        } else {
-                            completion(.success(()))
-                        }
-                    case .failure(let error):
-                        completion(.failure(error))
-                    }
-                }
+                print("CreateRecipeModel: Creating recipe via REST API...")
+                _ = try await RecipeService.shared.create(request)
+                print("CreateRecipeModel: Recipe created successfully")
+                completion(.success(()))
             } catch {
+                print("CreateRecipeModel ERROR: \(error)")
                 completion(.failure(error))
             }
         }

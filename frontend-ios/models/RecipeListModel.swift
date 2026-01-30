@@ -28,107 +28,72 @@ enum TimeOption: String, CaseIterable {
     }
 }
 
-class RecipeListModel: ObservableObject {
+import Foundation
+
+@MainActor
+final class RecipeListModel: ObservableObject {
     @Published var recipes: [RecipeListItems] = []
     @Published var errorMessage: String?
     @Published var isLoading = false
 
-    /**
-     * Loads the full recipe details. By default, Apollo Client uses cache-first fetching,
-     * meaning it will: First return cached data (from memory) Only make a network call if
-     * cache is empty. This is great for performance, but bad if we just created or deleted
-     * data — because we might get stale results.
-     */
-    func loadAllUserRecipes(email: String) {
+    func loadAllUserRecipes() {
         errorMessage = nil
         isLoading = true
 
-        let query = RecetteSchema.GetUserRecipesFullDetailsQuery(email: email)
-        
-        /**
-         * This tells Apollo:
-         * Don’t trust cache — always go to the server.
-         * That’s why the new recipe shows up, it forced Apollo to re-query the backend,
-         * which returned the up-to-date recipe list.
-         */
-        Network.shared.apollo.fetch(query: query, cachePolicy: .fetchIgnoringCacheCompletely) { result in
-            DispatchQueue.main.async {
-                defer { self.isLoading = false }
-                switch result {
-                case .success(let graphQLResult):
-                    if let gqlRecipes = graphQLResult.data?.userRecipes {
-                        self.recipes = gqlRecipes.map {
-                            RecipeListItems(
-                                id: $0.id,
-                                title: $0.title,
-                                description: $0.description,
-                                imageurl: $0.imageurl,
-                                difficulty: $0.difficulty,
-                                servingSize: $0.servingSize,
-                                cookTimeInMinutes: $0.cookTimeInMinutes
-                            )
-                        }
-                    } else {
-                        self.errorMessage = "Failed to load recipes."
-                        self.recipes = []
-                    }
-                case .failure(let error):
-                    self.errorMessage = error.localizedDescription
-                    self.recipes = []
+        Task {
+            do {
+                print("RecipeListModel: Loading recipes from REST API...")
+                let dtos = try await RecipeService.shared.getMine()
+                print("RecipeListModel: Received \(dtos.count) recipes")
+                self.recipes = dtos.map {
+                    RecipeListItems(
+                        id: $0.id,
+                        title: $0.title,
+                        description: $0.description,
+                        imageurl: $0.imageurl,
+                        difficulty: $0.difficulty,
+                        servingSize: $0.servingSize,
+                        cookTimeInMinutes: $0.cookTimeInMinutes
+                    )
                 }
+                self.isLoading = false
+            } catch {
+                print("RecipeListModel ERROR: \(error)")
+                self.errorMessage = error.localizedDescription
+                self.recipes = []
+                self.isLoading = false
             }
         }
     }
-    
-    
-    /** After user sets a filter, retrieve the filtered recipes */
-    func loadFilteredRecipes(email: String, filter: FilterRecipesModel) {
+
+    func loadFilteredRecipes(filter: FilterRecipesModel) {
         errorMessage = nil
         isLoading = true
 
-        let gqlFilterInput = RecetteSchema.RecipeFilterInput(
-            tags: filter.selectedTags.isEmpty ? nil : .some(Array(filter.selectedTags)),
-            maxCookTimeInMinutes: filter.maxCookTimeInMinutes != nil ? .some(filter.maxCookTimeInMinutes!.minutesValue) : nil,
-            difficulties: filter.selectedDifficulties.isEmpty ? nil : .some(filter.selectedDifficulties)
-        )
-
-        let query = RecetteSchema.GetUserFilteredRecipesQuery(
-            email: email,
-            recipeFilterInput: gqlFilterInput
-        )
-
-        Network.shared.apollo.fetch(query: query, cachePolicy: .fetchIgnoringCacheCompletely) { result in
-            DispatchQueue.main.async {
-                defer { self.isLoading = false }
-                switch result {
-                case .success(let graphQLResult):
-                    if let gqlRecipes = graphQLResult.data?.filterUserRecipes {
-                        self.recipes = gqlRecipes.map {
-                            RecipeListItems(
-                                id: $0.id,
-                                title: $0.title,
-                                description: $0.description,
-                                imageurl: $0.imageurl,
-                                difficulty: $0.difficulty,
-                                servingSize: $0.servingSize,
-                                cookTimeInMinutes: $0.cookTimeInMinutes
-                            )
-                        }
-                    } else if let errors = graphQLResult.errors {
-                        self.errorMessage = errors.map { $0.localizedDescription }.joined(separator: "\n")
-                        self.recipes = []
-                    } else {
-                        self.errorMessage = "No recipes found."
-                        self.recipes = []
-                    }
-                case .failure(let error):
-                    self.errorMessage = error.localizedDescription
-                    self.recipes = []
+        Task {
+            do {
+                let dtos = try await RecipeService.shared.getMineFiltered(filter: filter)
+                self.recipes = dtos.map {
+                    RecipeListItems(
+                        id: $0.id,
+                        title: $0.title,
+                        description: $0.description,
+                        imageurl: $0.imageurl,
+                        difficulty: $0.difficulty,
+                        servingSize: $0.servingSize,
+                        cookTimeInMinutes: $0.cookTimeInMinutes
+                    )
                 }
+                self.isLoading = false
+            } catch {
+                self.errorMessage = error.localizedDescription
+                self.recipes = []
+                self.isLoading = false
             }
         }
     }
 }
+
 
 
 

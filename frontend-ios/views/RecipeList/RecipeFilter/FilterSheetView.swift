@@ -41,7 +41,7 @@ struct FilterSheetView: View {
                 Spacer()
                 Button(action: {
                     if let email = session.userEmail {
-                        filterRecipesModel.applyFilter(email: email, recipeListModel: recipeListModel) {
+                        filterRecipesModel.applyFilter(recipeListModel: recipeListModel) {
                             onApply() // Close the sheet
                         }
                     }

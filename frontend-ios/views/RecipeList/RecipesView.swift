@@ -98,9 +98,9 @@ struct RecipesView: View {
 
     private func fetch(email: String) {
         if filterRecipesModel.isFilterActive {
-            model.loadFilteredRecipes(email: email, filter: filterRecipesModel)
+            model.loadFilteredRecipes(filter: filterRecipesModel)
         } else {
-            model.loadAllUserRecipes(email: email)
+            model.loadAllUserRecipes()
         }
     }
 }

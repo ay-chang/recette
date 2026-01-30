@@ -6,11 +6,12 @@ class FilterRecipesModel: ObservableObject {
     @Published var selectedDifficulties: [String] = []
     @Published var maxCookTimeInMinutes: TimeOption? = nil
     
-    func applyFilter(email: String, recipeListModel: RecipeListModel, onComplete: @escaping () -> Void) {
-        recipeListModel.loadFilteredRecipes(email: email, filter: self)
+    @MainActor
+    func applyFilter(recipeListModel: RecipeListModel, onComplete: @escaping () -> Void) {
+        recipeListModel.loadFilteredRecipes(filter: self)
         onComplete()
     }
-    
+
     func clearFilters() {
         selectedTags = []
         selectedDifficulties = []
@@ -18,7 +19,6 @@ class FilterRecipesModel: ObservableObject {
     }
 }
 
-/** Variable that tells us if any filter option is selected */
 extension FilterRecipesModel {
     var isFilterActive: Bool {
         return !selectedTags.isEmpty ||
@@ -26,6 +26,3 @@ extension FilterRecipesModel {
                maxCookTimeInMinutes != nil
     }
 }
-
-
-

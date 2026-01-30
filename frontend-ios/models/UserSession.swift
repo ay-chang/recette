@@ -19,48 +19,42 @@ class UserSession: ObservableObject {
 
     /** Login function */
     func logIn(email: String, password: String) {
-        let loginMutation = RecetteSchema.LoginMutation(email: email, password: password)
+        Task {
+            do {
+                let response = try await AuthService.shared.login(email: email, password: password)
 
-        Network.shared.apollo.perform(mutation: loginMutation) { result in
-            switch result {
-            case .success(let graphQLResult):
-                if let token = graphQLResult.data?.login {
-                    AuthManager.shared.saveToken(token) // store the token securely
-                    Network.refresh()
+                // Store token and refresh network
+                AuthManager.shared.saveToken(response.token)
+                Network.refresh()
 
-                    DispatchQueue.main.async {
-                        self.isLoggedIn = true
-                        self.userEmail = email
+                DispatchQueue.main.async {
+                    self.isLoggedIn = true
+                    self.userEmail = email
 
-                        UserDefaults.standard.set(email, forKey: "loggedInEmail")
-                        UserDefaults.standard.set(true, forKey: "isLoggedIn")
-                    }
+                    UserDefaults.standard.set(email, forKey: "loggedInEmail")
+                    UserDefaults.standard.set(true, forKey: "isLoggedIn")
+                }
 
-                    /** Fetch user details after login */
-                    let userDetailsQuery = RecetteSchema.GetUserDetailsQuery(email: email)
-                    Network.shared.apollo.fetch(query: userDetailsQuery) { result in
-                        switch result {
-                        case .success(let graphQLResult):
-                            if let user = graphQLResult.data?.userDetails {
-                                DispatchQueue.main.async {
-                                    self.userUsername = user.username
-                                    self.userFirstName = user.firstName
-                                    self.userLastName = user.lastName
+                // Fetch user details after login (still using GraphQL for now)
+                let userDetailsQuery = RecetteSchema.GetUserDetailsQuery(email: email)
+                Network.shared.apollo.fetch(query: userDetailsQuery) { result in
+                    switch result {
+                    case .success(let graphQLResult):
+                        if let user = graphQLResult.data?.userDetails {
+                            DispatchQueue.main.async {
+                                self.userUsername = user.username
+                                self.userFirstName = user.firstName
+                                self.userLastName = user.lastName
 
-                                    UserDefaults.standard.set(user.firstName, forKey: "loggedInFirstName")
-                                    UserDefaults.standard.set(user.lastName, forKey: "loggedInLastName")
-                                }
+                                UserDefaults.standard.set(user.firstName, forKey: "loggedInFirstName")
+                                UserDefaults.standard.set(user.lastName, forKey: "loggedInLastName")
                             }
-                        case .failure(let error):
-                            print("Failed to fetch user details: \(error)")
                         }
-                    }
-                } else if let errors = graphQLResult.errors {
-                    DispatchQueue.main.async {
-                        self.loginError = errors.compactMap { $0.message }.joined(separator: "\n")
+                    case .failure(let error):
+                        print("Failed to fetch user details: \(error)")
                     }
                 }
-            case .failure(let error):
+            } catch {
                 DispatchQueue.main.async {
                     self.loginError = error.localizedDescription
                 }
@@ -71,22 +65,17 @@ class UserSession: ObservableObject {
     /** Login with google */
     func logInWithGoogle(idToken: String) {
         loginError = nil
-        let m = RecetteSchema.LoginWithGoogleMutation(idToken: idToken)
 
-        Network.shared.apollo.perform(mutation: m) { result in
-            switch result {
-            case .success(let res):
-                guard let jwt = res.data?.loginWithGoogle else {
-                    DispatchQueue.main.async { self.loginError = "Login failed" }
-                    return
-                }
+        Task {
+            do {
+                let response = try await AuthService.shared.loginWithGoogle(idToken: idToken)
 
                 // 1) Save token + refresh Apollo auth header
-                AuthManager.shared.saveToken(jwt)
+                AuthManager.shared.saveToken(response.token)
                 Network.refresh()
 
                 // 2) Persist session flags + email
-                let email = self.decodeEmail(from: jwt)
+                let email = self.decodeEmail(from: response.token)
                 DispatchQueue.main.async {
                     self.isLoggedIn = true
                     if let email = email {
@@ -96,7 +85,7 @@ class UserSession: ObservableObject {
                     UserDefaults.standard.set(true, forKey: "isLoggedIn")
                 }
 
-                // 3) Fetch user details and persist them
+                // 3) Fetch user details and persist them (still using GraphQL for now)
                 if let email = email {
                     let q = RecetteSchema.GetUserDetailsQuery(email: email)
                     Network.shared.apollo.fetch(query: q) { r in
@@ -116,8 +105,7 @@ class UserSession: ObservableObject {
                         }
                     }
                 }
-
-            case .failure(let error):
+            } catch {
                 DispatchQueue.main.async { self.loginError = error.localizedDescription }
             }
         }
@@ -134,64 +122,57 @@ class UserSession: ObservableObject {
               let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else { return nil }
         return (json["sub"] as? String) ?? (json["email"] as? String)
     }
+    
 
 
     /** Completing sign up after user inputs code */
     func completeSignUpWithCode(email: String, code: String) {
-        let mutation = RecetteSchema.CompleteSignUpWithCodeMutation(email: email, code: code)
-        
-        Network.shared.apollo.perform(mutation: mutation) { result in
-            switch result {
-            case .success(let graphQLResult):
-                if let token = graphQLResult.data?.completeSignUpWithCode {
-                    /** Save token and refresh network client */
-                    AuthManager.shared.saveToken(token)
-                    Network.refresh()
-                    
-                    /** Store login info */
-                    DispatchQueue.main.async {
-                        self.userEmail = email
-                        self.userUsername = email.split(separator: "@").first.map(String.init) ?? ""
-                        self.isLoggedIn = true
-                        
-                        UserDefaults.standard.set(email, forKey: "loggedInEmail")
-                        UserDefaults.standard.set(self.userUsername, forKey: "loggedInUsername")
-                        UserDefaults.standard.set(true, forKey: "isLoggedIn")
-                        
-                        print("Sign-up login state saved")
-                    }
-                    
-                    /** Immediately fetch user details after signup */
-                    let userDetailsQuery = RecetteSchema.GetUserDetailsQuery(email: email)
-                    Network.shared.apollo.fetch(query: userDetailsQuery) { result in
-                        switch result {
-                        case .success(let graphQLResult):
-                            if let user = graphQLResult.data?.userDetails {
-                                DispatchQueue.main.async {
-                                    self.userUsername = user.username
-                                    self.userFirstName = user.firstName
-                                    self.userLastName = user.lastName
-                                    
-                                    UserDefaults.standard.set(user.username, forKey: "loggedInUsername")
-                                    UserDefaults.standard.set(user.firstName, forKey: "loggedInFirstName")
-                                    UserDefaults.standard.set(user.lastName, forKey: "loggedInLastName")
-                                    
-                                    print("User details fetched after sign-up")
-                                }
-                            } else if let errors = graphQLResult.errors {
-                                print("GraphQL errors fetching user details: \(errors.map(\.message))")
-                            }
-                        case .failure(let error):
-                            print("Failed to fetch user details after sign-up: \(error)")
-                        }
-                    }
+        Task {
+            do {
+                let response = try await AuthService.shared.completeSignUp(email: email, code: code)
 
-                } else if let errors = graphQLResult.errors {
-                    DispatchQueue.main.async {
-                        self.loginError = errors.compactMap { $0.message }.joined(separator: "\n")
+                /** Save token and refresh network client */
+                AuthManager.shared.saveToken(response.token)
+                Network.refresh()
+
+                /** Store login info */
+                DispatchQueue.main.async {
+                    self.userEmail = email
+                    self.userUsername = email.split(separator: "@").first.map(String.init) ?? ""
+                    self.isLoggedIn = true
+
+                    UserDefaults.standard.set(email, forKey: "loggedInEmail")
+                    UserDefaults.standard.set(self.userUsername, forKey: "loggedInUsername")
+                    UserDefaults.standard.set(true, forKey: "isLoggedIn")
+
+                    print("Sign-up login state saved")
+                }
+
+                /** Immediately fetch user details after signup (still using GraphQL for now) */
+                let userDetailsQuery = RecetteSchema.GetUserDetailsQuery(email: email)
+                Network.shared.apollo.fetch(query: userDetailsQuery) { result in
+                    switch result {
+                    case .success(let graphQLResult):
+                        if let user = graphQLResult.data?.userDetails {
+                            DispatchQueue.main.async {
+                                self.userUsername = user.username
+                                self.userFirstName = user.firstName
+                                self.userLastName = user.lastName
+
+                                UserDefaults.standard.set(user.username, forKey: "loggedInUsername")
+                                UserDefaults.standard.set(user.firstName, forKey: "loggedInFirstName")
+                                UserDefaults.standard.set(user.lastName, forKey: "loggedInLastName")
+
+                                print("User details fetched after sign-up")
+                            }
+                        } else if let errors = graphQLResult.errors {
+                            print("GraphQL errors fetching user details: \(errors.map(\.message))")
+                        }
+                    case .failure(let error):
+                        print("Failed to fetch user details after sign-up: \(error)")
                     }
                 }
-            case .failure(let error):
+            } catch {
                 DispatchQueue.main.async {
                     self.loginError = error.localizedDescription
                 }
@@ -251,21 +232,12 @@ class UserSession: ObservableObject {
     
     /** Send verification code */
     func sendVerificationCode(email: String, password: String, completion: @escaping (Bool) -> Void) {
-        let mutation = RecetteSchema.SendVerificationCodeMutation(email: email, password: password)
-        
-        Network.shared.apollo.perform(mutation: mutation) { result in
-            switch result {
-            case .success(let graphQLResult):
-                if graphQLResult.data?.sendVerificationCode == true {
-                    self.loginError = nil
-                    completion(true)
-                } else if let errors = graphQLResult.errors {
-                    DispatchQueue.main.async {
-                        self.loginError = errors.compactMap { $0.message }.joined(separator: "\n")
-                        completion(false)
-                    }
-                }
-            case .failure(let error):
+        Task {
+            do {
+                try await AuthService.shared.sendVerificationCode(email: email, password: password)
+                self.loginError = nil
+                completion(true)
+            } catch {
                 DispatchQueue.main.async {
                     self.loginError = error.localizedDescription
                     completion(false)
