@@ -15,8 +15,8 @@ import com.recette.allenchang.backend.models.Tag;
 import com.recette.allenchang.backend.models.User;
 import com.recette.allenchang.backend.models.Friendship.Friendship;
 import com.recette.allenchang.backend.models.Friendship.FriendshipStatus;
+import com.recette.allenchang.backend.recipes.RecipeRepository;
 import com.recette.allenchang.backend.repositories.FriendshipRepository;
-import com.recette.allenchang.backend.repositories.RecipeRepository;
 import com.recette.allenchang.backend.repositories.UserRepository;
 import com.recette.allenchang.backend.repositories.TagRepository;
 

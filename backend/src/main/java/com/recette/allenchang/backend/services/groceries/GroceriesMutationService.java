@@ -9,9 +9,9 @@ import jakarta.transaction.Transactional;
 
 import com.recette.allenchang.backend.models.Grocery;
 import com.recette.allenchang.backend.models.User;
+import com.recette.allenchang.backend.recipes.RecipeRepository;
 import com.recette.allenchang.backend.models.Recipe;
 import com.recette.allenchang.backend.repositories.GroceryRepository;
-import com.recette.allenchang.backend.repositories.RecipeRepository;
 import com.recette.allenchang.backend.repositories.UserRepository;
 
 @Service

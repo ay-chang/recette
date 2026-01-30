@@ -8,16 +8,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.recette.allenchang.backend.inputs.RecipeFilterInput;
+import com.recette.allenchang.backend.inputs.RecipeInput;
+import com.recette.allenchang.backend.inputs.UpdateRecipeInput;
 import com.recette.allenchang.backend.models.Recipe;
+import com.recette.allenchang.backend.recipes.dto.requests.CreateRecipeRequest;
 import com.recette.allenchang.backend.recipes.dto.requests.FilterRecipeRequest;
+import com.recette.allenchang.backend.recipes.dto.requests.UpdateRecipeRequest;
 import com.recette.allenchang.backend.recipes.dto.responses.RecipeResponse;
 import com.recette.allenchang.backend.recipes.mappers.RecipeFilterMapper;
 import com.recette.allenchang.backend.recipes.mappers.RecipeMapper;
@@ -29,11 +36,16 @@ import com.recette.allenchang.backend.services.S3Service;
 public class RecipeController {
 
     private final RecipeQueryService recipeQueryService;
+    private final RecipeMutationService recipeMutationService;
+    private final RecipeImageService recipeImageService;
     private final S3Service S3Service;
 
-    public RecipeController(S3Service S3Service, RecipeQueryService recipeQueryService) {
+    public RecipeController(S3Service S3Service, RecipeQueryService recipeQueryService,
+            RecipeMutationService recipeMutationService, RecipeImageService recipeImageService) {
         this.S3Service = S3Service;
         this.recipeQueryService = recipeQueryService;
+        this.recipeMutationService = recipeMutationService;
+        this.recipeImageService = recipeImageService;
     }
 
     /** GET recipe by recipe id */
@@ -93,6 +105,40 @@ public class RecipeController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Failed to delete image: " + e.getMessage());
         }
+    }
+
+    /** POST: Create a new recipe */
+    @PostMapping
+    public RecipeResponse createRecipe(@RequestBody CreateRecipeRequest request) {
+        String userEmail = JwtUtil.getLoggedInUserEmail();
+        RecipeInput input = RecipeMapper.toInput(request);
+        Recipe recipe = recipeMutationService.addRecipe(input, userEmail);
+        return RecipeMapper.toResponse(recipe);
+    }
+
+    /** PUT: Update an existing recipe */
+    @PutMapping("/{id}")
+    public RecipeResponse updateRecipe(@PathVariable String id, @RequestBody UpdateRecipeRequest request) {
+        String userEmail = JwtUtil.getLoggedInUserEmail();
+        UpdateRecipeInput input = RecipeMapper.toUpdateInput(id, request);
+        Recipe recipe = recipeMutationService.updateRecipe(input, userEmail);
+        return RecipeMapper.toResponse(recipe);
+    }
+
+    /** DELETE: Delete a recipe by id */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteRecipe(@PathVariable String id) {
+        String userEmail = JwtUtil.getLoggedInUserEmail();
+        recipeMutationService.deleteRecipe(UUID.fromString(id), userEmail);
+        return ResponseEntity.noContent().build();
+    }
+
+    /** PATCH: Update a recipe's image */
+    @PatchMapping("/{id}/image")
+    public RecipeResponse updateRecipeImage(@PathVariable String id, @RequestParam("imageUrl") String imageUrl) {
+        String userEmail = JwtUtil.getLoggedInUserEmail();
+        Recipe recipe = recipeImageService.updateRecipeImage(UUID.fromString(id), imageUrl, userEmail);
+        return RecipeMapper.toResponse(recipe);
     }
 
 }

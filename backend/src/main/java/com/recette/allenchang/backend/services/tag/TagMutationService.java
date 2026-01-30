@@ -8,9 +8,9 @@ import com.recette.allenchang.backend.exceptions.DuplicateTagException;
 import com.recette.allenchang.backend.models.Recipe;
 import com.recette.allenchang.backend.models.Tag;
 import com.recette.allenchang.backend.models.User;
+import com.recette.allenchang.backend.recipes.RecipeRepository;
 import com.recette.allenchang.backend.repositories.TagRepository;
 import com.recette.allenchang.backend.repositories.UserRepository;
-import com.recette.allenchang.backend.repositories.RecipeRepository;
 
 import jakarta.transaction.Transactional;
 
