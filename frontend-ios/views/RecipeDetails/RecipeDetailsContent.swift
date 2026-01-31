@@ -25,10 +25,12 @@ struct RecipeDetailsContent: View {
             }
 
             /** Recipe description */
-            Text(recipe.description)
-                .font(.system(size: 16))
-                .fontWeight(.regular)
-            
+            if !recipe.description.isEmpty {
+                Text(recipe.description)
+                    .font(.system(size: 16))
+                    .fontWeight(.regular)
+            }
+
             /** List of tags */
             RecipeTags(tags: recipe.tags)
                 .padding(.bottom, 12)

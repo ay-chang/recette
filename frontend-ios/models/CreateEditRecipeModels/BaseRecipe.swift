@@ -17,11 +17,7 @@ class BaseRecipe: ObservableObject, TagManageable {
         if title.trimmingCharacters(in: .whitespaces).isEmpty {
             return ValidationError("Recipe title is required.")
         }
-        
-        if description.trimmingCharacters(in: .whitespaces).isEmpty {
-            return ValidationError("Recipe description is required.")
-        }
-        
+
         if ingredients.isEmpty {
             return ValidationError("At least one ingredient is required.")
         }

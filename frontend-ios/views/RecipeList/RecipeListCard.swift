@@ -46,11 +46,13 @@ struct RecipeListCard: View {
                         )
                     }
 
-                    Text(description)
-                        .font(.system(size: 14))
-                        .foregroundColor(.gray)
-                        .lineLimit(2)
-                        .truncationMode(.tail)
+                    if !description.isEmpty {
+                        Text(description)
+                            .font(.system(size: 14))
+                            .foregroundColor(.gray)
+                            .lineLimit(2)
+                            .truncationMode(.tail)
+                    }
                 }
             }
             .frame(height: imageWidth + 8)

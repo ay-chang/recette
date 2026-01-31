@@ -50,14 +50,16 @@ struct RecipeCard: View {
                 .padding(.horizontal)
             }
             
-            Text(description)
-                .font(.system(size: 14))
-                .foregroundColor(Color.gray)
-                .lineLimit(2)
-                .truncationMode(.tail)
-                .padding(.vertical)
-                .padding(.horizontal)
-            
+            if !description.isEmpty {
+                Text(description)
+                    .font(.system(size: 14))
+                    .foregroundColor(Color.gray)
+                    .lineLimit(2)
+                    .truncationMode(.tail)
+                    .padding(.vertical)
+                    .padding(.horizontal)
+            }
+
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .contentShape(Rectangle())
