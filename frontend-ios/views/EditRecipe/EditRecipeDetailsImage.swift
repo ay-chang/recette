@@ -17,8 +17,15 @@ struct EditRecipeDetailsImage: View {
                     .frame(height: 425)
                     .frame(maxWidth: UIScreen.main.bounds.width)
                     .clipped()
-            } else {
+            } else if let imageUrlString = imageUrlString, !imageUrlString.isEmpty {
                 RecipeImage(imageUrlString: imageUrlString, frameHeight: 425, frameWidth: UIScreen.main.bounds.width)
+            } else {
+                Image("pasta-placeholder")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(height: 425)
+                    .frame(maxWidth: UIScreen.main.bounds.width)
+                    .clipped()
             }
             
             // Overlay "Edit Cover" button

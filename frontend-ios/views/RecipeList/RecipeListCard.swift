@@ -12,7 +12,7 @@ struct RecipeListCard: View {
     var body: some View {
         VStack (alignment: .leading) {
             HStack(alignment: .top, spacing: 12) { // spacing between image and text
-                if let imageurl = imageurl {
+                if let imageurl = imageurl, !imageurl.isEmpty {
                     RecipeImage(
                         imageUrlString: imageurl,
                         frameHeight: imageWidth,

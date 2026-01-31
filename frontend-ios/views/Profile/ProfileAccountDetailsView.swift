@@ -23,7 +23,6 @@ struct ProfileAccountSettingsView: View {
                     session.updateAccountDetails(firstName: firstName, lastName: lastName) {
                         dismiss()
                     }
-                    session.refreshUserDetails()
                 }
                 .foregroundColor(.black)
                 .fontWeight(.light)

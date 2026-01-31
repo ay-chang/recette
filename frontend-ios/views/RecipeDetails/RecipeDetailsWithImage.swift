@@ -19,7 +19,16 @@ struct RecipeDetailsWithImage: View {
 
         ZStack(alignment: .topLeading) {
             // Image Header
-            RecipeImage(imageUrlString: recipe.imageurl, frameHeight: 550, frameWidth: UIScreen.main.bounds.width)
+            if let imageurl = recipe.imageurl, !imageurl.isEmpty {
+                RecipeImage(imageUrlString: imageurl, frameHeight: 550, frameWidth: UIScreen.main.bounds.width)
+            } else {
+                Image("pasta-placeholder")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(height: 550)
+                    .frame(width: UIScreen.main.bounds.width)
+                    .clipped()
+            }
             
             ScrollView {
                 RecipeScrollSentinel { value in

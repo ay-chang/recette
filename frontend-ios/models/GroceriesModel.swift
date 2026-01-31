@@ -36,32 +36,27 @@ class GroceriesModel: ObservableObject {
         isLoading = true
         errorMessage = nil
 
-        let query = RecetteSchema.GetUserGroceriesQuery(email: email)
-        Network.shared.apollo.fetch(query: query, cachePolicy: .fetchIgnoringCacheCompletely) { [weak self] result in
-            DispatchQueue.main.async {
-                defer { self?.isLoading = false }
-                switch result {
-                case .success(let graphQLResult):
-                    if let groceries = graphQLResult.data?.getUserGroceries {
-                        self?.items = groceries.map { g in
-                            GroceryItem(
-                                id: g.id,
-                                name: g.name,
-                                measurement: g.measurement,
-                                recipeId: g.recipe?.id ?? "(no-id)",
-                                recipeTitle: g.recipe?.title ?? "(No Recipe)",
-                                isChecked: g.checked
-                            )
-                        }
-                    } else if let errs = graphQLResult.errors {
-                        self?.errorMessage = errs.map(\.localizedDescription).joined(separator: "\n")
-                        self?.items = []
-                    } else {
-                        self?.items = []
+        Task {
+            do {
+                let groceries = try await GroceryService.shared.getMyGroceries()
+                DispatchQueue.main.async {
+                    self.items = groceries.map { g in
+                        GroceryItem(
+                            id: g.id,
+                            name: g.name,
+                            measurement: g.measurement,
+                            recipeId: g.recipeId ?? "(no-id)",
+                            recipeTitle: g.recipeTitle,
+                            isChecked: g.checked
+                        )
                     }
-                case .failure(let error):
-                    self?.errorMessage = error.localizedDescription
-                    self?.items = []
+                    self.isLoading = false
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    self.errorMessage = error.localizedDescription
+                    self.items = []
+                    self.isLoading = false
                 }
             }
         }
@@ -69,26 +64,16 @@ class GroceriesModel: ObservableObject {
     
     func addGroceries(_ ingredients: [Ingredient], recipeId: String, completion: @escaping (Bool) -> Void) {
         let groceryInputs = ingredients.map {
-            RecetteSchema.GroceryInput(name: $0.name, measurement: $0.measurement)
+            GroceryInput(name: $0.name, measurement: $0.measurement)
         }
 
-        let mutation = RecetteSchema.AddGroceriesMutation(
-            groceries: groceryInputs,
-            recipeId: recipeId
-        )
-
-        Network.shared.apollo.perform(mutation: mutation) { result in
-            switch result {
-            case .success(let graphQLResult):
-                if let groceries = graphQLResult.data?.addGroceries {
-                    print("Successfully added \(groceries.count) groceries")
-                    completion(true)
-                } else if let errors = graphQLResult.errors {
-                    print("GraphQL errors: \(errors.map { $0.message })")
-                    completion(false)
-                }
-            case .failure(let error):
-                print("Network error: \(error.localizedDescription)")
+        Task {
+            do {
+                let groceries = try await GroceryService.shared.addGroceries(groceries: groceryInputs, recipeId: recipeId)
+                print("Successfully added \(groceries.count) groceries")
+                completion(true)
+            } catch {
+                print("Error adding groceries: \(error.localizedDescription)")
                 completion(false)
             }
         }
@@ -97,23 +82,15 @@ class GroceriesModel: ObservableObject {
 
     
     func removeRecipeFromGroceries(recipeId: String) {
-        let mutation = RecetteSchema.RemoveRecipeFromGroceriesMutation(recipeId: recipeId)
-        
-        Network.shared.apollo.perform(mutation: mutation) { [weak self] result in
-            switch result {
-            case .success(let graphQLResult):
-                if let success = graphQLResult.data?.removeRecipeFromGroceries, success {
-                    print("Successfully removed groceries for recipe \(recipeId)")
-                    DispatchQueue.main.async {
-                        self?.items.removeAll { $0.recipeId == recipeId }
-                    }
-                } else if let errors = graphQLResult.errors {
-                    print("GraphQL errors: \(errors.map { $0.message })")
-                } else {
-                    print("Unexpected: No success flag and no errors.")
+        Task {
+            do {
+                try await GroceryService.shared.removeRecipeFromGroceries(recipeId: recipeId)
+                print("Successfully removed groceries for recipe \(recipeId)")
+                DispatchQueue.main.async {
+                    self.items.removeAll { $0.recipeId == recipeId }
                 }
-            case .failure(let error):
-                print("Network error: \(error.localizedDescription)")
+            } catch {
+                print("Error removing groceries: \(error.localizedDescription)")
             }
         }
     }
@@ -121,18 +98,12 @@ class GroceriesModel: ObservableObject {
 
     
     func toggleGroceryCheck(id: String, checked: Bool) {
-        let mutation = RecetteSchema.ToggleGroceryCheckMutation(id: id, checked: checked)
-        
-        Network.shared.apollo.perform(mutation: mutation) { result in
-            switch result {
-            case .success(let graphQLResult):
-                if let updated = graphQLResult.data?.toggleGroceryCheck {
-                    print("Updated grocery \(updated.id) to checked: \(updated.checked)")
-                } else if let errors = graphQLResult.errors {
-                    print("GraphQL errors: \(errors.map { $0.message })")
-                }
-            case .failure(let error):
-                print("Network error: \(error.localizedDescription)")
+        Task {
+            do {
+                let updated = try await GroceryService.shared.toggleGroceryCheck(id: id, checked: checked)
+                print("Updated grocery \(updated.id) to checked: \(updated.checked)")
+            } catch {
+                print("Error toggling grocery check: \(error.localizedDescription)")
             }
         }
     }

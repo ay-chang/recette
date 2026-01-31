@@ -10,7 +10,7 @@ struct RecipeCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            if let imageurl = imageurl {
+            if let imageurl = imageurl, !imageurl.isEmpty {
                 GeometryReader { geometry in
                     RecipeImage(
                         imageUrlString: imageurl,
@@ -19,6 +19,12 @@ struct RecipeCard: View {
                     )
                 }
                 .frame(height: 350)
+            } else {
+                Image("pasta-placeholder")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(height: 350)
+                    .clipped()
             }
 
             Text(title)

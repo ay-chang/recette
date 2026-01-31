@@ -35,22 +35,19 @@ class UserSession: ObservableObject {
                     UserDefaults.standard.set(true, forKey: "isLoggedIn")
                 }
 
-                // Fetch user details after login (still using GraphQL for now)
-                let userDetailsQuery = RecetteSchema.GetUserDetailsQuery(email: email)
-                Network.shared.apollo.fetch(query: userDetailsQuery) { result in
-                    switch result {
-                    case .success(let graphQLResult):
-                        if let user = graphQLResult.data?.userDetails {
-                            DispatchQueue.main.async {
-                                self.userUsername = user.username
-                                self.userFirstName = user.firstName
-                                self.userLastName = user.lastName
+                // Fetch user details after login
+                Task {
+                    do {
+                        let user = try await UserService.shared.getCurrentUser()
+                        DispatchQueue.main.async {
+                            self.userUsername = user.username
+                            self.userFirstName = user.firstName
+                            self.userLastName = user.lastName
 
-                                UserDefaults.standard.set(user.firstName, forKey: "loggedInFirstName")
-                                UserDefaults.standard.set(user.lastName, forKey: "loggedInLastName")
-                            }
+                            UserDefaults.standard.set(user.firstName, forKey: "loggedInFirstName")
+                            UserDefaults.standard.set(user.lastName, forKey: "loggedInLastName")
                         }
-                    case .failure(let error):
+                    } catch {
                         print("Failed to fetch user details: \(error)")
                     }
                 }
@@ -85,24 +82,19 @@ class UserSession: ObservableObject {
                     UserDefaults.standard.set(true, forKey: "isLoggedIn")
                 }
 
-                // 3) Fetch user details and persist them (still using GraphQL for now)
-                if let email = email {
-                    let q = RecetteSchema.GetUserDetailsQuery(email: email)
-                    Network.shared.apollo.fetch(query: q) { r in
-                        switch r {
-                        case .success(let g):
-                            if let u = g.data?.userDetails {
-                                DispatchQueue.main.async {
-                                    self.userUsername = u.username
-                                    self.userFirstName = u.firstName
-                                    self.userLastName  = u.lastName
-                                    UserDefaults.standard.set(u.firstName, forKey: "loggedInFirstName")
-                                    UserDefaults.standard.set(u.lastName,  forKey: "loggedInLastName")
-                                }
-                            }
-                        case .failure(let e):
-                            print("Fetch user details failed:", e)
+                // 3) Fetch user details and persist them
+                Task {
+                    do {
+                        let user = try await UserService.shared.getCurrentUser()
+                        DispatchQueue.main.async {
+                            self.userUsername = user.username
+                            self.userFirstName = user.firstName
+                            self.userLastName = user.lastName
+                            UserDefaults.standard.set(user.firstName, forKey: "loggedInFirstName")
+                            UserDefaults.standard.set(user.lastName, forKey: "loggedInLastName")
                         }
+                    } catch {
+                        print("Fetch user details failed:", error)
                     }
                 }
             } catch {
@@ -148,27 +140,22 @@ class UserSession: ObservableObject {
                     print("Sign-up login state saved")
                 }
 
-                /** Immediately fetch user details after signup (still using GraphQL for now) */
-                let userDetailsQuery = RecetteSchema.GetUserDetailsQuery(email: email)
-                Network.shared.apollo.fetch(query: userDetailsQuery) { result in
-                    switch result {
-                    case .success(let graphQLResult):
-                        if let user = graphQLResult.data?.userDetails {
-                            DispatchQueue.main.async {
-                                self.userUsername = user.username
-                                self.userFirstName = user.firstName
-                                self.userLastName = user.lastName
+                /** Immediately fetch user details after signup */
+                Task {
+                    do {
+                        let user = try await UserService.shared.getCurrentUser()
+                        DispatchQueue.main.async {
+                            self.userUsername = user.username
+                            self.userFirstName = user.firstName
+                            self.userLastName = user.lastName
 
-                                UserDefaults.standard.set(user.username, forKey: "loggedInUsername")
-                                UserDefaults.standard.set(user.firstName, forKey: "loggedInFirstName")
-                                UserDefaults.standard.set(user.lastName, forKey: "loggedInLastName")
+                            UserDefaults.standard.set(user.username, forKey: "loggedInUsername")
+                            UserDefaults.standard.set(user.firstName, forKey: "loggedInFirstName")
+                            UserDefaults.standard.set(user.lastName, forKey: "loggedInLastName")
 
-                                print("User details fetched after sign-up")
-                            }
-                        } else if let errors = graphQLResult.errors {
-                            print("GraphQL errors fetching user details: \(errors.map(\.message))")
+                            print("User details fetched after sign-up")
                         }
-                    case .failure(let error):
+                    } catch {
                         print("Failed to fetch user details after sign-up: \(error)")
                     }
                 }
@@ -184,46 +171,25 @@ class UserSession: ObservableObject {
 
     /** Logout function, also clears out session variables through clearSession()*/
     func logOut() {
-        let logoutMutation = RecetteSchema.LogoutMutation()  // no email argument
-
-        Network.shared.apollo.perform(mutation: logoutMutation) { result in
-            switch result {
-            case .success:
-                print("Successfully logged out on backend")
-            case .failure(let error):
-                print("Logout failed on backend: \(error.localizedDescription)")
-            }
-
-            AuthManager.shared.clearToken()  // clear token
-            self.clearSession()
-        }
+        AuthManager.shared.clearToken()
+        self.clearSession()
     }
     
     /** Delete User account */
     func deleteAccount(onComplete: @escaping () -> Void = {}) {
-        let mutation = RecetteSchema.DeleteAccountMutation()
+        Task {
+            do {
+                try await UserService.shared.deleteCurrentUser()
+                print("Account successfully deleted")
 
-        Network.shared.apollo.perform(mutation: mutation) { result in
-            switch result {
-            case .success(let graphQLResult):
-                if graphQLResult.data?.deleteAccount == true {
-                    print("Account successfully deleted")
+                AuthManager.shared.clearToken()
+                self.clearSession()
 
-                    /** Clean up local session */
-                    AuthManager.shared.clearToken()
-                    self.clearSession()
-
-                    DispatchQueue.main.async {
-                        onComplete()
-                    }
-                } else if let errors = graphQLResult.errors {
-                    print("GraphQL Errors: \(errors.compactMap { $0.message }.joined(separator: "\n"))")
-                } else {
-                    print("Account deletion failed with unknown error")
+                DispatchQueue.main.async {
+                    onComplete()
                 }
-
-            case .failure(let error):
-                print("Network error while deleting account: \(error.localizedDescription)")
+            } catch {
+                print("Network error while deleting account: \(error)")
             }
         }
     }
@@ -249,52 +215,37 @@ class UserSession: ObservableObject {
     
     /** Update the users first and last name */
     func updateAccountDetails(firstName: String, lastName: String, onComplete: @escaping () -> Void = {}) {
-        guard let email = userEmail else { return }
-
-        let input = RecetteSchema.AccountDetailsInput(
-            firstName: .some(firstName),
-            lastName: .some(lastName)
-        )
-
-        let mutation = RecetteSchema.UpdateAccountDetailsMutation(email: email, input: input)
-
-        Network.shared.apollo.perform(mutation: mutation) { result in
-            switch result {
-            case .success(let graphQLResult):
-                if let _ = graphQLResult.data?.updateAccountDetails {
-                    DispatchQueue.main.async {
-                        self.refreshUserDetails()
-                        onComplete()
-                    }
-                } else if let errors = graphQLResult.errors {
-                    print("GraphQL Errors: \(errors.compactMap { $0.message }.joined(separator: "\n"))")
+        Task {
+            do {
+                let user = try await UserService.shared.updateCurrentUser(firstName: firstName, lastName: lastName)
+                DispatchQueue.main.async {
+                    self.userFirstName = user.firstName
+                    self.userLastName = user.lastName
+                    UserDefaults.standard.set(user.firstName, forKey: "loggedInFirstName")
+                    UserDefaults.standard.set(user.lastName, forKey: "loggedInLastName")
+                    onComplete()
                 }
-            case .failure(let error):
-                print("Network Error: \(error.localizedDescription)")
+            } catch {
+                print("Network Error: \(error)")
             }
         }
     }
 
     /** Used for when updating a users account details */
     func refreshUserDetails() {
-        guard let email = userEmail else { return }
+        Task {
+            do {
+                let user = try await UserService.shared.getCurrentUser()
+                DispatchQueue.main.async {
+                    self.userUsername = user.username
+                    self.userFirstName = user.firstName
+                    self.userLastName = user.lastName
 
-        let query = RecetteSchema.GetUserDetailsQuery(email: email)
-        Network.shared.apollo.fetch(query: query, cachePolicy: .fetchIgnoringCacheCompletely) { result in
-            switch result {
-            case .success(let graphQLResult):
-                if let user = graphQLResult.data?.userDetails {
-                    DispatchQueue.main.async {
-                        self.userUsername = user.username
-                        self.userFirstName = user.firstName
-                        self.userLastName = user.lastName
-
-                        UserDefaults.standard.set(user.username, forKey: "loggedInUsername")
-                        UserDefaults.standard.set(user.firstName, forKey: "loggedInFirstName")
-                        UserDefaults.standard.set(user.lastName, forKey: "loggedInLastName")
-                    }
+                    UserDefaults.standard.set(user.username, forKey: "loggedInUsername")
+                    UserDefaults.standard.set(user.firstName, forKey: "loggedInFirstName")
+                    UserDefaults.standard.set(user.lastName, forKey: "loggedInLastName")
                 }
-            case .failure(let error):
+            } catch {
                 print("Failed to refresh user details: \(error)")
             }
         }
@@ -303,17 +254,13 @@ class UserSession: ObservableObject {
     
     /** Load the tags that belong to a user */
     func loadUserTags(email: String) {
-        let getUserTagsQuery = RecetteSchema.GetUserTagsQuery(email: email)
-        
-        Network.shared.apollo.fetch(query: getUserTagsQuery, cachePolicy: .fetchIgnoringCacheCompletely) { result in
-            switch result {
-            case .success(let graphQLResult):
-                if let tags = graphQLResult.data?.userTags {
-                    DispatchQueue.main.async {
-                        self.availableTags = tags.map { $0.name }
-                    }
+        Task {
+            do {
+                let tags = try await TagService.shared.getMyTags()
+                DispatchQueue.main.async {
+                    self.availableTags = tags.map { $0.name }
                 }
-            case .failure(let error):
+            } catch {
                 print("Failed to load tags: \(error)")
             }
         }
@@ -321,31 +268,17 @@ class UserSession: ObservableObject {
     
     /** Add a tag to the users saved tags */
     func addTagToUser(tagName: String, completion: @escaping (String?) -> Void) {
-        let addTagMutation = RecetteSchema.AddTagMutation(name: tagName)
-
-        Network.shared.apollo.perform(mutation: addTagMutation) { result in
-            switch result {
-            case .success(let graphQLResult):
-                // If server returned GraphQL errors, surface the first message
-                if let firstError = graphQLResult.errors?.first {
-                    completion(firstError.message)
-                    return
-                }
-
-                // Success path
-                if let tag = graphQLResult.data?.addTag {
-                    DispatchQueue.main.async {
-                        if !self.availableTags.contains(where: { $0.caseInsensitiveCompare(tag.name) == .orderedSame }) {
-                            self.availableTags.append(tag.name)
-                        }
-                        self.shouldRefreshTags = true
+        Task {
+            do {
+                let tag = try await TagService.shared.createTag(name: tagName)
+                DispatchQueue.main.async {
+                    if !self.availableTags.contains(where: { $0.caseInsensitiveCompare(tag.name) == .orderedSame }) {
+                        self.availableTags.append(tag.name)
                     }
-                    completion(nil)
-                } else {
-                    completion("Unexpected server response.")
+                    self.shouldRefreshTags = true
                 }
-
-            case .failure(let error):
+                completion(nil)
+            } catch {
                 completion(error.localizedDescription)
             }
         }
@@ -354,22 +287,14 @@ class UserSession: ObservableObject {
     
     /** Deletes a tag from the user's list of tags */
     func deleteTagFromUser(tagName: String) {
-        let mutation = RecetteSchema.DeleteTagMutation(name: tagName)
-        
-        Network.shared.apollo.perform(mutation: mutation) { result in
-            switch result {
-            case .success(let graphQLResult):
-                if graphQLResult.data?.deleteTag == true {
-                    DispatchQueue.main.async {
-                        self.availableTags.removeAll { $0 == tagName }
-                        self.shouldRefreshTags = true
-                    }
-                } else if let errors = graphQLResult.errors {
-                    print("GraphQL errors: \(errors)")
-                } else {
-                    print("Unexpected: deleteTag returned false or nil")
+        Task {
+            do {
+                try await TagService.shared.deleteTag(name: tagName)
+                DispatchQueue.main.async {
+                    self.availableTags.removeAll { $0 == tagName }
+                    self.shouldRefreshTags = true
                 }
-            case .failure(let error):
+            } catch {
                 print("Failed to delete tag: \(error)")
             }
         }
@@ -425,34 +350,27 @@ class UserSession: ObservableObject {
         }
 
         // Fetch user details so first/last name are populated after app launch
-        if let email = email {
-            let userDetailsQuery = RecetteSchema.GetUserDetailsQuery(email: email)
-            Network.shared.apollo.fetch(query: userDetailsQuery) { result in
-                switch result {
-                case .success(let graphQLResult):
-                    if let user = graphQLResult.data?.userDetails {
-                        DispatchQueue.main.async {
-                            self.userUsername = user.username
-                            self.userFirstName = user.firstName
-                            self.userLastName  = user.lastName
+        Task {
+            do {
+                let user = try await UserService.shared.getCurrentUser()
+                DispatchQueue.main.async {
+                    self.userUsername = user.username
+                    self.userFirstName = user.firstName
+                    self.userLastName = user.lastName
 
-                            UserDefaults.standard.set(user.username,  forKey: "loggedInUsername")
-                            UserDefaults.standard.set(user.firstName, forKey: "loggedInFirstName")
-                            UserDefaults.standard.set(user.lastName,  forKey: "loggedInLastName")
-                        }
-                    } else if let errors = graphQLResult.errors {
-                        print("GraphQL errors while fetching user details:", errors.map(\.message))
+                    UserDefaults.standard.set(user.username, forKey: "loggedInUsername")
+                    UserDefaults.standard.set(user.firstName, forKey: "loggedInFirstName")
+                    UserDefaults.standard.set(user.lastName, forKey: "loggedInLastName")
+                }
+            } catch {
+                print("Failed to load user details at startup:", error)
+                // Fall back to cached names if present
+                DispatchQueue.main.async {
+                    if (self.userFirstName ?? "").isEmpty {
+                        self.userFirstName = UserDefaults.standard.string(forKey: "loggedInFirstName")
                     }
-                case .failure(let error):
-                    print("Failed to load user details at startup:", error)
-                    // Optional: fall back to cached names if present
-                    DispatchQueue.main.async {
-                        if (self.userFirstName ?? "").isEmpty {
-                            self.userFirstName = UserDefaults.standard.string(forKey: "loggedInFirstName")
-                        }
-                        if (self.userLastName ?? "").isEmpty {
-                            self.userLastName = UserDefaults.standard.string(forKey: "loggedInLastName")
-                        }
+                    if (self.userLastName ?? "").isEmpty {
+                        self.userLastName = UserDefaults.standard.string(forKey: "loggedInLastName")
                     }
                 }
             }
