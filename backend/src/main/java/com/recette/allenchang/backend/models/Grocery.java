@@ -9,6 +9,9 @@ import jakarta.persistence.Table;
 
 import java.util.UUID;
 
+import com.recette.allenchang.backend.models.Recipe;
+import com.recette.allenchang.backend.models.User;
+
 @Entity
 @Table(name = "groceries")
 public class Grocery {

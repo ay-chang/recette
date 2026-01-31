@@ -28,6 +28,11 @@ import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.recette.allenchang.backend.models.User;
+import com.recette.allenchang.backend.models.Tag;
+import com.recette.allenchang.backend.models.Grocery;
+import com.recette.allenchang.backend.models.Ingredient;
+
 /**
  * The @Entity anotations marks the class as a JPA entity, which means
  * it maps to a table in the database. The table will be named recipe by

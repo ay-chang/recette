@@ -1,6 +1,9 @@
 package com.recette.allenchang.backend.controllers;
 
-import com.recette.allenchang.backend.services.EmailService;
+import com.recette.allenchang.backend.models.*;
+import com.recette.allenchang.backend.services.*;
+
+import com.recette.allenchang.backend.common.EmailService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

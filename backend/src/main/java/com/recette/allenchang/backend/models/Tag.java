@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 
 import java.util.UUID;
 
+import com.recette.allenchang.backend.models.User;
+
 @Entity
 @Table(name = "tags")
 public class Tag {

@@ -1,6 +1,7 @@
 package com.recette.allenchang.backend.repositories;
 
-import com.recette.allenchang.backend.models.Grocery;
+import com.recette.allenchang.backend.models.*;
+
 import com.recette.allenchang.backend.models.Recipe;
 import com.recette.allenchang.backend.models.User;
 

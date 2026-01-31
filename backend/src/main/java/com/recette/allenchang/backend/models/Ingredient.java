@@ -9,6 +9,8 @@ import jakarta.persistence.ManyToOne;
 
 import java.util.UUID;
 
+import com.recette.allenchang.backend.models.Recipe;
+
 @Entity
 @Table(name = "ingredients")
 public class Ingredient {

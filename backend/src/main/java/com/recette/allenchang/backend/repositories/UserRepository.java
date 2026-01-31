@@ -1,6 +1,7 @@
 package com.recette.allenchang.backend.repositories;
 
-import com.recette.allenchang.backend.models.User;
+import com.recette.allenchang.backend.models.*;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

@@ -14,7 +14,10 @@ import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.recette.allenchang.backend.models.Friendship.Friendship;
+import com.recette.allenchang.backend.models.Friendship;
+import com.recette.allenchang.backend.models.Recipe;
+import com.recette.allenchang.backend.models.Grocery;
+import com.recette.allenchang.backend.models.Tag;
 
 @Entity
 @Table(name = "users")

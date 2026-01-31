@@ -1,12 +1,10 @@
 package com.recette.allenchang.backend.repositories;
 
+import com.recette.allenchang.backend.models.*;
+
 import com.recette.allenchang.backend.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import com.recette.allenchang.backend.models.Friendship.Friendship;
-import com.recette.allenchang.backend.models.Friendship.FriendshipId;
-import com.recette.allenchang.backend.models.Friendship.FriendshipStatus;
 
 import java.util.Optional;
 import java.util.List;

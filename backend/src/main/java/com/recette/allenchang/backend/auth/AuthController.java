@@ -13,7 +13,7 @@ import com.recette.allenchang.backend.auth.dto.requests.SendVerificationCodeRequ
 import com.recette.allenchang.backend.auth.dto.responses.AuthResponse;
 import com.recette.allenchang.backend.models.User;
 import com.recette.allenchang.backend.security.JwtUtil;
-import com.recette.allenchang.backend.services.AuthService;
+import com.recette.allenchang.backend.common.AuthService;
 
 @RestController
 @RequestMapping("/api/auth")
