@@ -1,7 +1,0 @@
-mutation UpdateRecipeImage($recipeId: String!, $imageurl: String!) {
-    updateRecipeImage(recipeId: $recipeId, imageurl: $imageurl) {
-        id
-        imageurl
-    }
-}
-

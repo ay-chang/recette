@@ -1,6 +1,0 @@
-mutation ToggleGroceryCheck($id: ID!, $checked: Boolean!) {
-  toggleGroceryCheck(id: $id, checked: $checked) {
-    id
-    checked
-  }
-}

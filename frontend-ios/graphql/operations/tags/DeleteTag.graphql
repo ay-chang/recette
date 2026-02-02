@@ -1,3 +1,0 @@
-mutation DeleteTag($name: String!) {
-  deleteTag(name: $name)
-}

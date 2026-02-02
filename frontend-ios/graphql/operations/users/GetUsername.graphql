@@ -1,3 +1,0 @@
-query GetUsername($email: String!) {
-  getUsername(email: $email)
-}

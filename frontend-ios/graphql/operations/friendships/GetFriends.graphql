@@ -1,8 +1,0 @@
-query friends {
-    friends {
-        id
-        username
-        firstName
-        lastName
-    }
-}

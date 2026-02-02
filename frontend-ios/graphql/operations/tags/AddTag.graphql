@@ -1,6 +1,0 @@
-mutation AddTag($name: String!) {
-  addTag(name: $name) {
-    id
-    name
-  }
-}

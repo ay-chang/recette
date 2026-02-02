@@ -1,3 +1,0 @@
-mutation removeRecipeFromGroceries($recipeId: String! ) {
-  removeRecipeFromGroceries(recipeId: $recipeId)
-}

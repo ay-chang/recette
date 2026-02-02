@@ -1,7 +1,0 @@
-mutation addGroceries($groceries: [GroceryInput!]!, $recipeId: String!) {
-  addGroceries(groceries: $groceries, recipeId: $recipeId) {
-    id
-    name
-    measurement
-  }
-}
