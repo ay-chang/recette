@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.recette.allenchang.backend.auth.dto.requests.CompleteSignUpRequest;
+import com.recette.allenchang.backend.auth.dto.requests.AppleLoginRequest;
 import com.recette.allenchang.backend.auth.dto.requests.GoogleLoginRequest;
 import com.recette.allenchang.backend.auth.dto.requests.LoginRequest;
 import com.recette.allenchang.backend.auth.dto.requests.SendVerificationCodeRequest;
@@ -39,6 +40,14 @@ public class AuthController {
     @PostMapping("/login/google")
     public AuthResponse loginWithGoogle(@RequestBody GoogleLoginRequest request) {
         User user = authService.authenticateWithGoogle(request.idToken());
+        String token = jwtUtil.generateToken(user.getEmail().toLowerCase());
+        return new AuthResponse(token);
+    }
+
+    /** POST: User login with Apple */
+    @PostMapping("/login/apple")
+    public AuthResponse loginWithApple(@RequestBody AppleLoginRequest request) {
+        User user = authService.authenticateWithApple(request.idToken());
         String token = jwtUtil.generateToken(user.getEmail().toLowerCase());
         return new AuthResponse(token);
     }

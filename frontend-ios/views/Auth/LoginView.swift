@@ -70,8 +70,12 @@ struct LoginView: View {
             
             // Google button
             GoogleLoginButton {
-                // Send the Google ID token to your backend
                 session.logInWithGoogle(idToken: $0)
+            }
+
+            // Apple button
+            SignInWithAppleButtonView {
+                session.logInWithApple(idToken: $0)
             }
 
             /* Sign up */

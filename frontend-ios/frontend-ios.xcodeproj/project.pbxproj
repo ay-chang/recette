@@ -49,200 +49,9 @@
 		971C4CF22DA6ADD300A8CBAD /* frontend-iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "frontend-iosTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		971C4CFC2DA6ADD300A8CBAD /* frontend-iosUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "frontend-iosUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		971C4D962DA8A4A600A8CBAD /* apollo-codegen-config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "apollo-codegen-config.json"; sourceTree = "<group>"; };
+		972ABD982F2FE9C5007878FD /* frontend-ios.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "frontend-ios.entitlements"; sourceTree = "<group>"; };
 		97A286032E88B2A8006A4D08 /* frontend-ios-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "frontend-ios-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		971C4D6F2DA858E400A8CBAD /* Exceptions for "app" folder in "frontend-ios" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				AppView.swift,
-				frontend_iosApp.swift,
-			);
-			target = 971C4CE42DA6ADD100A8CBAD /* frontend-ios */;
-		};
-		971C4D702DA858E400A8CBAD /* Exceptions for "models" folder in "frontend-ios" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				CreateEditRecipeModels/BaseRecipe.swift,
-				CreateEditRecipeModels/CreateRecipeModel.swift,
-				CreateEditRecipeModels/EditRecipeModel.swift,
-				FilterRecipesModel.swift,
-				FriendshipsModel.swift,
-				GroceriesModel.swift,
-				IngredientModel.swift,
-				ProfileModel.swift,
-				RecipeDetailsModel.swift,
-				RecipeListModel.swift,
-				UserSession.swift,
-			);
-			target = 971C4CE42DA6ADD100A8CBAD /* frontend-ios */;
-		};
-		971C4D712DA858E400A8CBAD /* Exceptions for "utilities" folder in "frontend-ios" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				AuthManager.swift,
-				"Color+Hex.swift",
-				Config.swift,
-				hideKeyboardOnTap.swift,
-				KeyboardToolbarModifier.swift,
-				Network.swift,
-				S3Service.swift,
-				Shimmer.swift,
-				TagManageable.swift,
-				Versioning/UpdateChecker.swift,
-				Versioning/UpdateGate.swift,
-				Versioning/Versioning.swift,
-			);
-			target = 971C4CE42DA6ADD100A8CBAD /* frontend-ios */;
-		};
-		971C4D722DA858E400A8CBAD /* Exceptions for "views" folder in "frontend-ios" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Auth/CodeInputFields.swift,
-				Auth/GoogleLoginButton.swift,
-				Auth/LoginView.swift,
-				Auth/SignInWithAppleButtonView.swift,
-				Auth/SignUpView.swift,
-				Auth/VerifyCodeView.swift,
-				CreateRecipe/AddIngredientView.swift,
-				CreateRecipe/AddStepView.swift,
-				CreateRecipe/AddTagView.swift,
-				CreateRecipe/CreateRecipeCoordinator.swift,
-				CreateRecipe/CreateRecipeDescriptionSteps.swift,
-				CreateRecipe/CreateRecipeDetailsStep.swift,
-				CreateRecipe/CreateRecipeIngredientsStep.swift,
-				CreateRecipe/CreateRecipeStepsStep.swift,
-				CreateRecipe/CreateRecipeTagsStep.swift,
-				CreateRecipe/OtherOptions/CookTimeSelectorView.swift,
-				CreateRecipe/OtherOptions/DifficultySelectorView.swift,
-				CreateRecipe/OtherOptions/ServingSizeSelectorView.swift,
-				EditRecipe/EditRecipe.swift,
-				EditRecipe/EditRecipeDetailsDescription.swift,
-				EditRecipe/EditRecipeDetailsImage.swift,
-				EditRecipe/EditRecipeDetailsIngredients.swift,
-				EditRecipe/EditRecipeDetailsSteps.swift,
-				EditRecipe/EditRecipeDetailsTags.swift,
-				EditRecipe/EditRecipeDetailsTitle.swift,
-				EditRecipe/EditRecipeOthers.swift,
-				Groceries/GroceryList.swift,
-				Groceries/GroceryListInfo.swift,
-				Groceries/GroceryListItemRow.swift,
-				Groceries/GroceryListRecipeGroup.swift,
-				Main/GroceriesView.swift,
-				Main/HomeView.swift,
-				Main/MainTabView.swift,
-				Main/ProfileView.swift,
-				Main/SocialView.swift,
-				Profile/ProfileAccountDetailsView.swift,
-				Profile/ProfileEditUserTags.swift,
-				Profile/ProfileFeedbackView.swift,
-				Profile/ProfileOptionsButton.swift,
-				Profile/ProfileOptionsList.swift,
-				RecipeDetails/ActionSheetView.swift,
-				RecipeDetails/RecipeDetailsContent.swift,
-				RecipeDetails/RecipeDetailsCoordinator.swift,
-				RecipeDetails/RecipeDetailsNoImage.swift,
-				RecipeDetails/RecipeDetailsWithImage.swift,
-				RecipeDetails/RecipeIngredients.swift,
-				RecipeDetails/RecipeScrollSentinel.swift,
-				RecipeDetails/RecipeSteps.swift,
-				RecipeDetails/RecipeTags.swift,
-				RecipeDetails/RecipeTopBar.swift,
-				RecipeList/MenuBar.swift,
-				RecipeList/RecipeCard.swift,
-				RecipeList/RecipeCardListView.swift,
-				RecipeList/RecipeFilter/FilterSheetDifficulties.swift,
-				RecipeList/RecipeFilter/FilterSheetTags.swift,
-				RecipeList/RecipeFilter/FilterSheetTimeOptions.swift,
-				RecipeList/RecipeFilter/FilterSheetView.swift,
-				RecipeList/RecipeListCard.swift,
-				RecipeList/RecipeListCardLoadingSkeleton.swift,
-				RecipeList/RecipeListView.swift,
-				RecipeList/RecipesView.swift,
-				Social/FriendsListView/FriendsList.swift,
-				Social/FriendsListView/FriendsListItem.swift,
-				Social/FriendsListView/FriendsListTopBar.swift,
-				Social/FriendsListView/FriendsListView.swift,
-				Social/FriendsPostsView.swift,
-				Social/SocialTopBar.swift,
-			);
-			target = 971C4CE42DA6ADD100A8CBAD /* frontend-ios */;
-		};
-		97A3A1552DDDDF9F0009272B /* Exceptions for "graphql" folder in "frontend-ios" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				operations/groceries/ToggleGroceryCheck.graphql,
-				operations/recipes/GetUserFilteredRecipes.graphql,
-				operations/recipes/GetUserRecipesFullDetails.graphql,
-				operations/tags/DeleteTag.graphql,
-				operations/users/CompleteSignUpWithCode.graphql,
-				schemas/friendshipsSchemas.graphqls,
-			);
-			target = 971C4CE42DA6ADD100A8CBAD /* frontend-ios */;
-		};
-		97C5D7E02DEDFBCC00665D56 /* Exceptions for "Components" folder in "frontend-ios" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				CharacterCountView.swift,
-				OthersBarView.swift,
-				RecipeImage.swift,
-				SlidingSegmentControl.swift,
-				TagChipView.swift,
-				TagContainerView.swift,
-			);
-			target = 971C4CE42DA6ADD100A8CBAD /* frontend-ios */;
-		};
-		97CEC6D02F05B7630040B1BB /* Exceptions for "Services" folder in "frontend-ios" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				AuthService.swift,
-				GroceryService.swift,
-				RecetteAPI.swift,
-				RecipeService.swift,
-				TagService.swift,
-				UserService.swift,
-			);
-			target = 971C4CE42DA6ADD100A8CBAD /* frontend-ios */;
-		};
-		97CEC6D32F05B7720040B1BB /* Exceptions for "dto" folder in "frontend-ios" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				AddGroceriesRequest.swift,
-				AuthResponse.swift,
-				CompleteSignUpRequest.swift,
-				CreateRecipeRequest.swift,
-				CreateTagRequest.swift,
-				GoogleLoginRequest.swift,
-				GroceryInput.swift,
-				GroceryResponse.swift,
-				IngredientDTO.swift,
-				LoginRequest.swift,
-				RecipeResponse.swift,
-				SendVerificationCodeRequest.swift,
-				TagResponse.swift,
-				UpdateAccountDetailsRequest.swift,
-				UpdateRecipeRequest.swift,
-				UserResponse.swift,
-			);
-			target = 971C4CE42DA6ADD100A8CBAD /* frontend-ios */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
-/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		97A3A1562DDDDF9F0009272B /* Exceptions for "graphql" folder in "Compile Sources" phase from "frontend-ios" target */ = {
-			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
-			buildPhase = 971C4CE12DA6ADD100A8CBAD /* Sources */;
-			membershipExceptions = (
-				operations/groceries/ToggleGroceryCheck.graphql,
-				operations/recipes/GetUserFilteredRecipes.graphql,
-				operations/recipes/GetUserRecipesFullDetails.graphql,
-				operations/tags/DeleteTag.graphql,
-				operations/users/CompleteSignUpWithCode.graphql,
-				schemas/friendshipsSchemas.graphqls,
-			);
-		};
-/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		971C4CF52DA6ADD300A8CBAD /* frontend-iosTests */ = {
@@ -255,74 +64,49 @@
 			path = "frontend-iosUITests";
 			sourceTree = "<group>";
 		};
-		971C4D522DA858E400A8CBAD /* app */ = {
+		972ABC892F2E9F7B007878FD /* app */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				971C4D6F2DA858E400A8CBAD /* Exceptions for "app" folder in "frontend-ios" target */,
-			);
 			path = app;
 			sourceTree = "<group>";
 		};
-		971C4D552DA858E400A8CBAD /* graphql */ = {
+		972ABC902F2E9F7B007878FD /* Components */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				97A3A1552DDDDF9F0009272B /* Exceptions for "graphql" folder in "frontend-ios" target */,
-				97A3A1562DDDDF9F0009272B /* Exceptions for "graphql" folder in "Compile Sources" phase from "frontend-ios" target */,
-			);
-			path = graphql;
-			sourceTree = "<group>";
-		};
-		971C4D572DA858E400A8CBAD /* models */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				971C4D702DA858E400A8CBAD /* Exceptions for "models" folder in "frontend-ios" target */,
-			);
-			path = models;
-			sourceTree = "<group>";
-		};
-		971C4D592DA858E400A8CBAD /* utilities */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				971C4D712DA858E400A8CBAD /* Exceptions for "utilities" folder in "frontend-ios" target */,
-			);
-			path = utilities;
-			sourceTree = "<group>";
-		};
-		971C4D622DA858E400A8CBAD /* views */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				971C4D722DA858E400A8CBAD /* Exceptions for "views" folder in "frontend-ios" target */,
-			);
-			path = views;
-			sourceTree = "<group>";
-		};
-		971C4E672DA9737D00A8CBAD /* Generated */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Generated;
-			sourceTree = "<group>";
-		};
-		97C5D7DD2DEDFBB800665D56 /* Components */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				97C5D7E02DEDFBCC00665D56 /* Exceptions for "Components" folder in "frontend-ios" target */,
-			);
 			path = Components;
 			sourceTree = "<group>";
 		};
-		97CEC6C72F05B2AA0040B1BB /* dto */ = {
+		972ABC9A2F2E9F7B007878FD /* Core */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				97CEC6D32F05B7720040B1BB /* Exceptions for "dto" folder in "frontend-ios" target */,
-			);
-			path = dto;
+			path = Core;
 			sourceTree = "<group>";
 		};
-		97CEC6CB2F05B51C0040B1BB /* Services */ = {
+		972ABCAD2F2E9F7B007878FD /* DTOs */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				97CEC6D02F05B7630040B1BB /* Exceptions for "Services" folder in "frontend-ios" target */,
-			);
+			path = DTOs;
+			sourceTree = "<group>";
+		};
+		972ABCAF2F2E9F7B007878FD /* Extensions */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		972ABCB52F2E9F7B007878FD /* Services */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Services;
+			sourceTree = "<group>";
+		};
+		972ABCBF2F2E9F7B007878FD /* utilities */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = utilities;
+			sourceTree = "<group>";
+		};
+		972ABCCB2F2E9F7B007878FD /* ViewModels */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		972ABD1B2F2E9F7B007878FD /* views */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = views;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -358,16 +142,17 @@
 		971C4CDC2DA6ADD100A8CBAD = {
 			isa = PBXGroup;
 			children = (
+				972ABD982F2FE9C5007878FD /* frontend-ios.entitlements */,
 				97A286032E88B2A8006A4D08 /* frontend-ios-Info.plist */,
-				97CEC6C72F05B2AA0040B1BB /* dto */,
-				97CEC6CB2F05B51C0040B1BB /* Services */,
-				97C5D7DD2DEDFBB800665D56 /* Components */,
-				971C4E672DA9737D00A8CBAD /* Generated */,
-				971C4D522DA858E400A8CBAD /* app */,
-				971C4D622DA858E400A8CBAD /* views */,
-				971C4D592DA858E400A8CBAD /* utilities */,
-				971C4D572DA858E400A8CBAD /* models */,
-				971C4D552DA858E400A8CBAD /* graphql */,
+				972ABC892F2E9F7B007878FD /* app */,
+				972ABC902F2E9F7B007878FD /* Components */,
+				972ABC9A2F2E9F7B007878FD /* Core */,
+				972ABCAD2F2E9F7B007878FD /* DTOs */,
+				972ABCAF2F2E9F7B007878FD /* Extensions */,
+				972ABCB52F2E9F7B007878FD /* Services */,
+				972ABCBF2F2E9F7B007878FD /* utilities */,
+				972ABCCB2F2E9F7B007878FD /* ViewModels */,
+				972ABD1B2F2E9F7B007878FD /* views */,
 				971C4CFF2DA6ADD300A8CBAD /* frontend-iosUITests */,
 				971C4CF52DA6ADD300A8CBAD /* frontend-iosTests */,
 				971C4D342DA84F2400A8CBAD /* Frameworks */,
@@ -411,8 +196,15 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				971C4D552DA858E400A8CBAD /* graphql */,
-				971C4E672DA9737D00A8CBAD /* Generated */,
+				972ABC892F2E9F7B007878FD /* app */,
+				972ABC902F2E9F7B007878FD /* Components */,
+				972ABC9A2F2E9F7B007878FD /* Core */,
+				972ABCAD2F2E9F7B007878FD /* DTOs */,
+				972ABCAF2F2E9F7B007878FD /* Extensions */,
+				972ABCB52F2E9F7B007878FD /* Services */,
+				972ABCBF2F2E9F7B007878FD /* utilities */,
+				972ABCCB2F2E9F7B007878FD /* ViewModels */,
+				972ABD1B2F2E9F7B007878FD /* views */,
 			);
 			name = "frontend-ios";
 			packageProductDependencies = (
@@ -705,6 +497,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "frontend-ios.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = D9387N6G4C;
@@ -739,12 +532,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "frontend-ios.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = D9387N6G4C;
+				DEVELOPMENT_TEAM = D9387N6G4C;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "frontend-ios-Info.plist";
@@ -762,7 +554,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "allenchang.frontend-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "frontend-ios App Store";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;

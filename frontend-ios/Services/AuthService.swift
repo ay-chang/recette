@@ -13,6 +13,11 @@ final class AuthService {
         return try await RecetteAPI.shared.post(AuthResponse.self, path: "/api/auth/login/google", body: request)
     }
 
+    func loginWithApple(idToken: String) async throws -> AuthResponse {
+        let request = AppleLoginRequest(idToken: idToken)
+        return try await RecetteAPI.shared.post(AuthResponse.self, path: "/api/auth/login/apple", body: request)
+    }
+
     func sendVerificationCode(email: String, password: String) async throws {
         let request = SendVerificationCodeRequest(email: email, password: password)
         let _: EmptyResponse = try await RecetteAPI.shared.post(EmptyResponse.self, path: "/api/auth/signup/send-code", body: request)

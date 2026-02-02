@@ -20,20 +20,20 @@ struct GoogleLoginButton: View {
             }
 
         } label: {
-            HStack(spacing: 8) {
+            HStack {
                 Image("google-g")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 22, height: 22)
                 Spacer()
-                Text("Continue with Google").fontWeight(.semibold)
-                Spacer()
             }
             .frame(maxWidth: .infinity)
-            .padding()
+            .padding(.horizontal, 16)
+            .frame(height: 54)
             .foregroundColor(.black)
             .background(Color.white)
             .cornerRadius(10)
+            .overlay(Text("Continue with Google").fontWeight(.semibold).foregroundColor(.black))
             .overlay(RoundedRectangle(cornerRadius: 10).stroke(.gray, lineWidth: 1))
         }
     }

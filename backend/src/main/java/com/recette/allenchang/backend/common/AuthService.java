@@ -1,19 +1,30 @@
 package com.recette.allenchang.backend.common;
 
+import java.math.BigInteger;
+import java.security.KeyFactory;
+import java.security.PublicKey;
+import java.security.spec.RSAPublicKeySpec;
 import java.util.Arrays;
+import java.util.Base64;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.recette.allenchang.backend.exceptions.InvalidCredentialsException;
 import com.recette.allenchang.backend.exceptions.InvalidInputException;
@@ -27,19 +38,25 @@ public class AuthService {
     @Value("${google.client-ids}") // comma-separated if multiple (iOS, web, etc.)
     private String googleClientIds;
 
+    @Value("${apple.client-id}")
+    private String appleClientId;
+
     private final VerificationCodeStore verificationCodeStore;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
     private final ServiceUtil serviceUtil;
+    private final ObjectMapper objectMapper;
 
     public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder,
-            VerificationCodeStore verificationCodeStore, EmailService emailService, ServiceUtil serviceUtil) {
+            VerificationCodeStore verificationCodeStore, EmailService emailService, ServiceUtil serviceUtil,
+            ObjectMapper objectMapper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.verificationCodeStore = verificationCodeStore;
         this.emailService = emailService;
         this.serviceUtil = serviceUtil;
+        this.objectMapper = objectMapper;
     }
 
     /** Validate username and password during login */
@@ -148,6 +165,101 @@ public class AuthService {
         } catch (Exception e) {
             // Verification or persistence error
             throw new InvalidCredentialsException("Failed Google login");
+        }
+    }
+
+    /** Authenticate or create a new user with Apple ID token */
+    public User authenticateWithApple(String idTokenString) {
+        try {
+            // Decode token header to extract kid
+            String[] parts = idTokenString.split("\\.");
+            if (parts.length != 3) {
+                throw new InvalidCredentialsException("Invalid Apple ID token format");
+            }
+            String headerJson = new String(Base64.getUrlDecoder().decode(parts[0]));
+            Map<String, Object> header = objectMapper.readValue(headerJson, Map.class);
+            String kid = (String) header.get("kid");
+
+            // Fetch Apple's public keys (JWKS)
+            RestTemplate restTemplate = new RestTemplate();
+            @SuppressWarnings("unchecked")
+            Map<String, Object> jwks = restTemplate.getForObject(
+                    "https://appleid.apple.com/auth/keys", Map.class);
+
+            // Find the key matching our kid
+            @SuppressWarnings("unchecked")
+            List<Map<String, Object>> keys = (List<Map<String, Object>>) jwks.get("keys");
+            Map<String, Object> matchingKey = keys.stream()
+                    .filter(k -> kid.equals(k.get("kid")))
+                    .findFirst()
+                    .orElseThrow(() -> new InvalidCredentialsException("No matching key in Apple JWKS"));
+
+            // Reconstruct RSA public key from JWK n and e parameters
+            byte[] modulus = Base64.getUrlDecoder().decode((String) matchingKey.get("n"));
+            byte[] exponent = Base64.getUrlDecoder().decode((String) matchingKey.get("e"));
+            RSAPublicKeySpec keySpec = new RSAPublicKeySpec(
+                    new BigInteger(1, modulus),
+                    new BigInteger(1, exponent));
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            PublicKey publicKey = keyFactory.generatePublic(keySpec);
+
+            // Verify the token signature and required claims
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(publicKey)
+                    .requireIssuer("https://appleid.apple.com")
+                    .requireAudience(appleClientId)
+                    .build()
+                    .parseClaimsJws(idTokenString)
+                    .getBody();
+
+            String appleSub = claims.getSubject();
+            String email = claims.get("email", String.class);
+
+            // Returning user: look up by Apple ID first
+            Optional<User> existingByAppleId = userRepository.findByAppleId(appleSub);
+            if (existingByAppleId.isPresent()) {
+                return existingByAppleId.get();
+            }
+
+            // First sign-in: email must be present
+            if (email == null) {
+                throw new InvalidCredentialsException("Apple sign-in failed: no email and no linked account");
+            }
+            email = email.toLowerCase(Locale.ROOT);
+
+            // Parse name — Apple sends it as a nested JSON string {"firstName":"...","lastName":"..."}
+            String firstName = null;
+            String lastName = null;
+            String nameJson = claims.get("name", String.class);
+            if (nameJson != null) {
+                Map<String, String> nameMap = objectMapper.readValue(nameJson, Map.class);
+                firstName = nameMap.get("firstName");
+                lastName = nameMap.get("lastName");
+            }
+
+            // Link to an existing account if email already registered
+            Optional<User> existingByEmail = userRepository.findByEmail(email);
+            if (existingByEmail.isPresent()) {
+                User user = existingByEmail.get();
+                user.setAppleId(appleSub);
+                return userRepository.save(user);
+            }
+
+            // Create a new account (password stays null)
+            User user = new User();
+            user.setEmail(email);
+            user.setAppleId(appleSub);
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+            user.setUsername(defaultUsernameFromEmail(email));
+            user.setPassword(null);
+
+            return userRepository.save(user);
+
+        } catch (InvalidCredentialsException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new InvalidCredentialsException("Failed Apple login");
         }
     }
 
