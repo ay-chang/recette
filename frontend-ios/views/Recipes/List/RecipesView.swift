@@ -23,33 +23,11 @@ struct RecipesView: View {
                 Text("Your Recipes")
                     .font(.title)
                     .fontWeight(.bold)
-//                Text("Saved Recipes")
-//                    .font(.footnote)
-//                    .foregroundColor(.gray)
-//                    .padding(.horizontal, 8)
-//                    .padding(.vertical, 4)
-//                    .overlay(
-//                        RoundedRectangle(cornerRadius: 8) // Adjust cornerRadius as needed
-//                            .stroke(Color.gray.opacity(0.3), lineWidth: 1) // Adjust color and lineWidth
-//                    )
                 Spacer()
             }
-            .padding(.vertical, 12)
+            .padding(.vertical, 4)
+            .padding(.bottom, 8)
             .padding(.horizontal)
-
-            
-//            HStack(alignment: .firstTextBaseline) {
-//                SlidingSegmentedControl(
-//                    segments: ["Yours", "Saved"],
-//                    selection: $segment
-//                )
-//                .frame(width: 200) // tweak to taste
-//                Spacer()
-//            }
-//            .padding(.vertical, 12)
-//            .padding(.horizontal)
-            
-
             // Loading skeletons
             if model.isLoading && !hasLoaded {
                 List(0..<10, id: \.self) { _ in

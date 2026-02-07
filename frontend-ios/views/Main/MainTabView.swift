@@ -12,8 +12,8 @@ struct MainTabView: View {
             Group {
                 switch selectedTab {
                 case 0: HomeView(selectedTab: $selectedTab)
-                case 1: GroceriesView()
-                case 2: SocialView()
+                case 1: SocialView()
+                case 2: GroceriesView()
                 case 3: ProfileView()
                     
                 default: HomeView(selectedTab: $selectedTab)
@@ -26,11 +26,11 @@ struct MainTabView: View {
             HStack {
                 tabItem(label: "Recipes", image: "list.bullet.rectangle", index: 0)
                 Spacer()
+                tabItem(label: "Social", image: "person.2", index: 1)
+                Spacer()
                 createButton()
                 Spacer()
-                tabItem(label: "Grocery", image: "cart", index: 1)
-                Spacer()
-                tabItem(label: "Social", image: "person.2", index: 2)
+                tabItem(label: "Grocery", image: "cart", index: 2)
                 Spacer()
                 tabItem(label: "Profile", image: "person", index: 3)
             }

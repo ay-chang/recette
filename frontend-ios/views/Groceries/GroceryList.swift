@@ -4,7 +4,7 @@ struct GroceryList: View {
     @EnvironmentObject var groceriesModel: GroceriesModel
     @EnvironmentObject var session: UserSession
     @State private var isEditing = false
-    @State private var showInfo = false
+    @State private var showOptions = false
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -12,28 +12,22 @@ struct GroceryList: View {
             HStack {
                 Spacer()
                 Button (action: {
-                    showInfo = true
+                    showOptions = true
                 }) {
-                    Text("Info")
-                        .padding(.vertical, 10)
-                        .padding(.horizontal, 14)
-                        .foregroundColor(Color.black)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 15)
-                                .stroke(Color.gray.opacity(0.6), lineWidth: 1)
-                        )
-                        .cornerRadius(15)
+                    Image(systemName: "ellipsis")
+                    .font(.system(size: 16, weight: .regular))
+                    .frame(width: 20, height: 20)
                 }
+                .padding(10)
+                .foregroundColor(Color.black)
+                .overlay(
+                Circle()
+                    .stroke(Color.gray.opacity(0.6), lineWidth: 1)
+            )
             }
             .padding(.bottom)
             .padding(.horizontal)
-            .overlay(
-                Rectangle()
-                    .frame(height: 1)
-                    .foregroundColor(Color.gray.opacity(0.1)),
-                alignment: .bottom
-            )
-            .background(Color.gray.opacity(0.03))
+
             
             /** Main content */
             VStack(alignment: .leading, spacing: 0) {
@@ -43,14 +37,9 @@ struct GroceryList: View {
                         .font(.title)
                         .fontWeight(.bold)
                     Spacer()
-                    Button (action: {
-                        isEditing.toggle()
-                    }) {
-                        Image(systemName: "pencil")
-                            .foregroundColor(isEditing ? Color(hex: "#e9c46a") : .gray)
-                    }
                 }
-                .padding(.vertical, 12)
+                .padding(.vertical, 4)
+                .padding(.bottom, 8)
    
                 VStack(alignment: .leading) {
                     if groceriesModel.items.isEmpty {
@@ -76,8 +65,8 @@ struct GroceryList: View {
         .onDisappear {
             isEditing = false
         }
-        .fullScreenCover(isPresented: $showInfo) {
-            GroceryListInfo(showInfo: $showInfo)
+        .sheet(isPresented: $showOptions) {
+            GrocerySheet(showOptions: $showOptions, isEditing: $isEditing)
         }
     }
 }

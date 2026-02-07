@@ -20,7 +20,7 @@ final class AuthService {
 
     func sendVerificationCode(email: String, password: String) async throws {
         let request = SendVerificationCodeRequest(email: email, password: password)
-        let _: EmptyResponse = try await RecetteAPI.shared.post(EmptyResponse.self, path: "/api/auth/signup/send-code", body: request)
+        try await RecetteAPI.shared.postEmpty(path: "/api/auth/signup/send-code", body: request)
     }
 
     func completeSignUp(email: String, code: String) async throws -> AuthResponse {

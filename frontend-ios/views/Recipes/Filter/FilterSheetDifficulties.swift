@@ -9,8 +9,7 @@ struct FilterSheetDifficulties: View {
             Text("Difficulty")
                 .font(.title3)
                 .bold()
-            Divider()
-            
+
             FilterRow(label: "Easy", isChecked: Binding(
                 get: { filterRecipesModel.selectedDifficulties.contains("Easy") },
                 set: { newValue in

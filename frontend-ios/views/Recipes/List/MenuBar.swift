@@ -7,44 +7,38 @@ struct MenuBar: View {
 
     var body: some View {
         HStack (alignment: .center) {
+            Spacer()
+
             Button(action: {
                 showFilterSheet = true
             }) {
-                HStack (alignment: .center){
-                    Text("Filter")
-                        .font(.system(size: 16))
-                    Image(systemName: "slider.horizontal.3")
-                        .font(.system(size: 16))
-                }
+                Image(systemName: "slider.horizontal.3")
+                    .font(.system(size: 16, weight: .regular))
+                    .frame(width: 20, height: 20)
             }
-            .padding(.vertical, 10)
-            .padding(.horizontal, 14)
+            .padding(10)
             .foregroundColor(Color.black)
             .overlay(
-                    RoundedRectangle(cornerRadius: 15)
-                        .stroke(Color.gray.opacity(0.6), lineWidth: 1)
-                )
-                .cornerRadius(15)
-
-            Spacer()
+                Circle()
+                    .stroke(Color.gray.opacity(0.6), lineWidth: 1)
+            )
 
             Button(action: {
                 showSavedRecipes = true
             }) {
                 Image(systemName: "bookmark")
-                    .font(.system(size: 20))
-                    .foregroundColor(.gray)
+                    .font(.system(size: 16, weight: .regular))
+                    .frame(width: 20, height: 20)
             }
+            .padding(10)
+            .foregroundColor(Color.black)
+            .overlay(
+                Circle()
+                    .stroke(Color.gray.opacity(0.6), lineWidth: 1)
+            )
 
         }
         .padding(.bottom)
         .padding(.horizontal)
-        .overlay(
-            Rectangle()
-                .frame(height: 1)
-                .foregroundColor(Color.gray.opacity(0.1)),
-            alignment: .bottom
-        )
-        .background(Color.gray.opacity(0.03))
     }
 }

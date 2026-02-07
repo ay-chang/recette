@@ -9,8 +9,7 @@ struct FilterSheetTimeOptions: View {
             Text("Time")
                 .font(.title3)
                 .bold()
-            Divider()
-            
+
             ForEach(TimeOption.allCases, id: \.self) { option in
                 FilterRow(
                     label: option.rawValue,

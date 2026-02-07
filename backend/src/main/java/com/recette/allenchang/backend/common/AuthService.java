@@ -143,7 +143,7 @@ public class AuthService {
 
             String email = ((String) payload.getEmail()).toLowerCase(Locale.ROOT);
             String firstName = (String) payload.get("given_name");
-            String lasstName = (String) payload.get("family_name");
+            String lastName = (String) payload.get("family_name");
 
             Optional<User> existing = userRepository.findByEmail(email);
             if (existing.isPresent()) {
@@ -154,7 +154,7 @@ public class AuthService {
             User user = new User();
             user.setEmail(email);
             user.setFirstName(firstName);
-            user.setLastName(lasstName);
+            user.setLastName(lastName);
             user.setUsername(defaultUsernameFromEmail(email)); // simple + deterministic
             user.setPassword(null);
 
@@ -227,7 +227,8 @@ public class AuthService {
             }
             email = email.toLowerCase(Locale.ROOT);
 
-            // Parse name — Apple sends it as a nested JSON string {"firstName":"...","lastName":"..."}
+            // Parse name — Apple sends it as a nested JSON string
+            // {"firstName":"...","lastName":"..."}
             String firstName = null;
             String lastName = null;
             String nameJson = claims.get("name", String.class);

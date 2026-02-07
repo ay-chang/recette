@@ -10,8 +10,7 @@ struct FilterSheetTags: View {
             Text("Tags")
                 .font(.title3)
                 .bold()
-            Divider()
-            
+
             TagContainerView(
                 selectedTags: $filterRecipesModel.selectedTags,
                 availableTags: $session.availableTags,

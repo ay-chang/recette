@@ -242,8 +242,10 @@ class UserSession: ObservableObject {
         Task {
             do {
                 try await AuthService.shared.sendVerificationCode(email: email, password: password)
-                self.loginError = nil
-                completion(true)
+                DispatchQueue.main.async {
+                    self.loginError = nil
+                    completion(true)
+                }
             } catch {
                 DispatchQueue.main.async {
                     self.loginError = error.localizedDescription

@@ -44,11 +44,17 @@ final class RecetteAPI {
         return req
     }
 
-    private func validate(_ response: URLResponse) throws {
+    private func validate(_ response: URLResponse, data: Data?) throws {
         guard let http = response as? HTTPURLResponse else { return }
         guard (200...299).contains(http.statusCode) else {
+            var message = "HTTP \(http.statusCode)"
+            if let data = data,
+               let body = try? JSONDecoder().decode([String: String].self, from: data),
+               let error = body["error"] {
+                message = error
+            }
             throw NSError(domain: "RecetteAPI", code: http.statusCode, userInfo: [
-                NSLocalizedDescriptionKey: "HTTP \(http.statusCode)"
+                NSLocalizedDescriptionKey: message
             ])
         }
     }
@@ -58,40 +64,40 @@ final class RecetteAPI {
         let hasToken = req.value(forHTTPHeaderField: "Authorization") != nil
         print("RecetteAPI GET: \(req.url?.absoluteString ?? "unknown") | Auth: \(hasToken ? "YES" : "NO")")
         let (data, resp) = try await URLSession.shared.data(for: req)
-        try validate(resp)
+        try validate(resp, data: data)
         return try JSONDecoder().decode(T.self, from: data)
     }
 
     func post<T: Decodable>(_ type: T.Type, path: String, body: Encodable) async throws -> T {
         let req = try makeRequest(method: "POST", path: path, body: body)
         let (data, resp) = try await URLSession.shared.data(for: req)
-        try validate(resp)
+        try validate(resp, data: data)
         return try JSONDecoder().decode(T.self, from: data)
     }
 
-    func postEmpty(path: String) async throws {
-        let req = try makeRequest(method: "POST", path: path)
-        let (_, resp) = try await URLSession.shared.data(for: req)
-        try validate(resp)
+    func postEmpty(path: String, body: Encodable? = nil) async throws {
+        let req = try makeRequest(method: "POST", path: path, body: body)
+        let (data, resp) = try await URLSession.shared.data(for: req)
+        try validate(resp, data: data)
     }
 
     func put<T: Decodable>(_ type: T.Type, path: String, body: Encodable) async throws -> T {
         let req = try makeRequest(method: "PUT", path: path, body: body)
         let (data, resp) = try await URLSession.shared.data(for: req)
-        try validate(resp)
+        try validate(resp, data: data)
         return try JSONDecoder().decode(T.self, from: data)
     }
 
     func delete(path: String) async throws {
         let req = try makeRequest(method: "DELETE", path: path)
-        let (_, resp) = try await URLSession.shared.data(for: req)
-        try validate(resp)
+        let (data, resp) = try await URLSession.shared.data(for: req)
+        try validate(resp, data: data)
     }
 
     func patch<T: Decodable>(_ type: T.Type, path: String, queryItems: [URLQueryItem] = []) async throws -> T {
         let req = try makeRequest(method: "PATCH", path: path, queryItems: queryItems)
         let (data, resp) = try await URLSession.shared.data(for: req)
-        try validate(resp)
+        try validate(resp, data: data)
         return try JSONDecoder().decode(T.self, from: data)
     }
 }

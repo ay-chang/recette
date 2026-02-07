@@ -30,8 +30,14 @@ struct CodeInputFields: View {
                             codeDigits[index] = filtered
                         }
 
+                        // Handle paste: distribute digits across fields
                         if filtered.count > 1 {
-                            codeDigits[index] = String(filtered.prefix(1))
+                            let digits = Array(filtered.prefix(6 - index))
+                            for (offset, digit) in digits.enumerated() {
+                                codeDigits[index + offset] = String(digit)
+                            }
+                            focusedField = min(index + digits.count, 5)
+                            return
                         }
 
                         if filtered.count == 1 && index < 5 {

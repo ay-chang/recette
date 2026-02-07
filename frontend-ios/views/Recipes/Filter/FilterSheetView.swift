@@ -5,30 +5,38 @@ struct FilterSheetView: View {
     @ObservedObject var recipeListModel: RecipeListModel
     @EnvironmentObject var session: UserSession
     var onApply: () -> Void
-    
+
     var body: some View {
         VStack(spacing: 12) {
             Capsule()
                 .frame(width: 40, height: 6)
                 .foregroundColor(.gray.opacity(0.8))
                 .padding(.top, 10)
-                .padding(.bottom, 10)
-            
+                .padding(.bottom, 4)
+
+            Text("Filter")
+                .font(.title2)
+                .fontWeight(.bold)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            Divider()
+                .padding(.bottom, 4)
+
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
                     /** Tags section*/
                     FilterSheetTags(filterRecipesModel: filterRecipesModel)
-                    
+
                     /** Difficulties section */
                     FilterSheetDifficulties(filterRecipesModel: filterRecipesModel)
-                    
+
                     /** Time options*/
                     FilterSheetTimeOptions(filterRecipesModel: filterRecipesModel)
                 }
             }
-            
+
             Spacer()
-            
+
             HStack {
                 Button(action: {
                         filterRecipesModel.clearFilters()
@@ -54,10 +62,12 @@ struct FilterSheetView: View {
                         .cornerRadius(8)
                 }
             }
-            
+
         }
-        .padding(.horizontal)
+        .padding(.horizontal, 24)
         .frame(maxWidth: .infinity)
+        .presentationDetents([.large])
+        .presentationBackground(.white)
         .onAppear {
             if let email = session.userEmail {
                 session.loadUserTags(email: email)
