@@ -64,7 +64,7 @@ struct RecipeDetailsCoordinator: View {
                 showWhiteTopBar = true
             }
         }
-        .sheet(isPresented: $showActionSheet) {
+        .bottomSheet(isPresented: $showActionSheet) {
             ActionSheetView(
                 onDelete: {
                     recipeModel.deleteRecipe { success in
@@ -75,12 +75,11 @@ struct RecipeDetailsCoordinator: View {
                     }
                 },
                 onEdit: {
-                    showActionSheet = false
                     showEditRecipe = true
                     session.shouldRefreshRecipes = true
-                }
+                },
+                recipeModel: recipeModel
             )
-            .ignoresSafeArea(.container, edges: .bottom)
         }
         .fullScreenCover(isPresented: $showEditRecipe, onDismiss: {
             recipeModel.loadRecipe()

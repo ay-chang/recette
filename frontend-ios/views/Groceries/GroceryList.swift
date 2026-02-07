@@ -3,8 +3,6 @@ import SwiftUI
 struct GroceryList: View {
     @EnvironmentObject var groceriesModel: GroceriesModel
     @EnvironmentObject var session: UserSession
-    @State private var isEditing = false
-    @State private var showOptions = false
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -12,7 +10,7 @@ struct GroceryList: View {
             HStack {
                 Spacer()
                 Button (action: {
-                    showOptions = true
+                    groceriesModel.showOptions = true
                 }) {
                     Image(systemName: "ellipsis")
                     .font(.system(size: 16, weight: .regular))
@@ -53,7 +51,7 @@ struct GroceryList: View {
                         .frame(maxWidth: .infinity)
                     } else {
                         List {
-                            GroceryListRecipeGroup(groceriesModel: groceriesModel, session: session, isEditing: isEditing)
+                            GroceryListRecipeGroup(groceriesModel: groceriesModel, session: session, isEditing: groceriesModel.isEditing)
                         }
                         .listStyle(.plain)
                         .scrollIndicators(.hidden)
@@ -63,10 +61,7 @@ struct GroceryList: View {
             .padding(.horizontal)
         }
         .onDisappear {
-            isEditing = false
-        }
-        .sheet(isPresented: $showOptions) {
-            GrocerySheet(showOptions: $showOptions, isEditing: $isEditing)
+            groceriesModel.isEditing = false
         }
     }
 }

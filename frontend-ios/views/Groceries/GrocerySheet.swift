@@ -1,55 +1,28 @@
 import SwiftUI
 
 struct GrocerySheet: View {
-    @Binding var showOptions: Bool
-    @Binding var isEditing: Bool
+    @ObservedObject var groceriesModel: GroceriesModel
+    @Environment(\.dismissSheet) private var dismissSheet
+
+    @State private var showDeleteAllConfirmation = false
 
     var body: some View {
-        VStack(spacing: 12) {
-            Capsule()
-                .frame(width: 40, height: 6)
-                .foregroundColor(.gray.opacity(0.8))
-                .padding(.top, 10)
-                .padding(.bottom, 4)
-
-            Text("Groceries")
-                .font(.title2)
-                .fontWeight(.bold)
-                .frame(maxWidth: .infinity, alignment: .leading)
-
-            Divider()
-                .padding(.bottom, 4)
-
-            Button(action: {
-                showOptions = false
-                isEditing.toggle()
-            }) {
-                HStack {
-                    Text("Delete by recipe")
-                    Spacer()
-                    Image(systemName: "trash")
-                }
-                .padding(.vertical, 12)
-                .foregroundColor(.black)
+        AppSheet(title: "Groceries") {
+            SheetButton(title: "Delete by recipe", icon: "trash") {
+                dismissSheet()
+                groceriesModel.isEditing.toggle()
             }
 
-            Button(action: {
-                // TODO: implement delete all
-            }) {
-                HStack {
-                    Text("Delete all")
-                    Spacer()
-                    Image(systemName: "trash.fill")
-                }
-                .padding(.vertical, 12)
-                .foregroundColor(.red)
+            SheetButton(title: "Delete all", icon: "trash.fill", isDestructive: true) {
+                showDeleteAllConfirmation = true
             }
-
-            Spacer()
         }
-        .padding(.horizontal, 24)
-        .frame(maxWidth: .infinity)
-        .presentationDetents([.medium])
-        .presentationBackground(.white)
+        .alert("Are you sure you want to delete all groceries?", isPresented: $showDeleteAllConfirmation) {
+            Button("Delete All", role: .destructive) {
+                groceriesModel.deleteAllGroceries()
+                dismissSheet()
+            }
+            Button("Cancel", role: .cancel) { }
+        }
     }
 }

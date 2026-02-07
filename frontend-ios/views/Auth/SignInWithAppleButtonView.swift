@@ -3,6 +3,7 @@ import AuthenticationServices
 
 struct SignInWithAppleButtonView: View {
     let onToken: (String) -> Void
+    var onError: ((String) -> Void)?
 
     var body: some View {
         Button {
@@ -10,7 +11,7 @@ struct SignInWithAppleButtonView: View {
             let request = provider.createRequest()
             request.requestedScopes = [.fullName, .email]
 
-            let delegate = AppleSignInDelegate(onToken: onToken)
+            let delegate = AppleSignInDelegate(onToken: onToken, onError: onError)
             let controller = ASAuthorizationController(authorizationRequests: [request])
             controller.delegate = delegate
             controller.presentationContextProvider = delegate
@@ -41,15 +42,17 @@ private class AppleSignInDelegate: NSObject, ASAuthorizationControllerDelegate, 
     static var current: AppleSignInDelegate?
 
     let onToken: (String) -> Void
+    let onError: ((String) -> Void)?
 
-    init(onToken: @escaping (String) -> Void) {
+    init(onToken: @escaping (String) -> Void, onError: ((String) -> Void)? = nil) {
         self.onToken = onToken
+        self.onError = onError
         super.init()
         AppleSignInDelegate.current = self
     }
 
     func authorizationController(controller: ASAuthorizationController, didFailWithError error: Error) {
-        print("Apple sign-in failed:", error.localizedDescription)
+        onError?(error.localizedDescription)
         AppleSignInDelegate.current = nil
     }
 
@@ -57,7 +60,7 @@ private class AppleSignInDelegate: NSObject, ASAuthorizationControllerDelegate, 
         defer { AppleSignInDelegate.current = nil }
         guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential,
               let idToken = String(data: credential.identityToken ?? Data(), encoding: .utf8) else {
-            print("No ID token from Apple")
+            onError?("No ID token received from Apple")
             return
         }
         onToken(idToken)

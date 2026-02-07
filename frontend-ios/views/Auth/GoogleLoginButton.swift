@@ -3,20 +3,21 @@ import GoogleSignIn
 
 struct GoogleLoginButton: View {
     let onToken: (String) -> Void
+    var onError: ((String) -> Void)?
 
     var body: some View {
         Button {
             guard let vc = UIApplication.shared.topViewController else { return }
             GIDSignIn.sharedInstance.signIn(withPresenting: vc) { result, error in
                 if let error = error {
-                    print("Google sign-in failed:", error.localizedDescription)
+                    onError?(error.localizedDescription)
                     return
                 }
                 guard let token = result?.user.idToken?.tokenString else {
-                    print("No ID token from Google")
+                    onError?("No ID token received from Google")
                     return
                 }
-                onToken(token) // LoginView passes this to session.logInWithGoogle
+                onToken(token)
             }
 
         } label: {

@@ -39,21 +39,21 @@ class EditRecipeModel: BaseRecipe {
                     let newImageUrl = try await S3Manager.uploadImage(selectedImage)
                     await MainActor.run {
                         self.imageurl = newImageUrl
-                        self.performGraphQLUpdate(completion: onSuccess)
+                        self.performUpdate(completion: onSuccess)
                     }
                 } catch {
                     print("Image upload failed: \(error)")
                 }
             } else {
                 await MainActor.run {
-                    self.performGraphQLUpdate(completion: onSuccess)
+                    self.performUpdate(completion: onSuccess)
                 }
             }
         }
     }
 
 
-    private func performGraphQLUpdate(completion: (() -> Void)? = nil) {
+    private func performUpdate(completion: (() -> Void)? = nil) {
         let requestIngredients = ingredients.map {
             IngredientDTO(name: $0.name, measurement: $0.measurement)
         }

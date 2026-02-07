@@ -102,17 +102,30 @@ struct VerifyCodeView: View {
 
             Spacer()
 
-            Button("Verify") {
+            Button(action: {
                 session.completeSignUpWithCode(email: email, code: fullCode)
+            }) {
+                Group {
+                    if session.isAuthLoading {
+                        ProgressView()
+                            .tint(.white)
+                    } else {
+                        Text("Verify")
+                    }
+                }
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(Color(hex: "#e9c46a"))
+                .foregroundColor(.white)
+                .cornerRadius(10)
             }
-            .frame(maxWidth: .infinity)
-            .padding()
-            .background(Color(hex: "#e9c46a"))
-            .foregroundColor(.white)
-            .cornerRadius(10)
-            .disabled(fullCode.count < 6)
+            .disabled(fullCode.count < 6 || session.isAuthLoading)
         }
         .padding()
+        .onDisappear {
+            cooldownTimer?.invalidate()
+            cooldownTimer = nil
+        }
     }
     
     

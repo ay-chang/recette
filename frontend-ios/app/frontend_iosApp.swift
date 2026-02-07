@@ -19,7 +19,8 @@ struct frontend_iosApp: App {
             UpdateGate {
                 AppView()
                     .environmentObject(session)
-                    .onAppear {
+                    .task {
+                        session.setupUnauthorizedHandler()
                         session.loadSavedSession()
                     }
                     .onOpenURL { url in

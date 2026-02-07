@@ -13,11 +13,9 @@ struct RecipesView: View {
     @State private var isListView = true
     @State private var hasLoaded = false
     @State private var showFilterSheet = false
-    @State private var showSavedRecipes = false
-
     var body: some View {
         VStack (spacing: 0) {
-            MenuBar(isListView: $isListView, showFilterSheet: $showFilterSheet, showSavedRecipes: $showSavedRecipes)
+            MenuBar(isListView: $isListView, showFilterSheet: $showFilterSheet)
 
             HStack (alignment: .bottom, spacing: 16){
                 Text("Your Recipes")
@@ -73,9 +71,9 @@ struct RecipesView: View {
                 recipeListModel: model
             ) { showFilterSheet = false }
         }
-        .fullScreenCover(isPresented: $showSavedRecipes) {
-            SavedRecipesView()
-        }
+        // .fullScreenCover(isPresented: $showSavedRecipes) {
+        //     SavedRecipesView()
+        // }
     }
 
     private func fetch(email: String) {

@@ -4,7 +4,6 @@ struct EditRecipeOthers: View {
     @Binding var difficulty: String?
     @Binding var servingSize: Int
     @Binding var cookTimeInMinutes: Int
-    @Binding var isPublic: Bool
     @State private var showDifficulty: Bool = false
     @State private var showServingSize: Bool = false
     @State private var showCookTime: Bool = false
@@ -91,18 +90,6 @@ struct EditRecipeOthers: View {
             .sheet(isPresented: $showCookTime) {
                 CookTimeSelectorView(cookTimeInMinutes: $cookTimeInMinutes, showSheet: $showCookTime)
             }
-
-            /** Visibility Toggle */
-            Toggle(isOn: $isPublic) {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Share with friends")
-                        .foregroundColor(.black)
-                    Text("Your friends will be able to see this recipe")
-                        .font(.caption)
-                        .foregroundColor(.gray)
-                }
-            }
-            .tint(Color(hex: "#e9c46a"))
         }
     }
 }

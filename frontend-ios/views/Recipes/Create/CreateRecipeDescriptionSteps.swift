@@ -148,23 +148,6 @@ struct CreateRecipeDescriptionStep: View {
 
                 }
 
-                // Visibility toggle
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("Sharing")
-                        .font(.headline)
-
-                    Toggle(isOn: $recipe.isPublic) {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("Share with friends")
-                                .foregroundColor(.black)
-                            Text("Your friends will be able to see this recipe")
-                                .font(.caption)
-                                .foregroundColor(.gray)
-                        }
-                    }
-                    .tint(Color(hex: "#e9c46a"))
-                }
-
             }
             .padding()
 

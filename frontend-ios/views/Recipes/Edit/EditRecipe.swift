@@ -86,8 +86,7 @@ struct EditRecipe: View {
                 EditRecipeOthers(
                     difficulty: $model.difficulty,
                     servingSize: $model.servingSize,
-                    cookTimeInMinutes: $model.cookTimeInMinutes,
-                    isPublic: $model.isPublic
+                    cookTimeInMinutes: $model.cookTimeInMinutes
                 )
                 
  

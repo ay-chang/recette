@@ -3,7 +3,7 @@ import SwiftUI
 struct MenuBar: View {
     @Binding var isListView: Bool
     @Binding var showFilterSheet: Bool
-    @Binding var showSavedRecipes: Bool
+    @State private var showComingSoon = false
 
     var body: some View {
         HStack (alignment: .center) {
@@ -24,7 +24,7 @@ struct MenuBar: View {
             )
 
             Button(action: {
-                showSavedRecipes = true
+                showComingSoon = true
             }) {
                 Image(systemName: "bookmark")
                     .font(.system(size: 16, weight: .regular))
@@ -36,6 +36,9 @@ struct MenuBar: View {
                 Circle()
                     .stroke(Color.gray.opacity(0.6), lineWidth: 1)
             )
+            .alert("Feature coming soon", isPresented: $showComingSoon) {
+                Button("OK", role: .cancel) { }
+            }
 
         }
         .padding(.bottom)

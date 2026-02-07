@@ -13,6 +13,8 @@ class GroceriesModel: ObservableObject {
     @Published var items: [GroceryItem] = []
     @Published var isLoading = false
     @Published var errorMessage: String?
+    @Published var showOptions = false
+    @Published var isEditing = false
     
     /**
       * This property returns the grocery items grouped by their associated recipe, preserving the original
@@ -108,6 +110,19 @@ class GroceriesModel: ObservableObject {
         }
     }
     
+    func deleteAllGroceries() {
+        Task {
+            do {
+                try await GroceryService.shared.deleteAllGroceries()
+                DispatchQueue.main.async {
+                    self.items = []
+                }
+            } catch {
+                print("Error deleting all groceries: \(error.localizedDescription)")
+            }
+        }
+    }
+
     func hasRecipe(_ recipeId: String) -> Bool {
         let found = items.contains(where: { $0.recipeId == recipeId })
         return found

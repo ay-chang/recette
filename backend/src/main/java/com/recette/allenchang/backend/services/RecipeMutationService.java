@@ -78,6 +78,18 @@ public class RecipeMutationService {
         return recipeRepository.save(recipe);
     }
 
+    /** Toggle recipe visibility */
+    public Recipe toggleVisibility(UUID id, boolean isPublic, String userEmail) {
+        Recipe recipe = serviceUtil.findRecipeById(id);
+
+        if (!recipe.getUser().getEmail().equalsIgnoreCase(userEmail)) {
+            throw new RuntimeException("Unauthorized to update this recipe");
+        }
+
+        recipe.setIsPublic(isPublic);
+        return recipeRepository.save(recipe);
+    }
+
     /** Delete a recipe given its id */
     @Transactional
     public boolean deleteRecipe(UUID id, String userEmail) {

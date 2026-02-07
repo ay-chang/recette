@@ -71,6 +71,17 @@ class RecipeDetailsModel: ObservableObject {
         }
     }
 
+    func toggleVisibility(_ isPublic: Bool) {
+        Task {
+            do {
+                _ = try await RecipeService.shared.toggleVisibility(id: recipeId, isPublic: isPublic)
+                self.recipe?.isPublic = isPublic
+            } catch {
+                print("RecipeDetailsModel ERROR toggling visibility: \(error)")
+            }
+        }
+    }
+
     func updateRecipeImage(image: UIImage, email: String, completion: @escaping (Bool) -> Void) {
         Task {
             do {

@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		971C4CED2DA6ADD200A8CBAD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 971C4CEC2DA6ADD200A8CBAD /* Assets.xcassets */; };
-		971C4D362DA84F2400A8CBAD /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = 971C4D352DA84F2400A8CBAD /* Apollo */; };
 		97A286052E89CDD6006A4D08 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 97A286042E89CDD6006A4D08 /* GoogleSignIn */; };
 		97A286072E89CDD6006A4D08 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 97A286062E89CDD6006A4D08 /* GoogleSignInSwift */; };
 /* End PBXBuildFile section */
@@ -48,7 +47,6 @@
 		971C4CEC2DA6ADD200A8CBAD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		971C4CF22DA6ADD300A8CBAD /* frontend-iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "frontend-iosTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		971C4CFC2DA6ADD300A8CBAD /* frontend-iosUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "frontend-iosUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		971C4D962DA8A4A600A8CBAD /* apollo-codegen-config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "apollo-codegen-config.json"; sourceTree = "<group>"; };
 		972ABD982F2FE9C5007878FD /* frontend-ios.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "frontend-ios.entitlements"; sourceTree = "<group>"; };
 		97A286032E88B2A8006A4D08 /* frontend-ios-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "frontend-ios-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -117,7 +115,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				97A286072E89CDD6006A4D08 /* GoogleSignInSwift in Frameworks */,
-				971C4D362DA84F2400A8CBAD /* Apollo in Frameworks */,
 				97A286052E89CDD6006A4D08 /* GoogleSignIn in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -156,7 +153,6 @@
 				971C4CFF2DA6ADD300A8CBAD /* frontend-iosUITests */,
 				971C4CF52DA6ADD300A8CBAD /* frontend-iosTests */,
 				971C4D342DA84F2400A8CBAD /* Frameworks */,
-				971C4D962DA8A4A600A8CBAD /* apollo-codegen-config.json */,
 				971C4CEC2DA6ADD200A8CBAD /* Assets.xcassets */,
 				971C4CE62DA6ADD100A8CBAD /* Products */,
 			);
@@ -208,7 +204,6 @@
 			);
 			name = "frontend-ios";
 			packageProductDependencies = (
-				971C4D352DA84F2400A8CBAD /* Apollo */,
 				97A286042E89CDD6006A4D08 /* GoogleSignIn */,
 				97A286062E89CDD6006A4D08 /* GoogleSignInSwift */,
 			);
@@ -295,7 +290,6 @@
 			mainGroup = 971C4CDC2DA6ADD100A8CBAD;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				971C4D332DA6CEE400A8CBAD /* XCRemoteSwiftPackageReference "apollo-ios" */,
 				97A286022E88B266006A4D08 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 			);
 			preferredProjectObjectVersion = 77;
@@ -674,14 +668,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		971C4D332DA6CEE400A8CBAD /* XCRemoteSwiftPackageReference "apollo-ios" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/apollographql/apollo-ios";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.19.0;
-			};
-		};
 		97A286022E88B266006A4D08 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
@@ -693,11 +679,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		971C4D352DA84F2400A8CBAD /* Apollo */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 971C4D332DA6CEE400A8CBAD /* XCRemoteSwiftPackageReference "apollo-ios" */;
-			productName = Apollo;
-		};
 		97A286042E89CDD6006A4D08 /* GoogleSignIn */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 97A286022E88B266006A4D08 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;

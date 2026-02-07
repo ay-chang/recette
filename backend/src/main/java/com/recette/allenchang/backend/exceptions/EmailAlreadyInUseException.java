@@ -1,6 +1,6 @@
 package com.recette.allenchang.backend.exceptions;
 
-public class EmailAlreadyInUseException extends GraphQLDomainException {
+public class EmailAlreadyInUseException extends RuntimeException {
     public EmailAlreadyInUseException(String message) {
         super(message);
     }

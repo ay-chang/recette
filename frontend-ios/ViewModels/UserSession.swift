@@ -1,5 +1,4 @@
 import Foundation
-import Apollo
 
 class UserSession: ObservableObject {
     /**
@@ -8,6 +7,7 @@ class UserSession: ObservableObject {
      * Whenever it changes, SwiftUI will automatically refresh any views that care about it.
      */
     @Published var isLoggedIn: Bool = false
+    @Published var isAuthLoading: Bool = false
     @Published var loginError: String?
     @Published var userEmail: String?
     @Published var userUsername: String?
@@ -17,15 +17,29 @@ class UserSession: ObservableObject {
     @Published var shouldRefreshTags: Bool = false
     @Published var availableTags: [String] = []
 
+    /** Wire up 401 auto-logout */
+    func setupUnauthorizedHandler() {
+        RecetteAPI.shared.onUnauthorized = { [weak self] in
+            self?.logOut()
+        }
+    }
+
+    /** Helper to save both tokens from an auth response */
+    private func saveTokens(from response: AuthResponse) {
+        AuthManager.shared.saveToken(response.token)
+        AuthManager.shared.saveRefreshToken(response.refreshToken)
+    }
+
     /** Login function */
     func logIn(email: String, password: String) {
+        DispatchQueue.main.async { self.isAuthLoading = true }
         Task {
+            defer { DispatchQueue.main.async { self.isAuthLoading = false } }
             do {
                 let response = try await AuthService.shared.login(email: email, password: password)
 
-                // Store token and refresh network
-                AuthManager.shared.saveToken(response.token)
-                Network.refresh()
+                // Store tokens and refresh network
+                saveTokens(from: response)
 
                 DispatchQueue.main.async {
                     self.isLoggedIn = true
@@ -62,14 +76,15 @@ class UserSession: ObservableObject {
     /** Login with google */
     func logInWithGoogle(idToken: String) {
         loginError = nil
+        DispatchQueue.main.async { self.isAuthLoading = true }
 
         Task {
+            defer { DispatchQueue.main.async { self.isAuthLoading = false } }
             do {
                 let response = try await AuthService.shared.loginWithGoogle(idToken: idToken)
 
-                // 1) Save token + refresh Apollo auth header
-                AuthManager.shared.saveToken(response.token)
-                Network.refresh()
+                // 1) Save tokens
+                saveTokens(from: response)
 
                 // 2) Persist session flags + email
                 let email = self.decodeEmail(from: response.token)
@@ -106,13 +121,14 @@ class UserSession: ObservableObject {
     /** Login with Apple */
     func logInWithApple(idToken: String) {
         loginError = nil
+        DispatchQueue.main.async { self.isAuthLoading = true }
 
         Task {
+            defer { DispatchQueue.main.async { self.isAuthLoading = false } }
             do {
                 let response = try await AuthService.shared.loginWithApple(idToken: idToken)
 
-                AuthManager.shared.saveToken(response.token)
-                Network.refresh()
+                saveTokens(from: response)
 
                 let email = self.decodeEmail(from: response.token)
                 DispatchQueue.main.async {
@@ -160,13 +176,14 @@ class UserSession: ObservableObject {
 
     /** Completing sign up after user inputs code */
     func completeSignUpWithCode(email: String, code: String) {
+        DispatchQueue.main.async { self.isAuthLoading = true }
         Task {
+            defer { DispatchQueue.main.async { self.isAuthLoading = false } }
             do {
                 let response = try await AuthService.shared.completeSignUp(email: email, code: code)
 
-                /** Save token and refresh network client */
-                AuthManager.shared.saveToken(response.token)
-                Network.refresh()
+                /** Save tokens and refresh network client */
+                saveTokens(from: response)
 
                 /** Store login info */
                 DispatchQueue.main.async {
@@ -239,7 +256,9 @@ class UserSession: ObservableObject {
     
     /** Send verification code */
     func sendVerificationCode(email: String, password: String, completion: @escaping (Bool) -> Void) {
+        DispatchQueue.main.async { self.isAuthLoading = true }
         Task {
+            defer { DispatchQueue.main.async { self.isAuthLoading = false } }
             do {
                 try await AuthService.shared.sendVerificationCode(email: email, password: password)
                 DispatchQueue.main.async {
@@ -374,8 +393,8 @@ class UserSession: ObservableObject {
             return
         }
 
-        // Make sure Apollo has the Authorization header
-        AuthManager.shared.saveToken(token)   // this also calls Network.refresh()
+        // Ensure token is saved (migrates from UserDefaults if needed)
+        AuthManager.shared.saveToken(token)
 
         // Get email: prefer saved value, otherwise decode from the JWT
         let savedEmail = UserDefaults.standard.string(forKey: "loggedInEmail")

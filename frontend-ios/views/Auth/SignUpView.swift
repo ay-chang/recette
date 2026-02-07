@@ -8,6 +8,10 @@ struct SignUpView: View {
     @State private var isPasswordVisible = false
     @Binding var showSheet: Bool
 
+    private var isPasswordValid: Bool {
+        password.count >= 8 && password.range(of: "[A-Z]", options: .regularExpression) != nil
+    }
+
     var body: some View {
         VStack(spacing: 20) {
             HStack {
@@ -61,12 +65,27 @@ struct SignUpView: View {
 
                 
                 
-                Text("Must contain at least 8 characters and have a capital letter")
-                    .font(.caption)
-                    .foregroundColor(.gray)
-                    .padding(.bottom, 24)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal)
+                VStack(alignment: .leading, spacing: 4) {
+                    HStack(spacing: 4) {
+                        Image(systemName: password.count >= 8 ? "checkmark.circle.fill" : "circle")
+                            .foregroundColor(password.count >= 8 ? .green : .gray)
+                            .font(.caption)
+                        Text("At least 8 characters")
+                            .font(.caption)
+                            .foregroundColor(password.count >= 8 ? .green : .gray)
+                    }
+                    HStack(spacing: 4) {
+                        Image(systemName: password.range(of: "[A-Z]", options: .regularExpression) != nil ? "checkmark.circle.fill" : "circle")
+                            .foregroundColor(password.range(of: "[A-Z]", options: .regularExpression) != nil ? .green : .gray)
+                            .font(.caption)
+                        Text("Contains a capital letter")
+                            .font(.caption)
+                            .foregroundColor(password.range(of: "[A-Z]", options: .regularExpression) != nil ? .green : .gray)
+                    }
+                }
+                .padding(.horizontal)
+                .padding(.bottom, 24)
+                .frame(maxWidth: .infinity, alignment: .leading)
 
                 Button(action: {
                     session.sendVerificationCode(email: email, password: password) { success in
@@ -75,15 +94,23 @@ struct SignUpView: View {
                         }
                     }
                 }) {
-                    Text("Sign up")
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .foregroundColor(.white)
-                        .background(Color(hex: "#e9c46a"))
-                        .cornerRadius(10)
-                        .font(.title3)
-                        .fontWeight(.semibold)
+                    Group {
+                        if session.isAuthLoading {
+                            ProgressView()
+                                .tint(.white)
+                        } else {
+                            Text("Sign up")
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .foregroundColor(.white)
+                    .background(isPasswordValid ? Color(hex: "#e9c46a") : Color(hex: "#e9c46a").opacity(0.5))
+                    .cornerRadius(10)
+                    .font(.title3)
+                    .fontWeight(.semibold)
                 }
+                .disabled(!isPasswordValid || session.isAuthLoading)
                 
                 if let error = session.loginError {
                     Text(error)

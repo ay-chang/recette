@@ -24,4 +24,6 @@ public interface GroceryRepository extends JpaRepository<Grocery, UUID> {
     void updateChecked(@Param("id") UUID id, @Param("checked") boolean checked);
 
     void deleteByUserAndRecipe(User user, Recipe recipe);
+
+    void deleteByUser(User user);
 }

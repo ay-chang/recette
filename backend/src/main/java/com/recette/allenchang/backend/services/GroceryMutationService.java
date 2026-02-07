@@ -69,4 +69,12 @@ public class GroceryMutationService {
         return true;
     }
 
+    @Transactional
+    public void removeAllGroceries(String email) {
+        User user = userRepository.findByEmail(email.toLowerCase())
+                .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
+
+        groceryRepository.deleteByUser(user);
+    }
+
 }

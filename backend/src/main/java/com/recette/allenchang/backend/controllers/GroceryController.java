@@ -79,4 +79,11 @@ public class GroceryController {
         groceryMutationService.removeRecipeFromGroceries(userEmail, UUID.fromString(recipeId));
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping
+    public ResponseEntity<Void> removeAllGroceries() {
+        String userEmail = JwtUtil.getLoggedInUserEmail();
+        groceryMutationService.removeAllGroceries(userEmail);
+        return ResponseEntity.noContent().build();
+    }
 }

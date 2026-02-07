@@ -26,11 +26,17 @@ public class User {
     @Id
     @GeneratedValue
     private UUID id;
+    @Column(unique = true)
     private String username;
+
+    @Column(unique = true)
     private String email;
+
     private String password;
     private String firstName;
     private String lastName;
+
+    @Column(unique = true)
     private String appleId;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

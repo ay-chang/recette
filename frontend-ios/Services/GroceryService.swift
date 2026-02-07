@@ -20,4 +20,8 @@ final class GroceryService {
     func removeRecipeFromGroceries(recipeId: String) async throws {
         try await RecetteAPI.shared.delete(path: "/api/groceries/recipe/\(recipeId)")
     }
+
+    func deleteAllGroceries() async throws {
+        try await RecetteAPI.shared.delete(path: "/api/groceries")
+    }
 }

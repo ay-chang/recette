@@ -5,34 +5,37 @@ import SwiftUI
 struct MainTabView: View {
     @State private var selectedTab = 0
     @State private var showCreateRecipe = false
+    @EnvironmentObject var groceriesModel: GroceriesModel
 
     var body: some View {
-        VStack(spacing: 0) {
+        ZStack(alignment: .bottom) {
             // Main content
             Group {
                 switch selectedTab {
                 case 0: HomeView(selectedTab: $selectedTab)
-                case 1: SocialView()
-                case 2: GroceriesView()
-                case 3: ProfileView()
-                    
+                // case 1: SocialView()
+                case 1: GroceriesView()
+                case 2: ProfileView()
+
                 default: HomeView(selectedTab: $selectedTab)
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-
+            .safeAreaInset(edge: .bottom) {
+                Color.clear.frame(height: 82)
+            }
 
             // Custom tab bar
             HStack {
                 tabItem(label: "Recipes", image: "list.bullet.rectangle", index: 0)
                 Spacer()
-                tabItem(label: "Social", image: "person.2", index: 1)
-                Spacer()
+                // tabItem(label: "Social", image: "person.2", index: 1)
+                // Spacer()
                 createButton()
                 Spacer()
-                tabItem(label: "Grocery", image: "cart", index: 2)
+                tabItem(label: "Grocery", image: "cart", index: 1)
                 Spacer()
-                tabItem(label: "Profile", image: "person", index: 3)
+                tabItem(label: "Profile", image: "person", index: 2)
             }
             .padding(.bottom, 36)
             .padding(.top, 10)
@@ -45,6 +48,9 @@ struct MainTabView: View {
             }
         }
         .edgesIgnoringSafeArea(.bottom)
+        .bottomSheet(isPresented: $groceriesModel.showOptions) {
+            GrocerySheet(groceriesModel: groceriesModel)
+        }
         .fullScreenCover(isPresented: $showCreateRecipe) {
             CreateRecipeCoordinator()
         }

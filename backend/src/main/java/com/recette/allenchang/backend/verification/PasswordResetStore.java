@@ -1,6 +1,5 @@
 package com.recette.allenchang.backend.verification;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -9,32 +8,19 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
-public class VerificationCodeStore {
+public class PasswordResetStore {
     private static final int MAX_ATTEMPTS = 5;
     private static final int LOCKOUT_MINUTES = 15;
 
-    private static record CodeEntry(String code, LocalDateTime expiresAt, String hashedPassword) {
-    }
+    private static record ResetEntry(String code, LocalDateTime expiresAt) {}
+    private static record AttemptEntry(AtomicInteger count, LocalDateTime lockedUntil) {}
 
-    private static record AttemptEntry(AtomicInteger count, LocalDateTime lockedUntil) {
-    }
-
-    private final Map<String, CodeEntry> store = new ConcurrentHashMap<>();
+    private final Map<String, ResetEntry> store = new ConcurrentHashMap<>();
     private final Map<String, AttemptEntry> attempts = new ConcurrentHashMap<>();
-    private final PasswordEncoder passwordEncoder;
 
-    public VerificationCodeStore(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
-
-    public void store(String email, String code, String rawPassword) {
-        String hashed = passwordEncoder.encode(rawPassword);
-        store.put(email, new CodeEntry(code, LocalDateTime.now().plusMinutes(10), hashed));
+    public void store(String email, String code) {
+        store.put(email, new ResetEntry(code, LocalDateTime.now().plusMinutes(10)));
         attempts.remove(email);
-    }
-
-    public boolean contains(String email) {
-        return store.containsKey(email);
     }
 
     public boolean isLockedOut(String email) {
@@ -53,7 +39,7 @@ public class VerificationCodeStore {
     public boolean isCodeValid(String email, String inputCode) {
         if (isLockedOut(email)) return false;
 
-        CodeEntry entry = store.get(email);
+        ResetEntry entry = store.get(email);
         if (entry == null || LocalDateTime.now().isAfter(entry.expiresAt()))
             return false;
 
@@ -62,7 +48,6 @@ public class VerificationCodeStore {
             return true;
         }
 
-        // Track failed attempt
         AttemptEntry attemptEntry = attempts.computeIfAbsent(email,
                 k -> new AttemptEntry(new AtomicInteger(0), null));
         int count = attemptEntry.count().incrementAndGet();
@@ -72,11 +57,6 @@ public class VerificationCodeStore {
         }
 
         return false;
-    }
-
-    public String getStoredPassword(String email) {
-        CodeEntry entry = store.get(email);
-        return (entry != null) ? entry.hashedPassword() : null;
     }
 
     public void clear(String email) {

@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.recette.allenchang.backend.exceptions.EmailAlreadyInUseException;
@@ -22,6 +24,8 @@ import com.recette.allenchang.backend.repositories.TagRepository;
 
 @Component
 public class ServiceUtil {
+    private static final Logger log = LoggerFactory.getLogger(ServiceUtil.class);
+
     private final FriendshipRepository friendshipRepository;
     private final UserRepository userRepository;
     private final RecipeRepository recipeRepository;
@@ -51,7 +55,7 @@ public class ServiceUtil {
 
     /** Ensure email format is correct */
     public void validateEmailFormat(String email) {
-        if (!email.matches("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+        if (!email.matches("^[\\w.+%-]+@([\\w-]+\\.)+[\\w-]{2,}$")) {
             throw new InvalidInputException("Invalid email format");
         }
     }
@@ -102,7 +106,7 @@ public class ServiceUtil {
                 .findByUserAndFriendAndStatus(friend, user, FriendshipStatus.PENDING)
                 .orElseThrow(() -> new IllegalArgumentException("No pending request from " + friend));
 
-        System.out.println(request);
+        log.debug("Incoming friend request: {}", request);
 
         return request;
     }

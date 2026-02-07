@@ -6,6 +6,7 @@ struct LoginView: View {
     @State private var email = ""
     @State private var password = ""
     @State private var showSignUp = false
+    @State private var showForgotPassword = false
     @EnvironmentObject var session: UserSession
 
     var body: some View {
@@ -42,20 +43,38 @@ struct LoginView: View {
                 Button(action: {
                     session.logIn(email: email, password: password)
                 }) {
-                    Text("Continue")
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .foregroundColor(.white)
-                        .background(Color(hex: "#e9c46a"))
-                        .cornerRadius(10)
-                        .font(.title3)
-                        .fontWeight(.semibold)
+                    Group {
+                        if session.isAuthLoading {
+                            ProgressView()
+                                .tint(.white)
+                        } else {
+                            Text("Continue")
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .foregroundColor(.white)
+                    .background(Color(hex: "#e9c46a"))
+                    .cornerRadius(10)
+                    .font(.title3)
+                    .fontWeight(.semibold)
                 }
+                .disabled(session.isAuthLoading)
                 if let error = session.loginError {
                     Text(error)
                         .foregroundColor(.red)
                         .font(.footnote)
                         .padding(.top, 4)
+                }
+
+                Button("Forgot password?") {
+                    showForgotPassword = true
+                }
+                .font(.subheadline)
+                .foregroundColor(.gray)
+                .frame(maxWidth: .infinity, alignment: .trailing)
+                .sheet(isPresented: $showForgotPassword) {
+                    ForgotPasswordView(showSheet: $showForgotPassword)
                 }
             }
             
@@ -69,14 +88,18 @@ struct LoginView: View {
             
             
             // Google button
-            GoogleLoginButton {
+            GoogleLoginButton(onToken: {
                 session.logInWithGoogle(idToken: $0)
-            }
+            }, onError: { error in
+                session.loginError = error
+            })
 
             // Apple button
-            SignInWithAppleButtonView {
+            SignInWithAppleButtonView(onToken: {
                 session.logInWithApple(idToken: $0)
-            }
+            }, onError: { error in
+                session.loginError = error
+            })
 
             /* Sign up */
             HStack (alignment: .center) {

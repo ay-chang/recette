@@ -1,5 +1,7 @@
 package com.recette.allenchang.backend.common;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +12,8 @@ import com.resend.services.emails.model.CreateEmailResponse;
 
 @Service
 public class EmailService {
+    private static final Logger log = LoggerFactory.getLogger(EmailService.class);
+
     private final Resend resend;
 
     public EmailService(@Value("${resend.api-key}") String apiKey) {
@@ -27,9 +31,10 @@ public class EmailService {
 
         try {
             CreateEmailResponse data = resend.emails().send(params);
-            System.out.println(data.getId());
+            log.info("Email sent to {} (id={})", recipientEmail, data.getId());
         } catch (ResendException e) {
-            e.printStackTrace();
+            log.error("Failed to send email to {}: {}", recipientEmail, e.getMessage());
+            throw new RuntimeException("Failed to send verification email. Please try again.", e);
         }
     }
 

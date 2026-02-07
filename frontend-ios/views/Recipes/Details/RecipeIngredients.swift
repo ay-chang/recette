@@ -7,6 +7,7 @@ struct RecipeIngredients: View {
     @EnvironmentObject var session: UserSession
     @EnvironmentObject var groceryModel: GroceriesModel
     @State private var showAlreadyAddedAlert = false
+    @State private var isAddingToGroceries = false
 
 
     var body: some View {
@@ -22,13 +23,15 @@ struct RecipeIngredients: View {
                 
                 Button {
                     if let email = session.userEmail {
-                        if groceryModel.hasRecipe(recipeId) {
+                        if groceryModel.hasRecipe(recipeId) || isAddingToGroceries {
                             showAlreadyAddedAlert = true
                         } else {
+                            isAddingToGroceries = true
                             groceryModel.addGroceries(ingredients, recipeId: recipeId) { success in
                                 if success {
                                     groceryModel.loadGroceries(email: email)
                                 } else {
+                                    isAddingToGroceries = false
                                     print("Failed to add groceries")
                                 }
                             }

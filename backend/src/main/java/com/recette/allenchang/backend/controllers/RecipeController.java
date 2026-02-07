@@ -127,6 +127,14 @@ public class RecipeController {
         return ResponseEntity.noContent().build();
     }
 
+    /** PATCH: Toggle recipe visibility */
+    @PatchMapping("/{id}/visibility")
+    public RecipeResponse toggleVisibility(@PathVariable String id, @RequestParam("isPublic") boolean isPublic) {
+        String userEmail = JwtUtil.getLoggedInUserEmail();
+        Recipe recipe = recipeMutationService.toggleVisibility(UUID.fromString(id), isPublic, userEmail);
+        return RecipeMapper.toResponse(recipe);
+    }
+
     /** PATCH: Update a recipe's image */
     @PatchMapping("/{id}/image")
     public RecipeResponse updateRecipeImage(@PathVariable String id, @RequestParam("imageUrl") String imageUrl) {

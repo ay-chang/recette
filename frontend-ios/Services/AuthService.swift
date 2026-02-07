@@ -27,6 +27,16 @@ final class AuthService {
         let request = CompleteSignUpRequest(email: email, code: code)
         return try await RecetteAPI.shared.post(AuthResponse.self, path: "/api/auth/signup/complete", body: request)
     }
+
+    func forgotPassword(email: String) async throws {
+        let request = ForgotPasswordRequest(email: email)
+        try await RecetteAPI.shared.postEmpty(path: "/api/auth/forgot-password", body: request)
+    }
+
+    func resetPassword(email: String, code: String, newPassword: String) async throws {
+        let request = ResetPasswordRequest(email: email, code: code, newPassword: newPassword)
+        try await RecetteAPI.shared.postEmpty(path: "/api/auth/reset-password", body: request)
+    }
 }
 
 // Helper for endpoints that return no content

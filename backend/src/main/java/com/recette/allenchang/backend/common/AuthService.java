@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Random;
+import java.security.SecureRandom;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
@@ -24,12 +24,12 @@ import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-
 import com.recette.allenchang.backend.exceptions.InvalidCredentialsException;
 import com.recette.allenchang.backend.exceptions.InvalidInputException;
 import com.recette.allenchang.backend.models.User;
 import com.recette.allenchang.backend.repositories.UserRepository;
+import com.recette.allenchang.backend.security.AppleJwksCache;
+import com.recette.allenchang.backend.verification.PasswordResetStore;
 import com.recette.allenchang.backend.verification.VerificationCodeStore;
 
 @Service
@@ -42,21 +42,26 @@ public class AuthService {
     private String appleClientId;
 
     private final VerificationCodeStore verificationCodeStore;
+    private final PasswordResetStore passwordResetStore;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
     private final ServiceUtil serviceUtil;
     private final ObjectMapper objectMapper;
+    private final AppleJwksCache appleJwksCache;
 
     public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder,
-            VerificationCodeStore verificationCodeStore, EmailService emailService, ServiceUtil serviceUtil,
-            ObjectMapper objectMapper) {
+            VerificationCodeStore verificationCodeStore, PasswordResetStore passwordResetStore,
+            EmailService emailService, ServiceUtil serviceUtil,
+            ObjectMapper objectMapper, AppleJwksCache appleJwksCache) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.verificationCodeStore = verificationCodeStore;
+        this.passwordResetStore = passwordResetStore;
         this.emailService = emailService;
         this.serviceUtil = serviceUtil;
         this.objectMapper = objectMapper;
+        this.appleJwksCache = appleJwksCache;
     }
 
     /** Validate username and password during login */
@@ -81,7 +86,7 @@ public class AuthService {
         }
 
         /** Generate 6 digit code between 100000 - 999999 and send the email */
-        String code = String.valueOf(new Random().nextInt(900000) + 100000);
+        String code = String.valueOf(new SecureRandom().nextInt(900000) + 100000);
         verificationCodeStore.store(email, code, password);
         emailService.sendEmail(
                 email,
@@ -93,20 +98,24 @@ public class AuthService {
     public User completeSignUpWithCode(String email, String code) {
         email = email.toLowerCase().trim();
 
+        if (verificationCodeStore.isLockedOut(email)) {
+            throw new InvalidInputException("Too many failed attempts. Please try again later.");
+        }
+
         if (!verificationCodeStore.isCodeValid(email, code)) {
             throw new InvalidInputException("Invalid or expired verification code");
         }
 
         serviceUtil.checkIfEmailExists(email); // re-check to avoid race conditions
 
-        String rawPassword = verificationCodeStore.getStoredPassword(email);
-        if (rawPassword == null) {
+        String hashedPassword = verificationCodeStore.getStoredPassword(email);
+        if (hashedPassword == null) {
             throw new InvalidInputException("Verification session expired. Please request a new code.");
         }
 
         User user = new User();
         user.setEmail(email);
-        user.setPassword(passwordEncoder.encode(rawPassword));
+        user.setPassword(hashedPassword); // already hashed in VerificationCodeStore
         user.setUsername(email.split("@")[0]);
 
         User savedUser = userRepository.save(user);
@@ -180,15 +189,8 @@ public class AuthService {
             Map<String, Object> header = objectMapper.readValue(headerJson, Map.class);
             String kid = (String) header.get("kid");
 
-            // Fetch Apple's public keys (JWKS)
-            RestTemplate restTemplate = new RestTemplate();
-            @SuppressWarnings("unchecked")
-            Map<String, Object> jwks = restTemplate.getForObject(
-                    "https://appleid.apple.com/auth/keys", Map.class);
-
-            // Find the key matching our kid
-            @SuppressWarnings("unchecked")
-            List<Map<String, Object>> keys = (List<Map<String, Object>>) jwks.get("keys");
+            // Fetch Apple's public keys (cached, refreshed hourly)
+            List<Map<String, Object>> keys = appleJwksCache.getKeys();
             Map<String, Object> matchingKey = keys.stream()
                     .filter(k -> kid.equals(k.get("kid")))
                     .findFirst()
@@ -262,6 +264,47 @@ public class AuthService {
         } catch (Exception e) {
             throw new InvalidCredentialsException("Failed Apple login");
         }
+    }
+
+    /** Send a password reset code to the user's email */
+    public void sendPasswordResetCode(String email) {
+        email = email.toLowerCase().trim();
+        serviceUtil.validateEmailFormat(email);
+
+        // Only send if user exists, but don't reveal that to the caller
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isEmpty()) {
+            return; // silently succeed to prevent email enumeration
+        }
+
+        String code = String.valueOf(new SecureRandom().nextInt(900000) + 100000);
+        passwordResetStore.store(email, code);
+        emailService.sendEmail(
+                email,
+                "Your Recette password reset code",
+                "<strong>Your password reset code is: " + code + "</strong><br>This code expires in 10 minutes.");
+    }
+
+    /** Reset the user's password using the verification code */
+    public void resetPassword(String email, String code, String newPassword) {
+        email = email.toLowerCase().trim();
+
+        if (passwordResetStore.isLockedOut(email)) {
+            throw new InvalidInputException("Too many failed attempts. Please try again later.");
+        }
+
+        if (!passwordResetStore.isCodeValid(email, code)) {
+            throw new InvalidInputException("Invalid or expired reset code");
+        }
+
+        serviceUtil.validatePasswordFormat(newPassword);
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new InvalidInputException("User not found"));
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+        passwordResetStore.clear(email);
     }
 
     private String defaultUsernameFromEmail(String email) {

@@ -46,6 +46,11 @@ final class RecipeService {
         try await RecetteAPI.shared.delete(path: "/api/recipes/\(id)")
     }
 
+    func toggleVisibility(id: String, isPublic: Bool) async throws -> RecipeResponse {
+        let queryItems = [URLQueryItem(name: "isPublic", value: "\(isPublic)")]
+        return try await RecetteAPI.shared.patch(RecipeResponse.self, path: "/api/recipes/\(id)/visibility", queryItems: queryItems)
+    }
+
     func updateImage(id: String, imageUrl: String) async throws -> RecipeResponse {
         let queryItems = [URLQueryItem(name: "imageUrl", value: imageUrl)]
         return try await RecetteAPI.shared.patch(RecipeResponse.self, path: "/api/recipes/\(id)/image", queryItems: queryItems)
