@@ -14,5 +14,6 @@ public record UpdateRecipeRequest(
         List<String> tags,
         String difficulty,
         Integer servingSize,
-        Integer cookTimeInMinutes) {
+        Integer cookTimeInMinutes,
+        Boolean isPublic) {
 }

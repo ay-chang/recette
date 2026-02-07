@@ -69,6 +69,12 @@ final class RecetteAPI {
         return try JSONDecoder().decode(T.self, from: data)
     }
 
+    func postEmpty(path: String) async throws {
+        let req = try makeRequest(method: "POST", path: path)
+        let (_, resp) = try await URLSession.shared.data(for: req)
+        try validate(resp)
+    }
+
     func put<T: Decodable>(_ type: T.Type, path: String, body: Encodable) async throws -> T {
         let req = try makeRequest(method: "PUT", path: path, body: body)
         let (data, resp) = try await URLSession.shared.data(for: req)

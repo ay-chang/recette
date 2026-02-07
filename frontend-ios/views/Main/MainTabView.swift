@@ -29,8 +29,8 @@ struct MainTabView: View {
                 createButton()
                 Spacer()
                 tabItem(label: "Grocery", image: "cart", index: 1)
-//                Spacer()
-//                tabItem(label: "Social", image: "link", index: 2)
+                Spacer()
+                tabItem(label: "Social", image: "person.2", index: 2)
                 Spacer()
                 tabItem(label: "Profile", image: "person", index: 3)
             }

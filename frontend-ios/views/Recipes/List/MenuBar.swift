@@ -3,6 +3,7 @@ import SwiftUI
 struct MenuBar: View {
     @Binding var isListView: Bool
     @Binding var showFilterSheet: Bool
+    @Binding var showSavedRecipes: Bool
 
     var body: some View {
         HStack (alignment: .center) {
@@ -26,6 +27,14 @@ struct MenuBar: View {
                 .cornerRadius(15)
 
             Spacer()
+
+            Button(action: {
+                showSavedRecipes = true
+            }) {
+                Image(systemName: "bookmark")
+                    .font(.system(size: 20))
+                    .foregroundColor(.gray)
+            }
 
         }
         .padding(.bottom)

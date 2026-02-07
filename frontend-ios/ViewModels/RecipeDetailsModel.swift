@@ -11,6 +11,7 @@ struct RecipeDetails: Identifiable, Equatable {
     var difficulty: String?
     var cookTimeInMinutes: Int?
     var servingSize: Int?
+    var isPublic: Bool
 }
 
 @MainActor
@@ -39,7 +40,8 @@ class RecipeDetailsModel: ObservableObject {
                     tags: dto.tags ?? [],
                     difficulty: dto.difficulty,
                     cookTimeInMinutes: dto.cookTimeInMinutes,
-                    servingSize: dto.servingSize
+                    servingSize: dto.servingSize,
+                    isPublic: dto.isPublic ?? false
                 )
             } catch {
                 print("Failed to load recipe: \(error)")

@@ -48,6 +48,7 @@ public class RecipeMutationService {
         recipe.setDifficulty(request.difficulty());
         recipe.setServingSize(request.servingSize());
         recipe.setCookTimeInMinutes(request.cookTimeInMinutes());
+        recipe.setIsPublic(request.isPublic() != null ? request.isPublic() : false);
 
         return recipeRepository.save(recipe);
     }
@@ -72,6 +73,7 @@ public class RecipeMutationService {
         recipe.setDifficulty(request.difficulty());
         recipe.setServingSize(request.servingSize());
         recipe.setCookTimeInMinutes(request.cookTimeInMinutes());
+        recipe.setIsPublic(request.isPublic() != null ? request.isPublic() : recipe.getIsPublic());
 
         return recipeRepository.save(recipe);
     }

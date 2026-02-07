@@ -17,6 +17,7 @@ class EditRecipeModel: BaseRecipe {
         self.difficulty = recipe.difficulty
         self.servingSize = recipe.servingSize ?? 0
         self.cookTimeInMinutes = recipe.cookTimeInMinutes ?? 0
+        self.isPublic = recipe.isPublic
     }
 
     func updateRecipe(
@@ -66,7 +67,8 @@ class EditRecipeModel: BaseRecipe {
             tags: Array(selectedTags),
             difficulty: difficulty,
             servingSize: servingSize,
-            cookTimeInMinutes: cookTimeInMinutes
+            cookTimeInMinutes: cookTimeInMinutes,
+            isPublic: isPublic
         )
 
         Task {

@@ -54,6 +54,9 @@ public class Recipe {
     private Integer cookTimeInMinutes;
     private Integer servingSize;
 
+    @Column(name = "is_public")
+    private Boolean isPublic = false;
+
     /**
      * The @OneToMany: Indicates a one-to-many relationship. A Recipe is the "one"
      * side, and Ingredient is the "many" side. mappedBy = "recipe": This tells JPA
@@ -97,7 +100,8 @@ public class Recipe {
     }
 
     public Recipe(String title, String description, List<Ingredient> ingredients, List<String> steps,
-            String imageurl, User user, String difficulty, Integer cookTimeInMinutes, Integer servingSize) {
+            String imageurl, User user, String difficulty, Integer cookTimeInMinutes, Integer servingSize,
+            Boolean isPublic) {
         this.title = title;
         this.description = description;
         this.ingredients = ingredients;
@@ -107,6 +111,7 @@ public class Recipe {
         this.difficulty = difficulty;
         this.cookTimeInMinutes = cookTimeInMinutes;
         this.servingSize = servingSize;
+        this.isPublic = isPublic != null ? isPublic : false;
     }
 
     /** Getters and setters */
@@ -196,6 +201,14 @@ public class Recipe {
 
     public void setServingSize(Integer servingSize) {
         this.servingSize = servingSize;
+    }
+
+    public Boolean getIsPublic() {
+        return isPublic;
+    }
+
+    public void setIsPublic(Boolean isPublic) {
+        this.isPublic = isPublic;
     }
 
     public LocalDateTime getCreatedAt() {

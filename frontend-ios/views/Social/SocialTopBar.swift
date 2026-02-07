@@ -16,7 +16,8 @@ struct SocialTopBar: View {
                     .padding(.vertical, 8)
             }
         }
-        .padding()
+        .padding(.bottom)
+        .padding(.horizontal)
         .overlay(
             Rectangle()
                 .frame(height: 1)

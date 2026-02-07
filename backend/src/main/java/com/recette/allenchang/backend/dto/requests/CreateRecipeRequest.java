@@ -13,5 +13,6 @@ public record CreateRecipeRequest(
                 List<String> tags,
                 String difficulty,
                 Integer servingSize,
-                Integer cookTimeInMinutes) {
+                Integer cookTimeInMinutes,
+                Boolean isPublic) {
 }

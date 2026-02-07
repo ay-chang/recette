@@ -35,7 +35,8 @@ class CreateRecipeModel: BaseRecipe {
                     tags: Array(selectedTags),
                     difficulty: difficulty,
                     servingSize: servingSize,
-                    cookTimeInMinutes: cookTimeInMinutes
+                    cookTimeInMinutes: cookTimeInMinutes,
+                    isPublic: isPublic
                 )
 
                 print("CreateRecipeModel: Creating recipe via REST API...")

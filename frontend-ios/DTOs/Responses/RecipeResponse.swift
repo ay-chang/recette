@@ -11,4 +11,7 @@ struct RecipeResponse: Codable {
     let difficulty: String?
     let servingSize: Int?
     let cookTimeInMinutes: Int?
+    let isPublic: Bool?
+    let owner: UserResponse?
+    let isSavedByCurrentUser: Bool?
 }

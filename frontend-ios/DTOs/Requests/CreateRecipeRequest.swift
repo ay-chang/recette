@@ -10,4 +10,5 @@ struct CreateRecipeRequest: Codable {
     let difficulty: String?
     let servingSize: Int?
     let cookTimeInMinutes: Int?
+    let isPublic: Bool
 }

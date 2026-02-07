@@ -15,5 +15,8 @@ public record RecipeResponse(
                 List<String> tags,
                 String difficulty,
                 Integer servingSize,
-                Integer cookTimeInMinutes) {
+                Integer cookTimeInMinutes,
+                Boolean isPublic,
+                UserResponse owner,
+                Boolean isSavedByCurrentUser) {
 }

@@ -12,6 +12,7 @@ class BaseRecipe: ObservableObject, TagManageable {
     @Published var difficulty: String? = nil
     @Published var servingSize: Int = 0
     @Published var cookTimeInMinutes: Int = 0
+    @Published var isPublic: Bool = false
     
     func validate() -> ValidationError? {
         if title.trimmingCharacters(in: .whitespaces).isEmpty {
