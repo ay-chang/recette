@@ -2,7 +2,8 @@ import SwiftUI
 
 struct FriendsListTopBar: View {
     @Binding var showFriendsListView: Bool
-    
+    @Binding var showSearchView: Bool
+
     var body: some View {
         HStack {
             Button(action: {
@@ -14,7 +15,9 @@ struct FriendsListTopBar: View {
                     .padding(.vertical, 8)
             }
             Spacer()
-            Button(action: {}) {
+            Button(action: {
+                showSearchView = true
+            }) {
                 Image(systemName: "person.2.badge.plus")
                     .font(.title2)
                     .foregroundColor(Color.gray)

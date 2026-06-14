@@ -55,6 +55,16 @@ public class FriendshipController {
                 .toList();
     }
 
+    /** GET: Get outgoing pending friend requests */
+    @GetMapping("/sent")
+    public List<UserResponse> getSentFriendRequests() {
+        String userEmail = JwtUtil.getLoggedInUserEmail();
+        List<User> sent = friendshipQueryService.getSentFriendRequests(userEmail);
+        return sent.stream()
+                .map(UserMapper::toResponse)
+                .toList();
+    }
+
     /** POST: Send a friend request */
     @PostMapping("/send")
     public FriendshipResponse sendFriendRequest(@RequestBody SendFriendRequestRequest request) {

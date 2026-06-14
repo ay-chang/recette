@@ -8,9 +8,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 import java.util.List;
+import java.util.UUID;
 
 @Repository
-public interface FriendshipRepository extends JpaRepository<Friendship, FriendshipId> {
+public interface FriendshipRepository extends JpaRepository<Friendship, UUID> {
 
     /** Check if a friendship already exists (in either direction) */
     Optional<Friendship> findByUserAndFriend(User user, User friend);

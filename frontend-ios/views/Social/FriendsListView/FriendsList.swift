@@ -26,14 +26,13 @@ struct FriendsList: View {
                 Text("No friends yet.")
                     .foregroundColor(.gray)
             } else {
-                List(friendshipsModel.friendships) { friend in
+                ForEach(friendshipsModel.friendships) { friend in
                     FriendsListItem(friend: friend) { friendUsername in
                         withAnimation {
                             friendshipsModel.removeFriend(friendUsername: friendUsername)
                         }
                     }
                 }
-                .listStyle(.plain)
             }
         }
         .padding(.horizontal)

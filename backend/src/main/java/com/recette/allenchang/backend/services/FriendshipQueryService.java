@@ -41,4 +41,13 @@ public class FriendshipQueryService {
                 .toList();
     }
 
+    /** Return a list of users that the current user has sent pending requests to */
+    public List<User> getSentFriendRequests(String userEmail) {
+        User user = serviceUtil.findUserByEmail(userEmail);
+        List<Friendship> friendships = friendshipRepository.findByUserAndStatus(user, FriendshipStatus.PENDING);
+        return friendships.stream()
+                .map(Friendship::getFriend)
+                .toList();
+    }
+
 }

@@ -20,7 +20,7 @@ public class AppConfigController {
     @Value("${app.version.message:}")
     private String message;
 
-    @GetMapping("app-config")
+    @GetMapping("/api/app-config")
     public Map<String, String> getAppConfig() {
         return Map.of(
                 "minSupportedVersion", minSupportedVersion,

@@ -19,19 +19,18 @@ struct ActionSheetView: View {
                 showDeleteConfirmation = true
             }
 
-            // TODO: Re-enable share toggle when social features are ready
-            // Divider()
-            //     .padding(.vertical, 4)
-            // Toggle(isOn: Binding(
-            //     get: { recipeModel.recipe?.isPublic ?? false },
-            //     set: { newValue in
-            //         recipeModel.toggleVisibility(newValue)
-            //     }
-            // )) {
-            //     Text("Share with friends")
-            //         .foregroundColor(.black)
-            // }
-            // .tint(Color(hex: "#e9c46a"))
+            Divider()
+                .padding(.vertical, 4)
+            Toggle(isOn: Binding(
+                get: { recipeModel.recipe?.isPublic ?? false },
+                set: { newValue in
+                    recipeModel.toggleVisibility(newValue)
+                }
+            )) {
+                Text("Share with friends")
+                    .foregroundColor(.black)
+            }
+            .tint(Color(hex: "#e9c46a"))
         }
         .alert("Are you sure you want to delete this recipe?", isPresented: $showDeleteConfirmation) {
             Button("Delete", role: .destructive) {
